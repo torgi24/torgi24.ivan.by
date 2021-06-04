@@ -1,4 +1,14 @@
-
+<script>
+  //делаем необезательное поле
+  $( document ).ready(function() {
+    //отчество
+    $('input#edit-profile-physical-field-phys-info-und-0-field-phys-pn-patrname-und-0-value').removeAttr("required");
+    $('input#edit-profile-physical-field-phys-info-und-0-field-phys-pn-patrname-und-0-value').removeClass("required");
+    //Квартира
+    $('input#edit-profile-physical-field-phys-address-und-0-field-phys-pa-appartment-und-0-value').removeAttr("required");
+    $('input#edit-profile-physical-field-phys-address-und-0-field-phys-pa-appartment-und-0-value').removeClass("required");
+  });
+</script>
 
 
 <div id="wrapper">
@@ -17,7 +27,7 @@
     <?php endif; ?>
   </div>
    <?php print render($page['header_center']); ?>
-  
+
    <?php if (!$logged_in): ?>
     <div id='login-user-header'>
       <div id="login-user-container">
@@ -37,22 +47,22 @@
       <div id='login-user'>
         <?print($user->name);?>
       </div>
-        
+
       <a id ='exit' href="/user/logout">Выход</a>
     </div>
-    
- 
+
+
   <?endif;?>
 
  </header>
- 
+
 
  <nav id="navigation">
     <div id="menu-toggle">
     </div>
-    
+
     <div id="main-menu">
-      <?php 
+      <?php
         if (module_exists('i18n_menu')) {
           $main_menu_tree = i18n_menu_translated_tree(variable_get('menu_main_links_source', 'main-menu'));
         } else {
@@ -60,15 +70,15 @@
         }
         print drupal_render($main_menu_tree);
       ?>
-       
+
     </div>
 
     <div id="search">
       <?php print render($page['search']); ?>
     </div>
-  </nav> 
-      
-  
+  </nav>
+
+
 </div>
 
 <div id="catalog-container">
@@ -112,9 +122,9 @@
                 <!-- изображение пользователя -->
                 <div id="user-image">
                     <img src="/sites/default/files/nooname_2.png" alt="" id='upload_user_photo' class="img-fluid"/>
-                   
-                    <? print render($page['content']['system_main']['field_user_img']);?> 
-                   
+
+                    <? print render($page['content']['system_main']['field_user_img']);?>
+
                     <div class="group-button">
                         <input type="button" value="Загрузить фото" id = "upload_photo" />
                         <!--<input type="button" value="Удалить"/>-->
@@ -133,7 +143,7 @@
                         </div>
                     </div>
                 </div>
-                
+
 
                  <!-- Личная информация -->
                  <div class="item">
@@ -144,33 +154,33 @@
 
                     <div class="input-group">
                         <div class="left-block">
-                            
+
                             <!-- Фамилия  -->
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_pn_lastname']['und']);?> 
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_pn_lastname']['und']);?>
                             <!-- Имя  -->
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_pn_name']['und']);?> 
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_pn_name']['und']);?>
                             <!-- Отчество  -->
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_pn_patrname']['und']);?> 
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_pn_patrname']['und']);?>
 
                         </div>
 
                         <div class="right-block">
                             <!-- Дата рождения -->
-                            
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_ph_borndate']['und']);?> 
+
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_ph_borndate']['und']);?>
                             <!-- Пол  -->
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_ph_address']['und']);?> 
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_ph_address']['und']);?>
                             <!-- Адрес  -->
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_ph_sex']['und']);?> 
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_ph_sex']['und']);?>
                             <!-- Номер -->
                             <? print render($page['content']['system_main']['profile_physical']['field_phys_info']['und'][0]['field_phys_ph_phone']['und']);?>
                         </div>
 
                     </div>
-                    
+
                 </div>
 
-                
+
                 <!-- Паспортные данные -->
                 <div class="item">
 
@@ -223,7 +233,7 @@
                         <div class="right-block">
                              <!-- Срок действия карты -->
                             <?print render($page['content']['system_main']['profile_physical']['field_phys_bankrecvizites']['und'][0]['field_phys_br_action_card']['und'])?>
-                            
+
                             <!-- Адрес -->
                             <?//print render($page['content']['system_main']['profile_physical']['field_phys_bankrecvizites']['und'][0]['field_phys_br_address']['und'])?>
 
@@ -232,8 +242,8 @@
                     </div>
 
                 </div>
-                
-                              
+
+
 
                 <!-- Почтовый адрес -->
                 <div class="item">
@@ -246,24 +256,24 @@
 
                         <div class="left-block">
                             <!-- страна -->
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_country']['und']);?> 
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_country']['und']);?>
                             <!-- Населенный пункт -->
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_city']['und']);?> 
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_city']['und']);?>
                             <!-- Индекс -->
                             <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_index']['und']);?>
                         </div>
 
                         <div class="right-block">
                             <!-- Улица -->
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_street']['und']);?> 
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_street']['und']);?>
                             <!-- Дом, корпус -->
-                            <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_homecorpus']['und']);?> 
+                            <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_homecorpus']['und']);?>
                             <!-- Квартира -->
                             <? print render($page['content']['system_main']['profile_physical']['field_phys_address']['und'][0]['field_phys_pa_appartment']['und']);?>
                         </div>
 
                     </div>
-                     
+
                 </div>
 
                 <input type="hidden" name="form_build_id" value="<?= $page['content']['system_main']['#build_id']?>">
@@ -272,7 +282,7 @@
                 <!-- логин / пароль -->
                 <div class="item">
                     <?php print render($page['content']['system_main']['account']); ?>
-                    
+
                 </div>
 
                 <!-- кнопка регистрация -->

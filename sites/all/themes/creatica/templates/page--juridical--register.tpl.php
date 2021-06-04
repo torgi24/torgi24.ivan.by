@@ -1,5 +1,18 @@
 
-
+<script>
+  //делаем необезательное поле
+  $( document ).ready(function() {
+    //отчество
+    $('input#edit-profile-juridical-field-jur-authface-und-0-field-jur-af-patrname-und-0-value').removeAttr("required");
+    $('input#edit-profile-juridical-field-jur-authface-und-0-field-jur-af-patrname-und-0-value').removeClass("required");
+    //ОКПО
+    $('input#edit-profile-juridical-field-jur-regcertificate-und-0-field-jur-rc-okpo-und-0-value').removeAttr("required");
+    $('input#edit-profile-juridical-field-jur-regcertificate-und-0-field-jur-rc-okpo-und-0-value').removeClass("required");
+    //Квартира
+    $('input#edit-profile-juridical-field-jur-juraddress-und-0-field-jur-ja-appartment-und-0-value').removeAttr("required");
+    $('input#edit-profile-juridical-field-jur-juraddress-und-0-field-jur-ja-appartment-und-0-value').removeClass("required");
+  });
+</script>
 
 <div id="wrapper">
 
@@ -161,6 +174,7 @@
                         </div>
 
                         <div class="right-block">
+                          <?//print_r($page['content']['system_main']['profile_juridical']['field_jur_authface']['und'][0]['field_jur_af_patrname']['und']);?>
                             <!-- Отчество -->
                             <? print render($page['content']['system_main']['profile_juridical']['field_jur_authface']['und'][0]['field_jur_af_patrname']['und']);?>
                             <!-- Должность -->
