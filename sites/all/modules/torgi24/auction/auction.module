@@ -1,0 +1,924 @@
+<?php
+function auction_menu() {
+	$items = array();
+	$items['auction/participate/%'] = array(
+		'page callback' => 'auction_participate',
+		'type' => MENU_CALLBACK,
+		'access arguments' => array('access content'),
+		'page arguments' => array(2)
+	);
+	$items['admin/config/content/auction_access'] = array(
+		'title' => 'Управление доступом аукциона',
+		'page callback' => 'auction_access_admin',
+		'access arguments' => array('access administration pages')
+	);
+	$items['admin/config/content/auction_access/edit/%'] = array(
+		'page callback' => 'auction_access_admin_edit',
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_CALLBACK,
+		'page arguments' => array(5)
+	);
+	$items['admin/config/content/auction_access/delete/%'] = array(
+		'page callback' => 'auction_access_admin_delete',
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_CALLBACK,
+		'page arguments' => array(5)
+	);
+	$items['auction/bet/%'] = array(
+		'page callback' => 'auction_bet',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+		'page arguments' => array(2)
+	);
+	$items['auction/info/%'] = array(
+		'page callback' => 'auction_info',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+		'page arguments' => array(2)
+	);
+	$items['own_auction'] = array(
+		'page callback' => 'own_auction',
+		'access callback' => 'user_is_logged_in',
+		'type' => MENU_CALLBACK
+	);
+	$items['admin/config/content/auction_logs'] = array(
+		'title' => 'Управление аукционом',
+		'page callback' => 'auction_logs',
+		'access arguments' => array('access administration pages'),
+	);
+	$items['admin/config/content/auction_log/%'] = array(
+		'page callback' => 'auction_log',
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_CALLBACK,
+		'page arguments' => array(4)
+	);
+	$items['auction/print/%'] = array(
+		'page callback' => 'auction_print_act',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+		'page arguments' => array(2)
+	);
+	
+	return $items;
+}
+
+function auction_theme($existing, $type, $theme, $path) {
+	return array(
+		'participate_button_anonymous' => array(
+			'template' => 'templates/participate_button_anonymous',
+		),
+		'participate_button_authenticated' => array(
+			'template' => 'templates/participate_button_authenticated',
+		),
+		'participate_button_sended' => array(
+			'template' => 'templates/participate_button_sended',
+		),
+		'mainform' => array(
+			'template' => 'templates/mainform'
+		),
+		'mainform_ext' => array(
+			'template' => 'templates/mainform_extended'
+		)
+	);
+}
+
+function auction_node_view($node, $view_mode, $langcode) {
+	if ($node->type != 'lot')
+		return true;
+	global $user;
+	switch ($node->field_lot_status['und'][0]['value']) {
+		case 'status1':
+			if (!in_array('authenticated user', $user->roles)) {
+				$node->content['participate_button'] = array(
+					'#markup' => theme('participate_button_anonymous'),
+					'#weight' => -1
+					);
+
+				return true;
+			}
+			$participant = (int) db_select('auction_access', 'a')
+				->condition('uid', $user->uid)
+				->condition('nid', $node->nid)
+				->countQuery()
+				->execute()
+				->fetchField();
+			if ($participant === 0) {
+				$node->content['participate_button'] = array(
+					'#markup' => theme('participate_button_authenticated', array('nid' => $node->nid)),
+					'#weight' => -1
+					);
+				return true;
+			}
+			$node->content['participate_button'] = array(
+				'#markup' => theme('participate_button_sended'),
+				'#weight' => -1
+				);
+			break;
+		case 'status2':
+			drupal_add_js(drupal_get_path('module', 'auction').'/js/auction.js');
+			
+			$participant = (int) db_select('auction_access', 'a')
+				->condition('uid', $user->uid)
+				->condition('nid', $node->nid)
+				->countQuery()
+				->execute()
+				->fetchField();
+			if ($participant === 1) {
+				if (!in_array('authenticated user', $user->roles))
+					return true;
+				drupal_add_js('https://raw.githubusercontent.com/jquery/jquery-color/master/jquery.color.js');
+				
+				$node->content['auction_mainform'] = array(
+					'#markup' => theme('mainform', array('price' => $node->field_lot_price['und'][0]['value'])),
+					'#weight' => 10
+				);
+			}else{
+				$node->content['auction_mainform'] = array(
+					'#markup' => theme('mainform_ext', array('price' => $node->field_lot_price['und'][0]['value'])),
+					'#weight' => 10
+				);
+			}
+			break;
+		case 'status3': case 'status5':
+			$info = db_select('auction_bets', 'b')
+				->fields('b')
+				->condition('nid', $node->nid)
+				->execute()
+				->fetchAll();
+			
+			$result = end($info);
+			
+			if(count($info) > 1){
+				$node->field_penultimate_bid['und'][0]['value'] = $info[count($info)-2]->current_price.'; '.date('H:i:s', $info[count($info)-2]->timestamp);
+			}else{
+				$node->field_penultimate_bid['und'][0]['value'] = $result->current_price.'; '.date('H:i:s', $result->timestamp);
+			}
+			$info_field_penultimate_bid = field_info_field('field_penultimate_bid');
+			field_sql_storage_field_storage_write('node', $node, 'update', array($info_field_penultimate_bid['id']));
+
+
+			$node->field_lot_winner['und'][0]['value'] = user_load($result->uid)->name;
+			$info_field_lot_winner = field_info_field('field_lot_winner');
+			field_sql_storage_field_storage_write('node', $node, 'update', array($info_field_lot_winner['id']));
+			
+			$node->field_max_price['und'][0]['value'] = $result->current_price.'; '.date('H:i:s', $result->timestamp);
+			$info_max_price = field_info_field('field_max_price');
+			field_sql_storage_field_storage_write('node', $node, 'update', array($info_max_price['id']));
+			
+			$node->field_number_bets['und'][0]['value'] = count($info); 
+			$info_field_number_bets = field_info_field('field_number_bets');
+			field_sql_storage_field_storage_write('node', $node, 'update', array($info_field_number_bets['id']));
+
+			cache_clear_all("field:node:{$node->nid}", 'cache_field');
+
+			$node->content['auction_winner'] = array(
+				'#markup' => '
+				<div class="min-price">
+					<p>Логин победителя торгов:</p>
+					<p class="price-text">'.$node->field_lot_winner['und'][0]['value'].'</p>
+				  </div>',
+				'#weight' => 0
+			);
+
+			if(((time() - $node->field_trading_end['und'][0]['value'])  <= 5 && $node->field_lot_status['und'][0]['value'] == 'status5') || ((time() - $node->field_trading_end['und'][0]['value'])  <= 5 && $node->field_lot_status['und'][0]['value'] == 'status3')){
+
+			
+				$node->content['winner'] = array(
+					'#markup' => '
+					<div style="width:100%;height:100%;position:fixed;display:flex;align-items:center;justify-content: center;left:0;top:0" id="modal-container">
+						<div class="modal">
+							<div class="modal-body">
+				
+							<div class="modal-content-win">
+								<div class="modal-content-text-win">
+								<p>Торги окончены. Вы выиграли лот № '.$node->nid.'</p>
+								</div>
+								<div class="modal-btn-container">
+									Окно закроется через 5 секнуд
+								</div>
+							</div>
+							</div>
+						</div>
+						<script>document.querySelector(".modal-btn-container").onclick = function(){document.querySelector("#modal-container").style.display = "none"}; setTimeout(function(){document.location.reload();}, 4000);</script>
+					</div>',
+					'#weight' => 0
+				);
+			}
+			break;
+		case 'status8':
+			drupal_add_js(drupal_get_path('module', 'auction').'/js/auction_ext.js');
+			
+			$participant = (int) db_select('auction_access', 'a')
+				->condition('uid', $user->uid)
+				->condition('nid', $node->nid)
+				->countQuery()
+				->execute()
+				->fetchField();
+			if ($participant === 1) {
+				if (!in_array('authenticated user', $user->roles))
+					return true;
+				drupal_add_js('https://raw.githubusercontent.com/jquery/jquery-color/master/jquery.color.js');
+				
+				$node->content['auction_mainform'] = array(
+					'#markup' => theme('mainform', array('price' => $node->field_lot_price['und'][0]['value'])),
+					'#weight' => 10
+				);
+			}else{
+				$node->content['auction_mainform'] = array(
+					'#markup' => theme('mainform_ext', array('price' => $node->field_lot_price['und'][0]['value'])),
+					'#weight' => 10
+				);
+			}
+			break;
+	}
+}
+
+function auction_participate($nid) {
+	if (!preg_match('/^[0-9]+$/', $nid)) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	$node = node_load($nid);
+	if (!$node) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	if ($node->field_lot_status['und'][0]['value'] != 'status1') {
+		drupal_not_found();
+		drupal_exit();
+	}
+	global $user;
+	$participant = (int) db_select('auction_access', 'a')
+		->condition('uid', $user->uid)
+		->condition('nid', $node->nid)
+		->countQuery()
+		->execute()
+		->fetchField();
+	if ($participant > 0) {
+		drupal_not_found();
+		drupal_exit();
+	}
+
+	
+
+
+	db_insert('auction_access')
+		->fields(array('uid' => $user->uid, 'nid' => $node->nid))
+		->execute();
+	
+	//drupal_set_message('Ваша заявка принята на расмотрение.', 'status');
+	drupal_goto(drupal_get_path_alias('node/'.$node->nid));
+}
+
+function auction_access_admin() {
+	$result = db_select('auction_access', 'a')
+		->fields('a')
+		->orderBy('a.status')
+		->execute();
+	$rows[] = array();
+	foreach ($result as $row) {
+		$user = user_load($row->uid);
+		$node = node_load($row->nid);
+		if (!$node)
+			continue;
+		$rows[] = array(
+			$row->id,
+			l($user->name, 'user/'.$user->uid, array('attributes' => array('target' => '_blank'))),
+			l($node->nid, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
+			l($node->title, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
+			($row->status == 0) ? 'Ожидается' : 'Участник',
+			l('Изменить', 'admin/config/content/auction_access/edit/'.$row->id, array('attributes' => array('class' => 'change_status'))),
+			l('Удалить', 'admin/config/content/auction_access/delete/'.$row->id, array('attributes' => array('class' => 'delete_request')))
+		);
+	}
+	drupal_add_js(drupal_get_path('module', 'auction').'/js/admin.js');
+	return theme('table', array('header' => array('ID', 'Имя пользователя', 'Номер лота', 'Название лота', 'Статус', 'Изменить статус', 'Удалить'), 'rows' => $rows));
+}
+
+function auction_access_admin_delete($id) {
+	if (!preg_match('/^[0-9]+$/', $id)) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	db_delete('auction_access')
+		->condition('id', $id)
+		->execute();
+	drupal_set_message('Заявка удалена.', 'status');
+	drupal_goto('admin/config/content/auction_access');
+}
+
+function auction_access_admin_edit($id) {
+	if (!preg_match('/^[0-9]+$/', $id)) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	$result = db_select('auction_access', 'a')
+		->fields('a', array('status','uid','nid'))
+		->condition('id', $id)
+		->execute()
+		->fetchAll();
+	
+	db_update('auction_access')
+		->fields(array('status' => ($result[0]->status == 0) ? 1 : 0))
+		->condition('id', $id)
+		->execute();
+	if($result[0]->status == 0){
+		/*$headers = array(
+			'From' => 'info@torgi24.by',
+			'Reply-To' => 'info@torgi24.by'
+		);*/
+		
+		$node_q = node_load($result[0]->nid);
+		$user = user_load($result[0]->uid);
+		$message = "Вам открыт доступ к лоту №".$result[0]->nid." Начало торгов: ".date('d.m.y H:i:s',$node_q->field_trading_start['und'][0]['value']);
+		mail($user->mail, 'torgi24.by', $message) or die($message);
+		
+	}
+
+	drupal_set_message('Статус обновлен.', 'status');
+	drupal_goto('admin/config/content/auction_access');
+}
+
+
+function auction_info($nid) {
+	if (!preg_match('/^[0-9]+$/', $nid)) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	$node = node_load($nid);
+	if (!$node) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	if (!in_array($node->field_lot_status['und'][0]['value'], array('status2', 'status8'))) {
+		print json_encode(array('status' => 0));
+		return true;
+	}
+	$result = db_select('auction_bets', 'b')
+		->fields('b')
+		->condition('nid', $nid)
+		->orderBy('id')
+		->execute()
+		->fetchAll();
+	
+
+	$count_user = count(db_select('auction_access', 'b')
+		->fields('b')
+		->condition('nid', $nid)
+		->execute()
+		->fetchAll());
+
+	$info = end($result);
+	$count = count($result);
+	$user = user_load($info->uid);
+	
+	if($node->field_type_auction['und'][0]['value'] == 'autctionType1' && $info->flag_lot != 0 ){
+
+		$count = date('H', $node->field_trading_start['und'][0]['value'])  - date('H', $result[0]->timestamp);
+		
+		
+	}elseif($node->field_type_auction['und'][0]['value'] == 'autctionType1' && $count == 0){
+		$count = date('H', $node->field_trading_start['und'][0]['value']) - date('H', time());
+	}
+	$start_price = $node->field_lot_price['und'][0]['value'];
+	//тип цены
+	//Динамическое понижение
+	if($node->field_lot_price_status['und'][0]['value'] == 'priceType1' && $node->field_type_auction['und'][0]['value'] == 'autctionType1'){
+				
+		if(empty($info)){
+			$step = $start_price * ($node->field_lot_percent_step['und'][0]['value'] / 100);
+			//$current_price =  $start_price + $step;
+			$current_price =  $start_price;
+		}else{
+			$step = $info->current_price * ($node->field_lot_percent_step['und'][0]['value'] / 100);
+			//$current_price =  $info->current_price + $step;
+			$current_price =  $info->current_price;
+		}
+		$next_price =  $current_price +  $step;
+		
+		if($count <= 0 && empty($info)){
+			
+			$auction_down = ($node->field_lot_price['und'][0]['value'] - $node->field_lot_min_price['und'][0]['value']) / 6;
+			$current_price =  $node->field_lot_price['und'][0]['value'] + ($count * $auction_down);
+			$next_price = $current_price + $current_price * ($node->field_lot_percent_step['und'][0]['value'] / 100);
+			$step = $current_price * ($node->field_lot_percent_step['und'][0]['value'] / 100);
+		}
+		
+
+	// Статическое повышение
+	}elseif ($node->field_lot_price_status['und'][0]['value'] == 'priceType2'  && $node->field_type_auction['und'][0]['value'] == 'autctionType2') {
+		
+			$step = $start_price * ($node->field_lot_percent_step['und'][0]['value'] / 100);
+			/*if(count($result) == 0){
+				$current_price = $start_price  + $step * (count($result) + 1);
+				$next_price = $start_price + $step * (count($result) + 2);
+			}else{
+				$current_price = $start_price  + $step * count($result);
+				$next_price = $start_price + $step * (count($result) + 1);
+			}*/
+
+			$current_price = $start_price  + $step * count($result);
+			$next_price = $start_price + $step * (count($result) + 1);
+	}//Статическое понижение
+	elseif($node->field_lot_price_status['und'][0]['value'] == 'priceType2'  && $node->field_type_auction['und'][0]['value'] == 'autctionType1'){
+		$step = $start_price * ($node->field_lot_percent_step['und'][0]['value'] / 100);
+		
+		if(empty($info)){
+			
+			$current_price =  $start_price + $step;
+		}else{
+			$current_price =  $info->current_price;
+		}
+		
+		
+		if($count <= 0 && empty($info)){
+			
+			$auction_down = ($node->field_lot_price['und'][0]['value'] - $node->field_lot_min_price['und'][0]['value']) / 6;
+			$current_price =  $node->field_lot_price['und'][0]['value'] + ($count * $auction_down);
+			
+		}
+		$next_price =  $current_price +  $step;
+	}
+
+	
+
+	$current_time = $node->field_trading_end['und'][0]['value'] - time();
+	
+
+	if (count($result) == 0) {
+		print json_encode(array(
+			'status' => 1,
+			'count' => $count,
+			'current_price' => number_format($current_price, 2, ',', ' ').' бел.руб.',
+			'next_price' => number_format($next_price, 2, ',', ' ').' бел.руб.',
+			'current_time' => gmdate('H:i:s', $current_time),
+			'step' => $step.' бел.руб'
+		));
+		return true;
+	}
+	
+	$data = array(
+		'status' => $node->field_lot_status['und'][0]['value'],
+		'user' => 'Участник №'.$user->uid,
+		'count' => $count,
+		'current_price' => number_format($current_price, 2, ',', ' ').' бел.руб.',
+		'next_price' => number_format($next_price, 2, ',', ' ').' бел.руб.',
+		'bids' => $result,
+		'current_time' => gmdate('H:i:s', $current_time),
+		'count_user' => $count_user,
+		'trading_start' => $node->field_trading_start['und'][0]['value'],
+		//'trading_start' => $node->field_trading_end['und'][0]['value'],
+		'step' => round($step,2).' бел.руб'
+	
+	);
+
+	$node->field_lot_pass['und'][0]['value'] = round($step,2).' бел. руб.'; 
+	$info_field_lot_pass = field_info_field('field_lot_pass');
+	field_sql_storage_field_storage_write('node', $node, 'update', array($info_field_lot_pass['id']));
+	cache_clear_all("field:node:{$node->nid}", 'cache_field');
+
+	if($node->field_trading_end['und'][0]['value'] < ($info->timestamp + 180)){
+		$data['current_time'] = gmdate('H:i:s',($info->timestamp + 180 - time()));
+	}
+
+	if($node->field_trading_end['und'][0]['value'] < ($info->timestamp + 180) &&  ($info->timestamp + 180) > time() || $node->field_trading_end['und'][0]['value'] > time()){
+		echo  json_encode($data);
+	}
+
+	
+
+}
+
+function auction_bet($nid) {
+	if (!preg_match('/^[0-9]+$/', $nid)) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	global $user;
+	if (!in_array('authenticated user', $user->roles)) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	$id = db_select('auction_access', 'a')
+		->fields('a', array('id'))
+		->condition('uid', $user->uid)
+		->condition('nid', $nid)
+		->condition('status', 1)
+		->execute()
+		->fetchField();
+	if (!$id) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	$result = db_select('auction_bets', 'b')
+		->fields('b', array('uid'))
+		->fields('b', array('timestamp'))
+		->fields('b', array('flag_lot'))
+		->fields('b', array('current_price'))
+		->condition('nid', $nid)
+		->execute()
+		->fetchAll();
+		
+	$info = end($result);
+	$count = count($result);
+
+	if ($info->uid == $user->uid) {
+		return true;
+	}
+
+
+	$node = node_load($nid);
+
+	
+	if((date('H', time()) - date('H', $info->timestamp)) > 0  && $info->flag_lot == 0){
+		$flag = 1;
+	}else{
+		$flag = $info->flag_lot;
+	}
+	
+	if($node->field_type_auction['und'][0]['value'] == 'autctionType1' && $info->flag_lot > 0 ){
+
+		$count = date('H', $node->field_trading_start['und'][0]['value']) - date('H', $result[0]->timestamp);
+		
+		
+	}elseif($node->field_type_auction['und'][0]['value'] == 'autctionType1' && $count == 0){
+		$count = date('H', $node->field_trading_start['und'][0]['value']) - date('H', time());
+	}
+	$start_price = $node->field_lot_price['und'][0]['value'];
+	//Динамическое понижение
+	if($node->field_lot_price_status['und'][0]['value'] == 'priceType1' && $node->field_type_auction['und'][0]['value'] == 'autctionType1'){
+		
+		
+
+		if(empty($info)){
+			$auction_down = ($start_price - $node->field_lot_min_price['und'][0]['value'] ) / 6;
+			$price =  $start_price + ($auction_down * $count);
+			
+			$current_price = $price + ($price * ($node->field_lot_percent_step['und'][0]['value'] / 100));
+		}else{
+			$step = $info->current_price * ($node->field_lot_percent_step['und'][0]['value'] / 100);
+			$current_price = $info->current_price + $step;
+		}
+		
+	
+	}
+	// Статическое повышение
+	elseif ($node->field_lot_price_status['und'][0]['value'] == 'priceType2'  && $node->field_type_auction['und'][0]['value'] == 'autctionType2') {
+		$current_price = $node->field_lot_price['und'][0]['value'] / 100 * $node->field_lot_percent_step['und'][0]['value'] * ($count+1) + $node->field_lot_price['und'][0]['value'];
+	}
+	// Статическое понижение
+	elseif($node->field_lot_price_status['und'][0]['value'] == 'priceType2'  && $node->field_type_auction['und'][0]['value'] == 'autctionType1'){
+		$step = $node->field_lot_price['und'][0]['value'] * ($node->field_lot_percent_step['und'][0]['value'] / 100);
+		if(empty($info)){
+			$auction_down = ($node->field_lot_price['und'][0]['value'] - $node->field_lot_min_price['und'][0]['value'] ) / 6;
+			$current_price =  $start_price + ($auction_down * $count) + $step;
+		}
+		else{
+			$current_price = $info->current_price + $step;
+		}
+	}
+
+	db_insert('auction_bets')
+		->fields(array('uid' => $user->uid, 'nid' => $nid, 'timestamp' => time() , 'flag_lot' =>$flag,'current_price'=>round($current_price,2)))
+		->execute();
+}
+
+function own_auction() {
+	global $user;
+	$result = db_select('auction_access', 'a')
+		->fields('a')
+		->condition('uid', $user->uid)
+		->orderBy('a.status', 'DESC')
+		->execute();
+	$rows[] = array();
+	foreach ($result as $row) {
+		$node = node_load($row->nid);
+		if (!$node)
+			continue;
+		$message = '';
+		if (in_array($node->field_lot_status['und'][0]['value'], array('status3', 'status5'))) {
+			$query = db_select('auction_bets', 'b')
+				->fields('b')
+				->condition('nid', $node->nid)
+				->orderBy('b.id')
+				->execute()
+				->fetchAll();
+			$query = end($query);
+			if ($query->uid == $user->uid)
+				$message = '<p>Вы выиграли данный лот</p>';
+		}
+		$rows[] = array(
+			array('data' => l(theme('image_style', array('style_name' => 'thumbnail', 'path' => $node->field_lot_img['und'][0]['uri'])), drupal_get_path_alias('node/'.$node->nid), array('html' => true)), 'class' => 'field-my-lot-img'),
+			l($node->title, drupal_get_path_alias('node/'.$node->nid)),
+			l($node->nid, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
+			($row->status == 0) ? 'Ожидается'.$message : 'Участник'.$message,
+		);
+	}
+	return theme('table', array('header' => array('Фото', 'Название лота', 'Номер лота', 'Статус'), 'rows' => $rows));
+}
+
+function auction_logs() {
+	$result = db_select('auction_bets', 'b')
+		->fields('b')
+		->groupBy('b.nid')
+		->orderBy('b.nid')
+		->execute();
+	$rows[] = array();
+	foreach ($result as $row) {
+		$node = node_load($row->nid);
+		if (!$node)
+			continue;
+		$rows[] = array(
+			array('data' => theme('image_style', array('style_name' => 'thumbnail', 'path' => $node->field_lot_img['und'][0]['uri'])), 'class' => 'field-my-lot-img'),
+			l($node->title, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
+			l($node->nid, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
+			date('d.m.Y H:i', $node->field_trading_start['und'][0]['value']),
+			date('d.m.Y H:i', $node->field_trading_end['und'][0]['value']),
+			($node->field_trading_end['und'][0]['value'] > time()) ? 'Проводится' : 'Завершен',
+			l('Отчёт', 'admin/config/content/auction_log/'.$row->nid, array('attributes' => array('target' => '_blank')))
+		);
+	}
+	return theme('table', array('header' => array('Фото', 'Наименование', 'Номер лота', 'Дата начало', 'Дата окончания', 'Статус', 'Посмотреть отчёт'), 'rows' => $rows));
+}
+
+function auction_log($nid) {
+	if (!preg_match('/^[0-9]+$/', $nid)) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	$node = node_load($nid);
+	if (!$node) {
+		drupal_not_found();
+		drupal_exit();
+	}
+	$result = db_select('auction_bets', 'b')
+		->fields('b')
+		->condition('b.nid', $nid)
+		->orderBy('b.id')
+		->execute();
+	$rows = array();
+	foreach ($result as $key => $row) {
+		$count = $key + 1;
+		$user = user_load($row->uid);
+		$rows[] = array(
+			$row->id,
+			l($node->title, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
+			l($user->name, 'user/'.$user->uid, array('attributes' => array('target' => '_blank'))),
+			number_format($row->current_price,2).' бел. руб.',
+			date('d.m.Y H:i:s', $row->timestamp)
+		);
+	}
+	return theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows));
+}
+
+function auction_init() {
+	$nodes = node_load_multiple(array(), array('type' => 'lot'));
+
+	foreach ($nodes as $node) {
+		$status = $node->field_lot_status['und'][0]['value'];
+		
+		switch ($status) {
+			case 'status1':
+				if (count($node->field_filing_end) == 0)
+					break;
+				if ($node->field_filing_end['und'][0]['value'] <= time()) {
+					$node->field_lot_status['und'][0]['value'] = 'status7';
+					node_save($node);
+				}
+				break;
+			case 'status2':
+				if (count($node->field_trading_end) == 0)
+					break;
+				
+					
+
+				
+
+				$result = db_select('auction_bets', 'b')
+						->fields('b', array('id', 'timestamp', ))
+						->condition('nid', $node->nid)
+						->execute()
+						->fetchAll();
+				
+				if(!empty($result)){
+					$last_bid = end($result);
+					$last_bid = $last_bid->timestamp;
+					if($node->field_trading_end['und'][0]['value'] < ($last_bid + 180)){
+						$node->field_lot_status['und'][0]['value'] = 'status8';
+						node_save($node);
+					}elseif ($node->field_trading_end['und'][0]['value'] <= time()) {
+						$node->field_lot_status['und'][0]['value'] = 'status8';
+						node_save($node);
+						print json_encode(array('status' => 2));
+						
+					}
+	
+					break;
+				}else if(empty($result) && ($node->field_trading_end['und'][0]['value'] < time())){
+					$node->field_lot_status['und'][0]['value'] = 'status4';
+					node_save($node);
+						
+				}
+				
+					
+
+				break;
+
+				
+			case 'status7':
+				$result = db_select('auction_access', 'a')
+						->fields('a', array('nid','status', ))
+						->condition('nid', $node->nid)
+						->condition('status', 1)
+						->execute()
+						->fetchAll();
+				if(count($result) <= 1){
+					$node->field_lot_status['und'][0]['value'] = 'status4';
+					$node->field_trading_end['und'][0]['value'] = $node->field_trading_start['und'][0]['value'];
+
+					node_save($node);
+					
+				}else{
+					$node->field_lot_count_user['und'][0]['value'] = count($result);
+					$info_field_lot_count_user = field_info_field('field_lot_count_user');
+					field_sql_storage_field_storage_write('node', $node, 'update', array($info_field_lot_count_user['id']));
+
+					cache_clear_all("field:node:{$node->nid}", 'cache_field');
+				}
+				
+
+				if ($node->field_trading_start['und'][0]['value'] <= time()) {
+					$node->field_lot_status['und'][0]['value'] = 'status2';
+					node_save($node);
+				
+				}
+				break;
+			case 'status8':
+					$result = db_select('auction_bets', 'b')
+						->fields('b', array('id', 'timestamp', 'uid'))
+						->condition('nid', $node->nid)
+						->execute()
+						->fetchAll();
+
+					if(empty($result) || count($result) == 0){
+						$node->field_lot_status['und'][0]['value'] = 'status4';
+						node_save($node);
+						drupal_goto(drupal_get_path_alias('node/'.$node->nid));
+					};
+
+					if(!empty($result)){
+						
+						$last_bid = end($result);
+						$last_bid = $last_bid->timestamp;
+						if ($node->field_trading_end['und'][0]['value'] > ($last_bid + 180))
+							$last_bid = $node->field_trading_end['und'][0]['value'];
+						else{
+							$last_bid = $node->field_trading_end['und'][0]['value'] + 180;
+						}
+						if (($last_bid) >= time())
+							break;
+						if (count($result) == 0) {
+							$node->field_lot_status['und'][0]['value'] = 'status4';
+							node_save($node);
+							drupal_goto(drupal_get_path_alias('node/'.$node->nid));
+						} elseif (count($result) == 1) {
+							/*$headers = array(
+								'From' => 'info@torgi24.by',
+								'Reply-To' => 'info@torgi24.by',
+								'X-Mailer' => 'PHP/' . phpversion()
+							);*/
+						
+								
+							$user_mail = user_load(end($result)->uid);
+							$lot = $node->nid;
+							mail($user_mail->mail, 'torgi24.by', "Вы выиграли лот №".$lot) or die('error');
+							
+							$node->field_lot_status['und'][0]['value'] = 'status3';
+							$node->field_lot_endprice['und'][0]['value'] = number_format(end($result)->current_price, 2, '.', ' ');
+							$node->field_trading_end['und'][0]['value'] = time();
+							node_save($node);
+							drupal_goto(drupal_get_path_alias('node/'.$node->nid));
+						} elseif (count($result) > 1) {
+
+							/*$headers = array(
+								'From' => 'info@torgi24.by',
+								'Reply-To' => 'info@torgi24.by',
+								'X-Mailer' => 'PHP/' . phpversion()
+							);*/
+						
+								
+							$user_mail = user_load(end($result)->uid);
+							$lot = $node->nid;
+							mail($user_mail->mail, 'torgi24.by', "Вы выиграли лот №".$lot) or die('error');
+							
+							
+							$node->field_lot_status['und'][0]['value'] = 'status5';
+							$node->field_lot_endprice['und'][0]['value'] = number_format(end($result)->current_price, 2, '.', ' ');
+							$node->field_trading_end['und'][0]['value'] = time();
+						
+							node_save($node);
+							drupal_goto(drupal_get_path_alias('node/'.$node->nid));
+						}
+					}
+				break;
+		}
+	}
+}
+
+function auction_print_act($nid) {
+
+	$node = node_load($nid);
+	
+	switch ($node->field_lot_status['und'][0]['value']) {
+		case 'status5':
+			$result = db_select('auction_bets', 'b')
+				->fields('b', array('uid','current_price'))
+				->condition('nid', $node->nid)
+				->execute()
+				->fetchAll();
+			
+			
+			$profile = profile2_load_by_user(end($result)->uid);
+
+			$wrapper = entity_metadata_wrapper('profile2', current($profile));
+
+			if(isset($wrapper->field_phys_info->field_phys_pn_lastname)){
+				$fio = $wrapper->field_phys_info->field_phys_pn_lastname->value().' '.$wrapper->field_phys_info->field_phys_pn_name->value().' '.$wrapper->field_phys_info->field_phys_pn_patrname->value();
+			}else{
+				$fio = $wrapper->field_jur_authface->field_jur_af_lastname->value().' '.$wrapper->field_jur_authface->field_jur_af_name->value().' '.$wrapper->field_jur_authface->field_jur_af_patrname->value();
+			}
+
+			require_once 'sites/all/modules/torgi24/auction/documents/PHPWord.php';
+			unlink('docx/*.docx');
+			
+
+			$PHPWord = new PHPWord();	
+			$templateProcessor = $PHPWord->loadTemplate('sites/all/modules/torgi24/auction/documents/examples/success.docx');
+			$templateProcessor->setValue('nid', $nid);
+			$templateProcessor->setValue('date', date('d.m.Y', $node->field_trading_end['und'][0]['value']));
+			$templateProcessor->setValue('protocol_id', date('dm', $node->field_trading_end['und'][0]['value']).'/'.$nid);
+			$templateProcessor->setValue('operator', $node->field_operator['und'][0]['value']);
+			$templateProcessor->setValue('date1', date('d.m.Y, H:i:s', $node->field_trading_start['und'][0]['value']));
+			$templateProcessor->setValue('date2', date('d.m.Y, H:i:s', $node->field_trading_end['und'][0]['value']));
+			$templateProcessor->setValue('crisis_manager',$node->field_crisis_manager['und'][0]['value']);
+			$templateProcessor->setValue('debitor', $node->field_debtor['und'][0]['value']);
+			$templateProcessor->setValue('head_position', $node->field_head_position['und'][0]['value']);
+			$templateProcessor->setValue('field_head_crisis', $node->field_head_crisis['und'][0]['value']);
+			$templateProcessor->setValue('cause', $node->field_cause['und'][0]['value']);
+			$templateProcessor->setValue('node_name', $node->title.', №'.$nid);
+			$templateProcessor->setValue('nid', $nid);
+			$templateProcessor->setValue('count_applications',$node->field_lot_count_user['und'][0]['value']);
+			$templateProcessor->setValue('max_price', end($result)->current_price);
+			$templateProcessor->setValue('count_bets', $node->field_number_bets['und'][0]['value']);
+			$templateProcessor->setValue('fio', $fio);
+			$file = 'docx/'.$nid.'-'.rand(0, 1000).'.docx';
+			$templateProcessor->save($file);
+			var_dump($node->field_operator['und'][0]['value']);
+			drupal_goto(drupal_get_path_alias($file));
+			break;
+		
+		case 'status4':
+			
+			require_once 'sites/all/modules/torgi24/auction/documents/PHPWord.php';
+			$PHPWord = new PHPWord();	
+			$templateProcessor = $PHPWord->loadTemplate('sites/all/modules/torgi24/auction/documents/examples/failed.docx');
+			$templateProcessor->setValue('nid', $nid);
+			$templateProcessor->setValue('field_operator', $node->field_operator['und'][0]['value']);
+			$templateProcessor->setValue('date', date('d.m.Y', $node->field_trading_end['und'][0]['value']));
+			$templateProcessor->setValue('protocol_id', date('dm', $node->field_trading_end['und'][0]['value']).'/'.$nid);
+			$templateProcessor->setValue('date1', date('d.m.Y, H:i:s', $node->field_trading_start['und'][0]['value']));
+			$templateProcessor->setValue('date2', date('d.m.Y, H:i:s', $node->field_trading_end['und'][0]['value']));
+			$templateProcessor->setValue('crisis_manager',$node->field_crisis_manager['und'][0]['value']);
+			$templateProcessor->setValue('debitor', $node->field_debtor['und'][0]['value']);
+			$templateProcessor->setValue('head_position', $node->field_head_position['und'][0]['value']);
+			$templateProcessor->setValue('field_head_crisis', $node->field_head_crisis['und'][0]['value']);
+			$templateProcessor->setValue('cause', $node->field_cause['und'][0]['value']);
+			$templateProcessor->setValue('node_name', $node->title.', №'.$nid);
+			$templateProcessor->setValue('nid', $nid);
+			
+			$templateProcessor->save('docx/'.$nid.'.docx');
+			
+
+			header("Location:".'/docx/'.$nid.'.docx');
+			break;
+		
+		default:
+			header("Location: /home");
+			break;
+	}
+	
+}
+
+
+/*
+status1|Прием заявок
+status2|Проводятся торги
+status3|Торги не состоялись (лот приобретен единственным участником)
+status4|Торги не состоялись. Ожидаются повторные торги
+status5|Торги состоялись
+status6|Торги отменены
+status7|Ожидаются торги
+status8|Торги продлены
+status9|Торги не состоялись (лот снят с участия)
+*/
+

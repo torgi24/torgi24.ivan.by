@@ -1,0 +1,1305 @@
+.container {
+  width: 100%;
+}
+
+.container .row {
+  width: 88.88889vw;
+  margin: 0 auto;
+}
+
+.content-wrapper {
+  margin-right: 5.55556vw;
+  margin-left: 12.5vw;
+  margin-bottom: 6.94444vw;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.hide h2 {
+  display: none;
+}
+
+.subscribe {
+  margin: 0 auto;
+  width: 75%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-top: 6.94444vw;
+  padding-bottom: 6.94444vw;
+}
+
+.subscribe .subscribe-text {
+  font-family: "Proxima Nova";
+  font-size: 1.38889vw;
+  width: 32%;
+}
+
+.subscribe .subscribe-form {
+  background-color: #f5f4f4;
+}
+
+.subscribe .subscribe-form #subscribeEmail {
+  font-size: 1.18056vw;
+  width: 25.625vw;
+  border: 0;
+  background-color: inherit;
+  padding: 0.69444vw;
+  font-family: "Proxima Nova";
+  font-weight: 600;
+}
+
+.subscribe .subscribe-form .btn {
+  padding-left: 2.15278vw;
+  padding-right: 2.15278vw;
+  padding-top: 0.97222vw;
+  padding-bottom: 0.97222vw;
+  font-size: 1.11111vw;
+  font-family: "Proxima Nova";
+  font-weight: 600;
+  border: 0;
+  cursor: pointer;
+  display: inline-block;
+  background-color: #3686cd;
+  color: white;
+}
+
+.lot-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.lot-info .gallery {
+  width: 37.22222vw;
+}
+
+.lot-info .gallery .main-img-container {
+  margin-bottom: 0.34722vw;
+  position: relative;
+}
+
+.lot-info .gallery .main-img-container img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+}
+
+.lot-info .gallery .divider {
+  border-bottom: 2px solid #c4c4c4;
+  margin-bottom: 0.69444vw;
+  position: relative;
+}
+
+.lot-info .gallery .divider::after {
+  content: "";
+  position: absolute;
+  background: url("../images/node/Polygon.svg") no-repeat;
+  width: 1.38889vw;
+  height: 0.55556vw;
+  left: 10%;
+}
+
+.lot-info .gallery .img-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.lot-info .gallery .img-container .img-item {
+  max-width: 9.72222vw;
+  width: 100%;
+  margin-right: 0.69444vw;
+}
+
+.lot-info .gallery .img-container .img-item img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.lot-info .gallery .img-container .img-item:last-child {
+  margin-right: 0;
+}
+
+.lot-info .lot-section-2 .lot-name {
+  padding-left: 0.69444vw;
+  padding-right: 0.69444vw;
+}
+
+.lot-info .lot-section-2 .lot-name h3 {
+  font-family: "Proxima Nova";
+  font-size: 1.73611vw;
+}
+
+.lot-info .lot-section-2 .lot-name p {
+  font-size: 1.04167vw;
+}
+
+.lot-info .lot-section-2 .lot-name .info-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 0.69444vw;
+  width: 55%;
+  font-family: "Roboto";
+}
+
+.lot-info .lot-section-2 .lot-name .info-item {
+  margin-right: 1.38889vw;
+}
+
+.lot-info .lot-section-2 .lot-name .views,
+.lot-info .lot-section-2 .lot-name .calendar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.lot-info .lot-section-2 .lot-name .views span {
+  margin-right: 0.34722vw;
+}
+
+.lot-info .lot-section-2 .lot-name .calendar {
+  margin-right: 0;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+}
+
+.lot-info .lot-section-2 .lot-details-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  font-family: "Proxima Nova";
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details {
+  padding: 0.69444vw;
+  background-color: #f4fafe;
+  width: 34.72222vw;
+  margin-right: 0.69444vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .details {
+  margin-bottom: 1.73611vw;
+  position: relative;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .details h4 {
+  font-size: 1.31944vw;
+  padding-left: 1.73611vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .details h4::before {
+  content: "";
+  position: absolute;
+  width: 1.38889vw;
+  height: 3px;
+  background-color: #3686cd;
+  left: 0;
+  top: 40%;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .details::before {
+  content: "";
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  background: url("../images/node/right.svg") no-repeat;
+  width: 1.31944vw;
+  height: 1.31944vw;
+  left: 95%;
+  top: 10%;
+  cursor: pointer;
+  -webkit-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .details-container {
+  font-size: 1.11111vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .details-container .detail-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 1.38889vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .details-container .detail-item .detail-info-2 {
+  width: 60%;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .details-container .detail-item .detail-info {
+  width: 30%;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .details-container .detail-item .status_node {
+  color: #3686cd;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  text-align: center;
+  margin-top: 2.08333vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .buttons .request {
+  background-color: #3686cd;
+  padding-top: 0.55556vw;
+  padding-bottom: 0.55556vw;
+  width: 13.19444vw;
+  margin: 0 auto;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .buttons .fav {
+  background-color: #fff;
+  padding-top: 0.41667vw;
+  padding-bottom: 0.55556vw;
+  width: 13.19444vw;
+  margin: 0 auto;
+  border: 2px solid #3686cd;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .buttons .fav a.btn {
+  color: #3686cd !important;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details .buttons a.btn {
+  text-decoration: none;
+  font-size: 1.11111vw;
+  color: #fff;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy {
+  padding: 0.69444vw;
+  background-color: #f4fafe;
+  width: 49.65278vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .details {
+  margin-bottom: 1.73611vw;
+  position: relative;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .details h4 {
+  font-size: 1.31944vw;
+  padding-left: 1.73611vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .details h4::before {
+  content: "";
+  position: absolute;
+  width: 1.38889vw;
+  height: 3px;
+  background-color: #3686cd;
+  left: 0;
+  top: 40%;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .details::before {
+  content: "";
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  background: url("../images/node/right.svg") no-repeat;
+  width: 1.31944vw;
+  height: 1.31944vw;
+  left: 95%;
+  top: 10%;
+  cursor: pointer;
+  -webkit-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .details-container {
+  font-size: 1.11111vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .details-container .detail-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 1.73611vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .details-container .detail-item .detail-info-2 {
+  width: 70%;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .details-container .detail-item .status {
+  color: #3686cd;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .buttons {
+  font-weight: 600;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  text-align: center;
+  margin-top: 4.16667vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .buttons .request {
+  background-color: #3686cd;
+  padding-top: 0.55556vw;
+  padding-bottom: 0.625vw;
+  width: 10.06944vw;
+  margin-right: 2.08333vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .buttons .fav {
+  background-color: #fff;
+  padding-top: 0.55556vw;
+  padding-bottom: 0.55556vw;
+  width: 13.88889vw;
+  border: 1px solid #3686cd;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .buttons .fav a.btn {
+  color: #3686cd !important;
+}
+
+.lot-info .lot-section-2 .lot-details-container .lot-details-buy .buttons a.btn {
+  text-decoration: none;
+  font-size: 1.11111vw;
+  color: #fff;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info {
+  background-color: #ebf6ff;
+  max-width: 16.45833vw;
+  width: 100%;
+  padding: 0.69444vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .start-price {
+  background-color: #fff;
+  padding-bottom: 0.69444vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info p {
+  font-size: 1.04167vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .start-text,
+.lot-info .lot-section-2 .lot-details-container .price-info .price-text {
+  font-size: 1.11111vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .first-price {
+  font-size: 1.38889vw;
+  position: relative;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .first-price .field-name-field-lot-price {
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .start-price,
+.lot-info .lot-section-2 .lot-details-container .price-info .step-torg,
+.lot-info .lot-section-2 .lot-details-container .price-info .min-price,
+.lot-info .lot-section-2 .lot-details-container .price-info .current-price,
+.lot-info .lot-section-2 .lot-details-container .price-info .next-bet,
+.lot-info .lot-section-2 .lot-details-container .price-info .count-bet,
+.lot-info .lot-section-2 .lot-details-container .price-info .my-bets,
+.lot-info .lot-section-2 .lot-details-container .price-info .timeout,
+.lot-info .lot-section-2 .lot-details-container .price-info .bet-btn,
+.lot-info .lot-section-2 .lot-details-container .price-info .participants {
+  padding: 0.69444vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .count-bet .bet-text {
+  background-color: #fff;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .timeout .time-text {
+  color: #3686cd;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .bet-btn {
+  text-align: center;
+  padding-left: 0.69444vw;
+  padding-right: 0.69444vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .bet-btn .bet-warning {
+  background-color: #de1818;
+  padding: 0.69444vw;
+  border: 0;
+  width: 100%;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .bet-btn .bet-success {
+  background-color: #23ba16;
+  padding: 0.69444vw;
+  border: 0;
+  width: 100%;
+}
+
+.lot-info .lot-section-2 .lot-details-container .price-info .bet-btn a.btn {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.11111vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container #details-panel {
+  display: none;
+}
+
+.lot-info .lot-section-2 .lot-details-container #panel {
+  height: 25.27778vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .active::before {
+  -webkit-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.lot-info .lot-section-2 .lot-details-container .users-bet {
+  background-color: #fff;
+  border: 0.5px solid #42aaff;
+  padding-top: 0.34722vw;
+  padding-bottom: 0.34722vw;
+  padding-left: 0.34722vw;
+  padding-right: 1.04167vw;
+  overflow: auto;
+}
+
+.lot-info .lot-section-2 .lot-details-container .users-bet .user-table {
+  width: 100%;
+}
+
+.lot-info .lot-section-2 .lot-details-container .users-bet .user-table td {
+  padding: 0.34722vw;
+  padding-right: 1.04167vw;
+}
+
+.lot-info .lot-section-2 .lot-details-container .users-bet .user-table tbody tr:nth-child(2n-1) {
+  background-color: #ebf6ff;
+}
+
+#user-table {
+  overflow: auto;
+  height: 25.27778vw;
+}
+
+#panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+#panel::-webkit-scrollbar-track {
+  background: #c4c4c4;
+}
+
+#panel::-webkit-scrollbar-thumb {
+  background: #3686cd;
+}
+
+.pay-info-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 1.38889vw;
+  font-family: "Proxima Nova";
+}
+
+.pay-info-container .payment {
+  padding: 0.69444vw;
+  background-color: #ebf6ff;
+  width: 37.22222vw;
+  font-size: 1.11111vw;
+}
+
+.pay-info-container .payment div {
+  margin-bottom: 1.38889vw;
+}
+
+.pay-info-container .payment .payment-info .payment-info-head {
+  margin-bottom: 1.38889vw;
+}
+
+.pay-info-container .payment .payment-cost {
+  margin-bottom: 0;
+}
+
+.pay-info-container .additional-info {
+  padding: 0.69444vw;
+  width: 48.33333vw;
+}
+
+.pay-info-container .additional-info .additional-head {
+  font-size: 1.38889vw;
+  position: relative;
+  margin-bottom: 2.43056vw;
+}
+
+.pay-info-container .additional-info .additional-head h4 {
+  padding-left: 1.73611vw;
+}
+
+.pay-info-container .additional-info .additional-head h4::before {
+  content: "";
+  position: absolute;
+  width: 1.38889vw;
+  height: 3px;
+  background-color: #3686cd;
+  left: 0;
+  top: 40%;
+}
+
+.pay-info-container .additional-info .additional-text {
+  line-height: 2.08333vw;
+  font-size: 1.18056vw;
+}
+
+.full-pay-info-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin-top: 1.38889vw;
+  font-family: "Proxima Nova";
+}
+
+.full-pay-info-container .additional-info {
+  padding: 0.69444vw;
+  width: 53%;
+}
+
+.full-pay-info-container .additional-info .additional-head {
+  font-size: 1.38889vw;
+  position: relative;
+  margin-bottom: 2.43056vw;
+}
+
+.full-pay-info-container .additional-info .additional-head h4 {
+  padding-left: 1.73611vw;
+}
+
+.full-pay-info-container .additional-info .additional-head h4::before {
+  content: "";
+  position: absolute;
+  width: 1.38889vw;
+  height: 3px;
+  background-color: #3686cd;
+  left: 0;
+  top: 40%;
+}
+
+.full-pay-info-container .additional-info .additional-text {
+  line-height: 2.08333vw;
+  font-size: 1.18056vw;
+}
+
+.person-lots {
+  background: rgba(54, 134, 205, 0.05);
+  padding-right: 5.55556vw;
+  padding-left: 5.55556vw;
+  padding-top: 2.77778vw;
+  padding-bottom: 2.77778vw;
+  margin-top: 2.08333vw;
+}
+
+.person-lots .checkbox {
+  margin-bottom: 5.55556vw;
+}
+
+.person-lots input[type="checkbox"] {
+  display: none;
+}
+
+.person-lots .checkbox label:before {
+  border-radius: 0.34722vw;
+  width: 1.04167vw;
+  margin-right: 0.69444vw;
+  background: #fff;
+}
+
+.person-lots input[type="checkbox"]:checked + label:before {
+  content: "\2713";
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  font-size: 1.11111vw;
+  color: #3686cd;
+  text-align: center;
+  line-height: 1.11111vw;
+}
+
+.person-lots label {
+  font-family: "Roboto";
+  font-size: 1.11111vw;
+}
+
+.person-lots .red {
+  color: red;
+}
+
+.title-lots {
+  font-family: "Proxima Nova";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.38889vw;
+  line-height: 1.66667vw;
+  text-transform: uppercase;
+  color: #424242;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 1.38889vw;
+}
+
+.title-lots::before {
+  content: "";
+  display: block;
+  width: 1.38889vw;
+  height: 0.20833vw;
+  background: #3686cd;
+  position: relative;
+  bottom: -0.625vw;
+  margin-right: 0.69444vw;
+}
+
+.lot {
+  margin-right: 1.38889vw;
+  width: 20.48611vw;
+  height: 27.29167vw;
+  min-height: 27.29167vw !important;
+  background: #ffffff;
+  position: relative;
+}
+
+.lot-image {
+  position: relative;
+}
+
+.lot-image img {
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.close-lot {
+  position: absolute;
+  top: 1.04167vw;
+  right: 0.69444vw;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.close-lot svg {
+  width: 1.38889vw;
+  height: 1.45833vw;
+}
+
+.special-lot {
+  position: absolute;
+  top: 0.34722vw;
+  left: 0px;
+  background: #de1818;
+  color: #fff;
+  font-family: "Proxima Nova";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.11111vw;
+  padding-top: 0.34722vw;
+  padding-bottom: 0.34722vw;
+  padding-left: 1.04167vw;
+  padding-right: 1.38889vw;
+}
+
+.lot-description {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.04167vw;
+  line-height: 1.25vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 1.04167vw;
+}
+
+.lot-time-img {
+  margin-right: 0.34722vw;
+}
+
+.lot-location,
+.lot-time,
+.lot-bet {
+  padding-left: 1.04167vw;
+  margin-top: 0.34722vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.83333vw;
+}
+
+.location-img svg {
+  width: 1.59722vw;
+  height: 1.59722vw;
+}
+
+.lot-time-img svg {
+  width: 1.25vw;
+  height: 1.25vw;
+}
+
+.lot-button {
+  min-width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background: #3686cd;
+  color: #ffffff;
+  padding-bottom: 0.69444vw;
+  padding-top: 0.69444vw;
+  font-size: 1.04167vw;
+  text-align: center;
+  border: 0px;
+}
+
+.today-slider,
+.favorite-slider {
+  margin-bottom: 4.16667vw;
+}
+
+.slick-next::before {
+  content: url(Images/arrow-down-next.png);
+}
+
+.slick-prev {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.slick-prev::before {
+  content: url(Images/arrow-down-next.png);
+}
+
+@media only screen and (max-width: 375px) {
+  .subscribe {
+    width: 100%;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+  .subscribe .subscribe-text {
+    font-size: 5.33333vw !important;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5.33333vw !important;
+  }
+  .subscribe .subscribe-form #subscribeEmail {
+    font-family: Roboto;
+    font-size: 3.73333vw !important;
+    width: -webkit-fill-available;
+    padding: 4vw !important;
+    font-weight: 500;
+  }
+  .subscribe .subscribe-form #subscribeEmail:focus {
+    border: 0;
+  }
+  .subscribe .subscribe-form .btn {
+    font-family: Roboto;
+    padding-left: 8.26667vw !important;
+    padding-right: 8.26667vw !important;
+    padding-top: 3.73333vw !important;
+    padding-bottom: 3.73333vw !important;
+    font-size: 4.8vw !important;
+    width: 100%;
+    font-weight: 500;
+  }
+  .lot-name .info-container {
+    width: 100% !important;
+  }
+  .lot-name h3 {
+    font-size: 5.06667vw !important;
+  }
+  .lot-name p {
+    font-size: 3.73333vw !important;
+  }
+  .details {
+    margin-bottom: 5.33333vw !important;
+  }
+  .details h4 {
+    font-size: 4.53333vw !important;
+    padding-left: 6.66667vw !important;
+  }
+  .details h4::before {
+    width: 5.33333vw !important;
+  }
+  .arrow-btn-bet {
+    margin-top: 1.73611vw;
+  }
+  .details::before {
+    width: 5.33333vw !important;
+    height: 3.46667vw !important;
+    width: 90%;
+  }
+  .lot-info {
+    -ms-flex-wrap: wrap-reverse;
+        flex-wrap: wrap-reverse;
+  }
+  .gallery {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
+  .gallery .divider {
+    margin-bottom: 2.66667vw !important;
+  }
+  .gallery .divider::after {
+    width: 5.33333vw !important;
+    height: 2.13333vw !important;
+  }
+  .gallery .img-container .img-item {
+    max-width: 100% !important;
+  }
+  .lot-section-2 {
+    width: 100%;
+  }
+  .lot-section-2 .lot-name .calendar {
+    width: auto !important;
+  }
+  .lot-section-2 .lot-name .views span {
+    margin-right: 1.33333vw !important;
+  }
+  .lot-details-container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+  }
+  .lot-details-container .lot-details {
+    padding: 2.66667vw !important;
+    width: -webkit-fill-available !important;
+    margin-right: 0;
+    margin-bottom: 4vw !important;
+  }
+  .lot-details-container .lot-details-buy {
+    width: -webkit-fill-available !important;
+    padding: 2.66667vw !important;
+  }
+  .lot-details-container .lot-details-buy .request {
+    width: 24vw !important;
+    padding-bottom: 2.13333vw !important;
+    padding-top: 2.66667vw !important;
+  }
+  .lot-details-container #panel {
+    height: 95.2vw !important;
+  }
+  .lot-details-container .users-bet {
+    padding-top: 1.33333vw !important;
+    padding-bottom: 1.33333vw !important;
+    padding-left: 1.33333vw !important;
+    padding-right: 0;
+    font-size: 3.46667vw !important;
+  }
+  .lot-details-container .details-container {
+    font-size: 4vw !important;
+  }
+  .lot-details-container .details-container .detail-item .detail-info-2 {
+    width: 50% !important;
+  }
+  .lot-details-container .buttons a.btn {
+    font-size: 4vw !important;
+  }
+  .lot-details-container .buttons .request,
+  .lot-details-container .buttons .fav {
+    width: 34.13333vw !important;
+  }
+  .price-info {
+    max-width: 100% !important;
+    width: -webkit-fill-available !important;
+    padding: 5.33333vw !important;
+    margin-bottom: 4vw !important;
+  }
+  .price-info .start-price {
+    padding-bottom: 2.66667vw !important;
+  }
+  .price-info p {
+    font-size: 4vw !important;
+  }
+  .price-info .start-text,
+  .price-info .price-text {
+    font-size: 4.26667vw !important;
+  }
+  .price-info span {
+    font-size: 5.06667vw !important;
+  }
+  .price-info .first-price .field-name-field-lot-price {
+    width: -webkit-min-content;
+    width: -moz-min-content;
+    width: min-content;
+  }
+  .price-info .first-price .start-price,
+  .price-info .first-price .step-torg,
+  .price-info .first-price .min-price,
+  .price-info .first-price .current-price,
+  .price-info .first-price .next-bet,
+  .price-info .first-price .count-bet,
+  .price-info .first-price .my-bets,
+  .price-info .first-price .timeout,
+  .price-info .first-price .bet-btn,
+  .price-info .first-price .participants {
+    padding: 5.33333vw !important;
+    margin-bottom: 1.33333vw !important;
+  }
+  .price-info .bet-btn {
+    width: 53.33333vw !important;
+  }
+  .price-info .bet-btn .bet-warning {
+    padding: 2.66667vw !important;
+    width: 70% !important;
+    float: left;
+  }
+  .price-info .bet-btn .bet-success {
+    padding: 2.66667vw !important;
+    width: 70% !important;
+    float: left;
+  }
+  .price-info .bet-btn a.btn {
+    font-size: 4.26667vw !important;
+  }
+  .pay-info-container,
+  .full-pay-info-container {
+    margin-top: 5.33333vw !important;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+  .pay-info-container .payment,
+  .full-pay-info-container .payment {
+    padding: 2.66667vw !important;
+    margin-right: 0 !important;
+    width: auto !important;
+    font-size: 4vw !important;
+    margin-bottom: 4vw !important;
+  }
+  .pay-info-container .payment div,
+  .full-pay-info-container .payment div {
+    margin-bottom: 4vw !important;
+  }
+  .pay-info-container .payment .payment-info .payment-info-head,
+  .full-pay-info-container .payment .payment-info .payment-info-head {
+    margin-bottom: 5.33333vw !important;
+  }
+  .pay-info-container .payment .payment-cost,
+  .full-pay-info-container .payment .payment-cost {
+    margin-bottom: 0;
+  }
+  .pay-info-container .additional-info,
+  .full-pay-info-container .additional-info {
+    padding: 2.66667vw !important;
+    width: 100%;
+  }
+  .pay-info-container .additional-info .additional-head,
+  .full-pay-info-container .additional-info .additional-head {
+    font-size: 5.33333vw !important;
+    margin-bottom: 9.33333vw !important;
+  }
+  .pay-info-container .additional-info .additional-head h4,
+  .full-pay-info-container .additional-info .additional-head h4 {
+    padding-left: 6.66667vw !important;
+  }
+  .pay-info-container .additional-info .additional-head h4::before,
+  .full-pay-info-container .additional-info .additional-head h4::before {
+    width: 5.33333vw !important;
+  }
+  .pay-info-container .additional-info .additional-text,
+  .full-pay-info-container .additional-info .additional-text {
+    line-height: 8vw !important;
+    font-size: 4.53333vw !important;
+  }
+  .title-lots {
+    font-size: 5.06667vw !important;
+    line-height: 21.33333vw !important;
+  }
+  .title-lots::before {
+    width: 5.33333vw !important;
+    height: 0.8vw !important;
+    background: #3686cd;
+    position: relative;
+    top: 9.6vw !important;
+    margin-right: 2.66667vw !important;
+  }
+  .lot {
+    margin-left: 5.33333vw !important;
+    margin-right: 5.33333vw !important;
+    width: 78.66667vw !important;
+    min-height: 104.8vw !important;
+    margin-bottom: 5.33333vw !important;
+  }
+  .close-lot {
+    top: 4vw !important;
+    right: 2.66667vw !important;
+  }
+  .close-lot svg {
+    width: 5.33333vw !important;
+    height: 5.6vw !important;
+  }
+  .special-lot {
+    top: 1.33333vw !important;
+    font-size: 4.26667vw !important;
+    padding-top: 1.33333vw !important;
+    padding-bottom: 1.33333vw !important;
+    padding-left: 4vw !important;
+    padding-right: 5.33333vw !important;
+  }
+  .lot-description {
+    font-size: 4vw !important;
+    line-height: 4.8vw !important;
+    padding: 4vw !important;
+  }
+  .lot-time-img {
+    margin-right: 1.33333vw !important;
+  }
+  .lot-location,
+  .lot-time,
+  .lot-bet {
+    padding-left: 4vw !important;
+    margin-top: 1.33333vw !important;
+    font-size: 3.2vw !important;
+  }
+  .location-img svg {
+    width: 6.13333vw !important;
+    height: 6.13333vw !important;
+  }
+  .lot-time-img svg {
+    width: 4.8vw !important;
+    height: 4.8vw !important;
+  }
+  .lot-button {
+    padding-bottom: 2.66667vw !important;
+    padding-top: 2.66667vw !important;
+    font-size: 4vw !important;
+  }
+  .today-slider,
+  .favorite-slider {
+    margin-bottom: 0vw !important;
+    max-height: 106.66667vw !important;
+  }
+  .slick-next::before {
+    margin-right: 5.33333vw !important;
+  }
+  .slick-prev::before {
+    margin-left: -5.33333vw !important;
+  }
+}
+
+.modal {
+  padding: 0.69444vw;
+  width: 35.83333vw;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 0.5px solid #e6e6e6;
+  z-index: 1000;
+}
+
+.modal-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.modal-container::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(28, 34, 66, 0.5);
+  opacity: .5;
+}
+
+.modal-body {
+  border: 2px solid #3686cd;
+  position: relative;
+  font-size: 1.38889vw;
+}
+
+.close-btn {
+  position: absolute;
+  left: 95%;
+  cursor: pointer;
+  margin-top: 0.13889vw;
+}
+
+.close-btn svg {
+  width: 0.90278vw;
+  height: 0.90278vw;
+}
+
+.modal-content {
+  text-align: center;
+  margin-top: 2.08333vw;
+  margin-bottom: 2.08333vw;
+}
+
+.modal-content-text {
+  margin-bottom: 1.04167vw;
+}
+
+.modal-content-text-fav {
+  margin-bottom: 1.73611vw;
+}
+
+.modal-content-text-win {
+  margin-bottom: 1.73611vw;
+}
+
+.modal-content-text-fail {
+  margin-bottom: 1.73611vw;
+  color: #de1818;
+}
+
+.modal-content-fav {
+  text-align: center;
+  margin-top: 2.43056vw;
+  margin-bottom: 2.36111vw;
+}
+
+.modal-content-win {
+  text-align: center;
+  margin-top: 2.43056vw;
+  margin-bottom: 2.36111vw;
+}
+
+.favorite {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.fav {
+  background-color: #3686cd;
+  padding: 8px 0 10px 0;
+  width: 13.88889vw;
+  margin: 0 auto;
+}
+
+.back {
+  background-color: #fff;
+  padding: 6px 0 10px 0;
+  width: 13.88889vw;
+  margin: 0 auto;
+  border: 2px solid #3686cd;
+}
+
+.back .modal-btn {
+  color: #3686cd !important;
+}
+
+.modal-btn-container {
+  background-color: #3686cd;
+  padding: 8px 0 10px 0;
+  width: 13.88889vw;
+  margin: 0 auto;
+}
+
+a.modal-btn {
+  text-decoration: none;
+  font-size: 1.11111vw;
+}
+
+@media only screen and (max-width: 375px) {
+  .modal {
+    width: 80vw !important;
+  }
+  a.modal-btn {
+    font-size: 3.73333vw !important;
+  }
+  .modal-body {
+    font-size: 4.26667vw !important;
+  }
+  .modal-btn-container {
+    width: 44vw !important;
+  }
+  .fav,
+  .back {
+    width: 30.66667vw !important;
+    padding: 0;
+  }
+  .close-btn svg {
+    width: 2.4vw !important;
+    height: 2.4vw !important;
+  }
+  .modal-content-text-win {
+    width: 75.46667vw !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+/*# sourceMappingURL=style2.css.map */

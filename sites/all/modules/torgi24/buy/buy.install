@@ -1,0 +1,35 @@
+<?php
+
+function buy_schema() {
+
+	$schema['purchases'] = array(
+		'fields' => array (
+			'id' => array (
+				'type' => 'serial',
+				'unsigned' => TRUE,
+				'not null' => TRUE
+			),
+			'uid' => array (
+				'type' => 'int',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+				'default' => 0
+			),
+			'nid' => array (
+				'type' => 'int',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+				'default' => 0
+			),
+			'status' => array (
+				'type' => 'int',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+				'default' => 0
+			)
+		),
+		'primary key' => array('id')
+	);
+
+	return $schema;
+}

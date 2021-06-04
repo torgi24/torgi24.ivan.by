@@ -1,0 +1,5 @@
+name=Favorite
+description=Избранное
+version=1.0
+package=torgi24
+core=7.x

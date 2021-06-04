@@ -1,0 +1,57 @@
+name = Creatica
+description = Theme by Sergey Rusakov
+core = 7.x
+engine = phptemplate
+stylesheets[all][] = css/animate.css
+stylesheets[all][] = css/style.css
+stylesheets[all][] = css/forms.css
+stylesheets[all][] = css/views.css
+
+stylesheets[all][] = css/style1.css
+
+stylesheets[all][] = css/ion.rangeSlider.css
+stylesheets[all][] = js/slick-1.8.1/slick/slick.css
+stylesheets[all][] = js/slick-1.8.1/slick/slick-theme.css
+
+scripts[] = js/ion-rangeslider.js
+scripts[] = js/superfish.js
+scripts[] = js/supersubs.js
+scripts[] = js/slick-1.8.1/slick/slick.min.js
+scripts[] = js/sfmenu.js
+
+
+regions[header_left]    = Header Left
+regions[header]  = Header
+regions[header_right]   = Header Right
+regions[search]         = Search
+
+regions[catalog_nav]    = Catalog Navigation
+
+regions[sidebar_first]  = First Sidebar
+regions[slider]         = Slider
+regions[content]        = Content
+regions[content_top]    = Content Top
+regions[help]           = Help
+regions[copy]           = Copy
+regions[counter]        = Counter
+regions[dev]            = Dev
+regions[footer]         = Footer
+
+features[] = logo
+features[] = name
+features[] = node_user_picture
+features[] = comment_user_picture
+features[] = comment_user_verification
+features[] = favicon
+features[] = main_menu
+features[] = secondary_menu
+settings[show_front_content] = 1
+settings[breadcrumbs]  = 1
+
+
+; Information added by Drupal.org packaging script on 2014-03-21
+version = "7.x-1.11"
+core = "7.x"
+project = "creatica"
+datestamp = "1395414857"
+

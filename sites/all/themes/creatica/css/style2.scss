@@ -1,0 +1,1201 @@
+$max-width: 1440;
+
+$mobile-max-width: 375;
+
+@function get-vw($target) {
+  $vw-context: ($max-width * 0.01) * 1px;
+  @return ($target/$vw-context) * 1vw;
+}
+
+@mixin vw($property, $size) {
+  #{$property}: get-vw($size);
+}
+
+@function get-m-vw($target) {
+  $vw-context: ($mobile-max-width * 0.01) * 1px;
+  @return ($target/$vw-context) * 1vw !important;
+}
+
+@mixin vwm($property, $size) {
+  #{$property}: get-m-vw($size); 
+}
+.container {
+  width: 100%;
+  .row {
+    @include vw(width, 1280px);
+    margin: 0 auto;
+  }
+}
+.content-wrapper {
+  @include vw(margin-right, 80px);
+  @include vw(margin-left, 180px);
+  @include vw(margin-bottom, 100px);
+}
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.hide {
+  h2 {
+    display: none;
+  }
+}
+
+// Subscribe
+.subscribe {
+  margin: 0 auto;
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include vw(padding-top, 100px);
+  @include vw(padding-bottom, 100px);
+  .subscribe-text {
+    font-family: "Proxima Nova";
+    @include vw(font-size, 20px);
+    width: 32%;
+  }
+  .subscribe-form {
+    background-color: #f5f4f4;
+
+    #subscribeEmail {
+      @include vw(font-size, 17px);
+      @include vw(width, 369px);
+      border: 0;
+      background-color: inherit;
+      @include vw(padding, 10px);
+      font-family: "Proxima Nova";
+      font-weight: 600;
+    }
+    .btn {
+      @include vw(padding-left, 31px);
+      @include vw(padding-right, 31px);
+      @include vw(padding-top, 14px);
+      @include vw(padding-bottom, 14px);
+      @include vw(font-size, 16px);
+      font-family: "Proxima Nova";
+      font-weight: 600;
+      border: 0;
+
+      cursor: pointer;
+      display: inline-block;
+      background-color: #3686cd;
+      color: white;
+    }
+  }
+}
+.lot-info {
+  display: flex;
+  justify-content: space-between;
+
+  .gallery {
+    @include vw(width, 536px);
+
+    .main-img-container {
+      @include vw(margin-bottom, 5px);
+      position: relative;
+      img {
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+    .divider {
+      border-bottom: 2px solid #c4c4c4;
+      @include vw(margin-bottom, 10px);
+      position: relative;
+    }
+    .divider::after {
+      content: "";
+      position: absolute;
+      background: url("../images/node/Polygon.svg") no-repeat;
+      @include vw(width, 20px);
+      @include vw(height, 8px);
+      left: 10%;
+    }
+    .img-container {
+      display: flex;
+      justify-content: space-between;
+      .img-item {
+        @include vw(max-width, 140px);
+        width: 100%;
+        @include vw(margin-right, 10px);
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+      .img-item:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  .lot-section-2 {
+    .lot-name {
+      @include vw(padding-left, 10px);
+      @include vw(padding-right, 10px);
+      h3 {
+        font-family: "Proxima Nova";
+        @include vw(font-size, 25px);
+      }
+      p {
+        @include vw(font-size, 15px);
+      }
+
+      .info-container {
+        display: flex;
+        justify-content: space-between;
+        @include vw(margin-top, 10px);
+        width: 55%;
+        font-family: "Roboto";
+      }
+
+      .info-item {
+        @include vw(margin-right, 20px);
+      }
+
+      .views,
+      .calendar {
+        display: flex;
+        align-items: flex-start;
+      }
+      .views {
+        span {
+          @include vw(margin-right, 5px);
+        }
+      }
+      .calendar {
+        margin-right: 0;
+        align-self: flex-start;
+      }
+    }
+    .lot-details-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-family: "Proxima Nova";
+
+      .lot-details {
+        @include vw(padding, 10px);
+        background-color: #f4fafe;
+        @include vw(width, 500px);
+        @include vw(margin-right, 10px);
+        //position: relative;
+
+        .details {
+          @include vw(margin-bottom, 25px);
+          position: relative;
+          h4 {
+            @include vw(font-size, 19px);
+            @include vw(padding-left, 25px);
+          }
+          h4::before {
+            content: "";
+            position: absolute;
+            @include vw(width, 20px);
+            height: 3px;
+            background-color: #3686cd;
+            left: 0;
+            top: 40%;
+          }
+        }
+        .details::before {
+          content: "";
+          position: absolute;
+          background-size: cover;
+          background-position: center;
+          background: url("../images/node/right.svg") no-repeat;
+          @include vw(width, 19px);
+          @include vw(height, 19px);
+          left: 95%;
+          top: 10%;
+
+          cursor: pointer;
+          transition: all 0.5s ease-out;
+        }
+        .details-container {
+          @include vw(font-size, 16px);
+          .detail-item {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            @include vw(margin-bottom, 20px);
+
+            .detail-info-2 {
+              width: 60%;
+            }
+            .detail-info {
+              width: 30%;
+            }
+            .status_node {
+              color: #3686cd;
+            }
+          }
+        }
+        .buttons {
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+          @include vw(margin-top, 30px);
+          .request {
+            background-color: #3686cd;
+            @include vw(padding-top, 8px);
+            @include vw(padding-bottom, 8px);
+            @include vw(width, 190px);
+            margin: 0 auto;
+          }
+          .fav {
+            background-color: #fff;
+            @include vw(padding-top, 6px);
+            @include vw(padding-bottom, 8px);
+            @include vw(width, 190px);
+            margin: 0 auto;
+            border: 2px solid #3686cd;
+            a.btn {
+              color: #3686cd !important;
+            }
+          }
+          a.btn {
+            text-decoration: none;
+            @include vw(font-size, 16px);
+            color: #fff;
+          }
+        }
+      }
+      .lot-details-buy {
+        @include vw(padding, 10px);
+        background-color: #f4fafe;
+        @include vw(width, 715px);
+        // width: 100%;
+        //position: relative;
+
+        #details-panel-buy {
+        }
+
+        .details {
+          @include vw(margin-bottom, 25px);
+          position: relative;
+          h4 {
+            @include vw(font-size, 19px);
+            @include vw(padding-left, 25px);
+          }
+          h4::before {
+            content: "";
+            position: absolute;
+            @include vw(width, 20px);
+            height: 3px;
+            background-color: #3686cd;
+            left: 0;
+            top: 40%;
+          }
+        }
+        .details::before {
+          content: "";
+          position: absolute;
+          background-size: cover;
+          background-position: center;
+          background: url("../images/node/right.svg") no-repeat;
+          @include vw(width, 19px);
+          @include vw(height, 19px);
+          left: 95%;
+          top: 10%;
+          cursor: pointer;
+          transition: all 0.5s ease-out;
+          // transform: rotate(180deg);
+        }
+        .details-container {
+          @include vw(font-size, 16px);
+          .detail-item {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            @include vw(margin-bottom, 25px);
+
+            .detail-info-2 {
+              width: 70%;
+            }
+            .detail-info {
+            }
+            .status {
+              color: #3686cd;
+            }
+          }
+        }
+        .buttons {
+          font-weight: 600;
+          display: flex;
+          justify-content: flex-start;
+          text-align: center;
+          @include vw(margin-top, 60px);
+          .request {
+            background-color: #3686cd;
+            @include vw(padding-top, 8px);
+            @include vw(padding-bottom, 9px);
+            @include vw(width, 145px);
+            @include vw(margin-right, 30px);
+          }
+          .fav {
+            background-color: #fff;
+            @include vw(padding-top, 8px);
+            @include vw(padding-bottom, 8px);
+            @include vw(width, 200px);
+            border: 1px solid #3686cd;
+            a.btn {
+              color: #3686cd !important;
+            }
+          }
+          a.btn {
+            text-decoration: none;
+            @include vw(font-size, 16px);
+            color: #fff;
+            //   padding: 10px;
+          }
+        }
+      }
+      .price-info {
+        background-color: #ebf6ff;
+        @include vw(max-width, 237px);
+        width: 100%;
+        @include vw(padding, 10px);
+        .start-price {
+          background-color: #fff;
+          @include vw(padding-bottom, 10px);
+        }
+        p {
+          @include vw(font-size, 15px);
+        }
+        .start-text,
+        .price-text {
+          @include vw(font-size, 16px);
+        }
+        .first-price {
+          @include vw(font-size, 20px);
+          position: relative;
+          svg {
+          }
+        }
+        .first-price {
+          .field-name-field-lot-price {
+            width: min-content;
+          }
+        }
+
+        .start-price,
+        .step-torg,
+        .min-price,
+        .current-price,
+        .next-bet,
+        .count-bet,
+        .my-bets,
+        .timeout,
+        .bet-btn,
+        .participants {
+          @include vw(padding, 10px);
+        }
+        .count-bet {
+          .bet-text {
+            background-color: #fff;
+          }
+        }
+        .timeout {
+          .time-text {
+            color: #3686cd;
+          }
+        }
+        .bet-btn {
+          text-align: center;
+          @include vw(padding-left, 10px);
+          @include vw(padding-right, 10px);
+          .bet-warning {
+            background-color: #de1818;
+            @include vw(padding, 10px);
+            border: 0;
+            width: 100%;
+          }
+          .bet-success {
+            background-color: #23ba16;
+            @include vw(padding, 10px);
+            border: 0;
+            width: 100%;
+          }
+          a.btn {
+            text-decoration: none;
+            color: #fff;
+            @include vw(font-size, 16px);
+          }
+        }
+      }
+      #details-panel-request {
+      }
+      #details-panel {
+        display: none;
+      }
+
+      #panel {
+        @include vw(height, 364px);
+      }
+      .active::before {
+        transition: all 0.5s ease-out;
+        transform: rotate(180deg);
+      }
+      .users-bet {
+        background-color: #fff;
+        border: 0.5px solid #42aaff;
+        @include vw(padding-top, 5px);
+        @include vw(padding-bottom, 5px);
+        @include vw(padding-left, 5px);
+        @include vw(padding-right, 15px);
+        overflow: auto;
+
+        .user-table {
+          width: 100%;
+          td {
+            @include vw(padding, 5px);
+            @include vw(padding-right, 15px);
+          }
+          thead {
+          }
+          tbody {
+            tr:nth-child(2n-1) {
+              background-color: #ebf6ff;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+#user-table {
+  overflow: auto;
+  @include vw(height, 364px);
+}
+#panel::-webkit-scrollbar {
+  width: 4px;
+}
+#panel::-webkit-scrollbar-track {
+  background: #c4c4c4;
+}
+#panel::-webkit-scrollbar-thumb {
+  background: #3686cd;
+}
+.pay-info-container {
+  display: flex;
+  justify-content: space-between;
+  @include vw(margin-top, 20px);
+  font-family: "Proxima Nova";
+  .payment {
+    @include vw(padding, 10px);
+    background-color: #ebf6ff;
+    @include vw(width, 536px);
+    @include vw(font-size, 16px);
+    div {
+      @include vw(margin-bottom, 20px);
+    }
+    .payment-info {
+      .payment-info-head {
+        @include vw(margin-bottom, 20px);
+      }
+      .payment-info-text {
+      }
+    }
+    .payment-cost {
+      margin-bottom: 0;
+    }
+  }
+
+  .additional-info {
+    @include vw(padding, 10px);
+    @include vw(width, 696px);
+    // width: 100%;
+
+    .additional-head {
+      @include vw(font-size, 20px);
+      position: relative;
+      @include vw(margin-bottom, 35px);
+      h4 {
+        @include vw(padding-left, 25px);
+      }
+      h4::before {
+        content: "";
+        position: absolute;
+        @include vw(width, 20px);
+        height: 3px;
+        background-color: #3686cd;
+        left: 0;
+        top: 40%;
+      }
+    }
+    .additional-text {
+      @include vw(line-height, 30px);
+      @include vw(font-size, 17px);
+    }
+  }
+}
+.full-pay-info-container {
+  display: flex;
+  justify-content: flex-end;
+  @include vw(margin-top, 20px);
+  font-family: "Proxima Nova";
+
+  .additional-info {
+    @include vw(padding, 10px);
+    width: 53%;
+
+    .additional-head {
+      @include vw(font-size, 20px);
+      position: relative;
+      @include vw(margin-bottom, 35px);
+      h4 {
+        @include vw(padding-left, 25px);
+      }
+      h4::before {
+        content: "";
+        position: absolute;
+        @include vw(width, 20px);
+        height: 3px;
+        background-color: #3686cd;
+        left: 0;
+        top: 40%;
+      }
+    }
+    .additional-text {
+      @include vw(line-height, 30px);
+      @include vw(font-size, 17px);
+    }
+  }
+}
+.person-lots {
+  background: rgba(54, 134, 205, 0.05);
+  @include vw(padding-right, 80px);
+  @include vw(padding-left, 80px);
+  @include vw(padding-top, 40px);
+  @include vw(padding-bottom, 40px);
+  @include vw(margin-top, 30px);
+
+  .checkbox {
+    @include vw(margin-bottom, 80px);
+  }
+  input[type="checkbox"] {
+    display: none;
+  }
+  .checkbox label:before {
+    @include vw(border-radius, 5px);
+    @include vw(width, 15px);
+    @include vw(margin-right, 10px);
+    background: #fff;
+  }
+  input[type="checkbox"]:checked + label:before {
+    content: "\2713";
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    @include vw(font-size, 16px);
+    color: #3686cd;
+    text-align: center;
+    @include vw(line-height, 16px);
+  }
+  label {
+    font-family: "Roboto";
+    @include vw(font-size, 16px);
+  }
+  .red {
+    color: red;
+  }
+}
+.title-lots {
+  font-family: "Proxima Nova";
+  font-style: normal;
+  font-weight: normal;
+  @include vw(font-size, 20px);
+  @include vw(line-height, 24px);
+  text-transform: uppercase;
+  color: #424242;
+  display: flex;
+  @include vw(padding-bottom, 20px);
+  &::before {
+    content: "";
+    display: block;
+    @include vw(width, 20px);
+    @include vw(height, 3px);
+    background: #3686cd;
+    position: relative;
+    @include vw(bottom, -9px);
+    @include vw(margin-right, 10px);
+  }
+}
+.lot {
+  @include vw(margin-right, 20px);
+  @include vw(width, 295px);
+  @include vw(height, 393px);
+  min-height: 27.29167vw !important;
+  background: #ffffff;
+  position: relative;
+}
+.lot-image {
+  position: relative;
+  img {
+    width: 100%;
+    object-fit: contain;
+  }
+}
+.close-lot {
+  position: absolute;
+  @include vw(top, 15px);
+  @include vw(right, 10px);
+  cursor: pointer;
+  z-index: 2;
+  svg {
+    @include vw(width, 20px);
+    @include vw(height, 21px);
+  }
+}
+.special-lot {
+  position: absolute;
+  @include vw(top, 5px);
+  left: 0px;
+  background: #de1818;
+  color: #fff;
+  font-family: "Proxima Nova";
+  font-style: normal;
+  font-weight: normal;
+  @include vw(font-size, 16px);
+  @include vw(padding-top, 5px);
+  @include vw(padding-bottom, 5px);
+  @include vw(padding-left, 15px);
+  @include vw(padding-right, 20px);
+}
+.lot-description {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  @include vw(font-size, 15px);
+  @include vw(line-height, 18px);
+  display: flex;
+  align-items: center;
+  @include vw(padding, 15px);
+}
+.lot-time-img {
+  @include vw(margin-right, 5px);
+}
+.lot-location,
+.lot-time,
+.lot-bet {
+  @include vw(padding-left, 15px);
+  @include vw(margin-top, 5px);
+  display: flex;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 400;
+  @include vw(font-size, 12px);
+}
+.location-img {
+  svg {
+    @include vw(width, 23px);
+    @include vw(height, 23px);
+  }
+}
+.lot-time-img {
+  svg {
+    @include vw(width, 18px);
+    @include vw(height, 18px);
+  }
+}
+.lot-button {
+  min-width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background: #3686cd;
+  color: #ffffff;
+  @include vw(padding-bottom, 10px);
+  @include vw(padding-top, 10px);
+  @include vw(font-size, 15px);
+  text-align: center;
+  border: 0px;
+}
+.today-slider,
+.favorite-slider {
+  @include vw(margin-bottom, 60px);
+}
+
+.slick-next::before {
+  content: url(Images/arrow-down-next.png);
+}
+.slick-prev {
+  transform: rotate(180deg);
+}
+.slick-prev::before {
+  content: url(Images/arrow-down-next.png);
+}
+
+@media only screen and (max-width: 375px) {
+  .subscribe {
+    width: 100%;
+    flex-wrap: wrap;
+    .subscribe-text {
+      @include vwm(font-size, 20px);
+      width: 100%;
+      text-align: center;
+      @include vwm(margin-bottom, 20px);
+    }
+    .subscribe-form {
+      #subscribeEmail {
+        font-family: Roboto;
+        @include vwm(font-size, 14px);
+        // @include vwm(width, 369px);
+        width: -webkit-fill-available;
+        @include vwm(padding, 15px);
+        font-weight: 500;
+      }
+      #subscribeEmail:focus {
+        border: 0;
+      }
+      .btn {
+        font-family: Roboto;
+        @include vwm(padding-left, 31px);
+        @include vwm(padding-right, 31px);
+        @include vwm(padding-top, 14px);
+        @include vwm(padding-bottom, 14px);
+        @include vwm(font-size, 18px);
+        width: 100%;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .lot-name {
+    .info-container {
+      width: 100% !important;
+    }
+    h3 {
+      @include vwm(font-size, 19px);
+    }
+    p {
+      @include vwm(font-size, 14px);
+    }
+  }
+  .details {
+    @include vwm(margin-bottom, 20px);
+    h4 {
+      @include vwm(font-size, 17px);
+      @include vwm(padding-left, 25px);
+    }
+    h4::before {
+      @include vwm(width, 20px);
+    }
+  }
+  .arrow-btn-bet {
+    @include vw(margin-top, 25px);
+  }
+  .details::before {
+    @include vwm(width, 20px);
+    @include vwm(height, 13px);
+    width: 90%;
+  }
+
+  .lot-info {
+    flex-wrap: wrap-reverse;
+  }
+  .gallery {
+    width: 100% !important;
+    margin-right: 0 !important;
+    .divider {
+      @include vwm(margin-bottom, 10px);
+    }
+    .divider::after {
+      @include vwm(width, 20px);
+      @include vwm(height, 8px);
+    }
+    .img-container {
+      .img-item {
+        max-width: 100% !important;
+      }
+    }
+  }
+  .lot-section-2 {
+    width: 100%;
+    .lot-name {
+      .calendar {
+        width: auto !important;
+      }
+      .views {
+        span {
+          @include vwm(margin-right, 5px);
+        }
+      }
+    }
+  }
+  .lot-details-container {
+    flex-direction: column-reverse;
+    .lot-details {
+      @include vwm(padding, 10px);
+      width: -webkit-fill-available !important;
+      margin-right: 0;
+      @include vwm(margin-bottom, 15px);
+    }
+    .lot-details-buy {
+      width: -webkit-fill-available !important;
+      @include vwm(padding, 10px);
+      .request {
+        @include vwm(width, 90px);
+        @include vwm(padding-bottom, 8px);
+        @include vwm(padding-top, 10px);
+      }
+    }
+
+    #panel {
+      @include vwm(height, 357px);
+    }
+    .users-bet {
+      @include vwm(padding-top, 5px);
+      @include vwm(padding-bottom, 5px);
+      @include vwm(padding-left, 5px);
+      padding-right: 0;
+      @include vwm(font-size, 13px);
+    }
+    .details-container {
+      @include vwm(font-size, 15px);
+
+      .detail-item {
+        .detail-info-2 {
+          width: 50% !important;
+        }
+      }
+    }
+    .buttons {
+      a.btn {
+        @include vwm(font-size, 15px);
+      }
+      .request,
+      .fav {
+        @include vwm(width, 128px);
+      }
+    }
+  }
+  .price-info {
+    max-width: 100% !important;
+    width: -webkit-fill-available !important;
+    @include vwm(padding, 20px);
+    @include vwm(margin-bottom, 15px);
+    .start-price {
+      @include vwm(padding-bottom, 10px);
+    }
+    p {
+      @include vwm(font-size, 15px);
+    }
+    .start-text,
+    .price-text {
+      @include vwm(font-size, 16px);
+    }
+    span {
+      @include vwm(font-size, 19px);
+      svg {
+      }
+    }
+    .first-price {
+      .field-name-field-lot-price {
+        width: min-content;
+      }
+      .start-price,
+      .step-torg,
+      .min-price,
+      .current-price,
+      .next-bet,
+      .count-bet,
+      .my-bets,
+      .timeout,
+      .bet-btn,
+      .participants {
+        @include vwm(padding, 20px);
+        @include vwm(margin-bottom, 5px);
+      }
+    }
+
+    .bet-btn {
+      @include vwm(width, 200px);
+      .bet-warning {
+        @include vwm(padding, 10px);
+        width: 70% !important;
+        float: left;
+      }
+      .bet-success {
+        @include vwm(padding, 10px);
+        width: 70% !important;
+        float: left;
+      }
+      a.btn {
+        @include vwm(font-size, 16px);
+      }
+    }
+  }
+  .pay-info-container,
+  .full-pay-info-container {
+    @include vwm(margin-top, 20px);
+    flex-wrap: wrap;
+    .payment {
+      @include vwm(padding, 10px);
+      margin-right: 0 !important;
+      width: auto !important;
+      @include vwm(font-size, 15px);
+      @include vwm(margin-bottom, 15px);
+      div {
+        @include vwm(margin-bottom, 15px);
+      }
+      .payment-info {
+        .payment-info-head {
+          @include vwm(margin-bottom, 20px);
+        }
+        .payment-info-text {
+        }
+      }
+      .payment-cost {
+        margin-bottom: 0;
+      }
+    }
+
+    .additional-info {
+      @include vwm(padding, 10px);
+      width: 100%;
+
+      .additional-head {
+        @include vwm(font-size, 20px);
+        @include vwm(margin-bottom, 35px);
+        h4 {
+          @include vwm(padding-left, 25px);
+        }
+        h4::before {
+          @include vwm(width, 20px);
+        }
+      }
+      .additional-text {
+        @include vwm(line-height, 30px);
+        @include vwm(font-size, 17px);
+      }
+    }
+  }
+
+  .title-lots {
+    @include vwm(font-size, 19px);
+    @include vwm(line-height, 80px);
+    &::before {
+      @include vwm(width, 20px);
+      @include vwm(height, 3px);
+      background: #3686cd;
+      position: relative;
+      @include vwm(top, 36px);
+      @include vwm(margin-right, 10px);
+    }
+  }
+
+  .lot {
+    @include vwm(margin-left, 20px);
+    @include vwm(margin-right, 20px);
+    @include vwm(width, 295px);
+    @include vwm(min-height, 393px);
+    @include vwm(margin-bottom, 20px);
+  }
+  .close-lot {
+    @include vwm(top, 15px);
+    @include vwm(right, 10px);
+    svg {
+      @include vwm(width, 20px);
+      @include vwm(height, 21px);
+    }
+  }
+  .special-lot {
+    @include vwm(top, 5px);
+    @include vwm(font-size, 16px);
+    @include vwm(padding-top, 5px);
+    @include vwm(padding-bottom, 5px);
+    @include vwm(padding-left, 15px);
+    @include vwm(padding-right, 20px);
+  }
+  .lot-description {
+    @include vwm(font-size, 15px);
+    @include vwm(line-height, 18px);
+    @include vwm(padding, 15px);
+  }
+  .lot-time-img {
+    @include vwm(margin-right, 5px);
+  }
+  .lot-location,
+  .lot-time,
+  .lot-bet {
+    @include vwm(padding-left, 15px);
+    @include vwm(margin-top, 5px);
+    @include vwm(font-size, 12px);
+  }
+  .location-img {
+    svg {
+      @include vwm(width, 23px);
+      @include vwm(height, 23px);
+    }
+  }
+  .lot-time-img {
+    svg {
+      @include vwm(width, 18px);
+      @include vwm(height, 18px);
+    }
+  }
+  .lot-button {
+    @include vwm(padding-bottom, 10px);
+    @include vwm(padding-top, 10px);
+    @include vwm(font-size, 15px);
+  }
+  .today-slider,
+  .favorite-slider {
+    @include vwm(margin-bottom, 0px);
+    @include vwm(max-height, 400px);
+  }
+  .slick-next::before {
+    @include vwm(margin-right, 20px);
+  }
+  .slick-prev::before {
+    @include vwm(margin-left, -20px);
+  }
+}
+
+
+.modal {
+  @include vw(padding, 10px);
+  @include vw(width, 516px);
+  //   @include vw(height, 177px);
+  margin: 0 auto;
+  background-color: #fff;
+  border: 0.5px solid #e6e6e6;
+  z-index: 1000;
+}
+
+.modal-container{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  &::before{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(28, 34, 66, 0.5);
+    opacity: .5;
+  }
+}
+
+.modal-body {
+  border: 2px solid #3686cd;
+  position: relative;
+  //   @include vw(height, 161px);
+  @include vw(font-size, 20px);
+}
+.close-btn {
+  position: absolute;
+  left: 95%;
+  cursor: pointer;
+  //   @include vw(width, 13px);
+  //   @include vw(height, 13px);
+  @include vw(margin-top, 2px);
+  svg {
+    @include vw(width, 13px);
+    @include vw(height, 13px);
+  }
+  // right: 100%;
+}
+
+.modal-content {
+  text-align: center;
+  @include vw(margin-top, 30px);
+  @include vw(margin-bottom, 30px);
+  //   height: auto;
+  //   margin: 20px auto;
+}
+.modal-content-text {
+  @include vw(margin-bottom, 15px);
+}
+.modal-content-text-fav {
+    @include vw(margin-bottom, 25px);
+}
+.modal-content-text-win {
+  @include vw(margin-bottom, 25px);
+}
+.modal-content-text-fail {
+  @include vw(margin-bottom, 25px);
+  color: #de1818;
+}
+
+.modal-content-fav {
+  text-align: center;
+  @include vw(margin-top, 35px);
+  @include vw(margin-bottom, 34px);
+}
+.modal-content-win {
+  text-align: center;
+  @include vw(margin-top, 35px);
+  @include vw(margin-bottom, 34px);
+  //   height: auto;
+  //   margin: 20px auto;
+}
+.favorite {
+  display: flex;
+  justify-content: space-between;
+}
+.fav {
+  background-color: #3686cd;
+  padding: 8px 0 10px 0;
+  @include vw(width, 200px);
+  margin: 0 auto;
+}
+.back {
+  background-color: #fff;
+  padding: 6px 0 10px 0;
+  @include vw(width, 200px);
+  margin: 0 auto;
+  border: 2px solid #3686cd;
+}
+.back .modal-btn {
+  color: #3686cd !important;
+}
+.modal-btn-container {
+  background-color: #3686cd;
+  padding: 8px 0 10px 0;
+  @include vw(width, 200px);
+  margin: 0 auto;
+}
+a.modal-btn {
+  text-decoration: none;
+  @include vw(font-size, 16px);
+ // color: #fff;
+  //   padding: 10px;
+}
+
+@media only screen and (max-width: 375px) {
+  .modal {
+    @include vwm(width, 300px);
+  }
+  a.modal-btn {
+    @include vwm(font-size, 14px);
+  }
+  .modal-body {
+    @include vwm(font-size, 16px);
+  }
+  .modal-btn-container {
+    @include vwm(width, 165px);
+  }
+  .fav,
+  .back {
+    @include vwm(width, 115px);
+    padding: 0;
+  }
+  .close-btn {
+    svg {
+      @include vwm(width, 9px);
+      @include vwm(height, 9px);
+    }
+  }
+  .modal-content-text-win{
+      @include vwm(width, 283px);
+      margin-left: auto;
+      margin-right: auto;
+  }
+}

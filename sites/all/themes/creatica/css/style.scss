@@ -1,0 +1,4301 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+$max-width: 1440;
+
+$mobile-max-width: 375;
+
+@function get-vw($target) {
+    $vw-context: ($max-width * .01) * 1px;
+    @return ($target/$vw-context) * 1vw;
+}
+
+@mixin vw($property, $size) {
+    #{$property}: get-vw($size);
+}
+
+@function get-m-vw($target) {
+    $vw-context: ($mobile-max-width * .01) * 1px;
+    //@return ($target/$vw-context) * 1vw !important;
+    @return ($target/$vw-context) * 1vw;
+}
+
+@mixin vwm($property, $size) {
+    #{$property}: get-m-vw($size);
+}
+
+@font-face{
+    font-family: 'Proxima Nova';
+    src: url('../fonts/ProximaNovaT.ttf');
+}
+
+@font-face{
+    font-family: 'SairaStencilOne';
+    src: url('../fonts/SairaStencilOne.ttf');
+}
+
+@font-face{
+    font-family: 'Century_Gothic_Regular';
+    src: url('../fonts/Century_Gothic_Regular.ttf');
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
+
+.messages.error, .form-required{
+    display: none;
+}
+
+.container{
+    width: 100%;
+    .row{
+        @include vw(width, 1280px);
+        margin: 0 auto;
+    }
+}
+
+a{
+    text-decoration: none !important;
+}
+
+li{
+    list-style: none;
+}
+
+textarea{
+    resize: none;
+}
+
+input{
+    outline: none;
+}
+
+.modal-btn{
+  cursor: pointer;
+}
+
+/** header **/
+header{
+    @include vw(height, 100px);
+    @include vw(padding-left, 80px);
+    @include vw(padding-right, 80px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    #logo{
+        img{
+            @include vw(height, 42px);
+            @include vw(width, 160px);
+        }
+    }
+
+    #user-block{
+        @include vw(width, 200px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        #link-edit-profile{
+            @include vw(width, 44px);
+            @include vw(height, 44px)
+        }
+
+        #login-user,#exit{
+            @include vw(font-size, 14px);
+            font-family: 'Proxima Nova';
+            font-weight: bold;
+        }
+    }
+
+    #block-login{
+        display: flex;
+        a{
+            @include vw(padding-left, 8px);
+            @include vw(padding-right, 8px);
+            @include vw(padding-top, 7px);
+            @include vw(padding-bottom, 7px);
+            @include vw(font-size, 14px);
+            @include vw(margin-left, 6px);
+            @include vw(margin-right, 6px);
+            border: 1px solid #3686CD;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .5s;
+            font-family: 'Proxima Nova';
+            font-weight: 700;
+
+            &:hover{
+                background-color: #3686CD;
+                color: white;
+            }
+        }
+    }
+
+}
+.field-name-field-instruction-file{
+    display: none !important;
+}
+.popular-container-row{
+    //display: flex;
+}
+
+/** end header **/
+
+.btn-danger{
+
+    background-color: transparent;
+    background-image: none;
+    border: 2px solid #dc3545 !important;
+}
+
+#main-content{
+    min-height: 775px;
+}
+
+#login{
+    form#user-login{
+        padding: 3.26389vw;
+    }
+}
+
+/** popular **/
+.popular-container-row{
+  display: flex;
+}
+/** end popular **/
+
+/** login **/
+
+#login-user-header{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+
+    &.active{
+        display: flex;
+    }
+    #login-user-container{
+        @include vw(width, 665px);
+        @include vw(height, 541px);
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+
+        .close{
+            @include vw(top, 33px);
+            @include vw(right, 39px);
+            @include vw(height, 22px);
+            @include vw(width, 22px);
+            position: absolute;
+            cursor: pointer;
+            &::before,&::after{
+                content: '';
+
+                @include vw(height, 2px);
+                @include vw(width, 18px);
+                position: absolute;
+                background-color: rgba(54, 134, 205, 0.65);
+            }
+
+            &::before{
+                transform: rotate(45deg);
+            }
+
+            &::after{
+                transform: rotate(-45deg);
+            }
+
+
+        }
+
+
+        #block-user-login{
+            @include vw(width, 649px);
+            @include vw(height, 525px);
+            border:3px solid #3686CD;
+            background-color: white;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+            h2{
+                @include vw(font-size, 30px);
+                font-family: 'Proxima Nova';
+                color: #3686CD;
+            }
+
+            label{
+                @include vw(font-size, 19px);
+                @include vw(margin-bottom, 10px);
+                font-family: 'Proxima Nova';
+                color: #484848;
+            }
+
+            input.form-text, textarea.form-textarea, select.form-select{
+                @include vw(width, 400px);
+                @include vw(height, 47px);
+                background-color: #EBF6FF;
+                border: none;
+            }
+
+            #login-user-header #login-user-container #block-user-login label{
+                @include vw(margin-bottom, 7px)
+            }
+
+            .item-list ul{
+                @include vw(margin-top, 30px);
+                @include vw(margin-bottom, 60px);
+                display: flex;
+                justify-content: space-between;
+                li{
+                    @include vw(font-size, 16px);
+                    font-family: 'Proxima Nova';
+                    font-weight: 700;
+                    margin: 0;
+                }
+            }
+
+
+            #edit-submit{
+                @include vw(font-size, 18px);
+                @include vw(padding-top, 12px);
+                @include vw(padding-left, 34px);
+                @include vw(padding-right, 34px);
+                @include vw(padding-bottom, 12px);
+                margin: 0 auto;
+                display: flex;
+                background-color: #3686CD;
+                align-items: center;
+                justify-content: center;
+                font-family: 'Proxima Nova';
+                font-weight: 700;
+                color: white;
+
+            }
+        }
+    }
+}
+
+/** end **/
+
+
+/** footer **/
+footer{
+    width: 100%;
+    @include vw(padding-top, 60px);
+    position: relative;
+    &::before{
+        content: '';
+        @include vw(padding-top, 60px);
+        top: 0;
+        position: absolute;
+        background-color: rgba(54, 134, 205, 0.65);
+        width: 100%;
+    }
+
+    .footer-top{
+        @include vw(padding-top, 32px);
+        @include vw(padding-bottom, 32px);
+        display: flex;
+        justify-content: space-between;
+        .requisites{
+            @include vw(width, 570px);
+            li{
+                @include vw(font-size, 15px);
+                @include vw(margin-bottom, 5px);
+                font-family: 'Proxima Nova';
+                color: #424242;
+
+                p{
+                    @include vw(margin-right, 5px);
+
+                    font-weight: bold;
+                    display: inline-block;
+                }
+                span{
+                   color: #7B7B7B
+                }
+            }
+
+        }
+        .footer-nav{
+            @include vw(width, 390px);
+            display: flex;
+            justify-content: space-between;
+
+            li{
+
+                font-family: 'Proxima Nova';
+                &.title{
+                    @include vw(font-size, 17px);
+                    @include vw(margin-bottom, 16px);
+                    color: #3686CD;
+                    font-weight: bold;
+                }
+                @include vw(font-size, 15px);
+                @include vw(margin-bottom, 5px);
+                a{
+                    color: #424242;
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+
+    .footer-bottom{
+        @include vw(padding-top, 21px);
+        @include vw(padding-bottom, 21px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        p{
+            @include vw(font-size,15px);
+            font-family: 'Proxima Nova';
+        }
+
+        div{
+            display: flex;
+            align-items: center;
+            &:hover{
+                .cls-1{
+                    fill:red;
+                }
+
+
+            }
+            svg{
+                @include vw(height, 25px);
+                @include vw(width, 112px);
+                @include vw(margin-left, 37px);
+                .cls-2{
+                    font-size: 36px;
+                    font-family: 'Century_Gothic_Regular';
+                }
+                .cls-3{
+                    fill: #fbfbfb;
+                }
+
+
+            }
+        }
+    }
+}
+/** end footer **/
+
+/** navigation **/
+
+nav#navigation{
+    @include vw(height, 60px);
+    background: rgba(54, 134, 205, 0.65);
+    display: flex;
+    align-items: center;
+    #main-menu{
+        //@include vw(width, 1280px);
+        height: 100%;
+       // margin: 0 auto;
+        display: flex;
+        align-items: center;
+
+        ul{
+            display: flex;
+            li{
+                @include vw(margin-right, 63px);
+                list-style: none;
+
+                position: relative;
+                a{
+                    @include vw(font-size, 18px);
+                    color:white;
+                    text-align: center;
+                    display: block;
+
+                    position: relative;
+                    overflow: hidden;
+                    font-family: 'Secular One', sans-serif;
+
+                    &:before{
+                        content: '';
+                        @include vw(height, 3px);
+                        width: 100%;
+                        position: absolute;
+                        left: -100%;
+                        bottom: -2.5px;
+                        background-color: white;
+                        opacity: 0;
+                        transition: all .5s;
+                    }
+                    &:hover{
+                        &:before{
+                            left: 0;
+                            opacity: 1;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+/** end navigation **/
+
+/*** catalog menu ***/
+
+#menu-toggle{
+    @include vw(height, 16px);
+    @include vw(width, 23px);
+    @include vw(margin-left, 17px);
+    @include vw(margin-right, 36px);
+    //background-color: white;
+    //@include vw(border-top, 2px);
+    //@include vw(border-bottom, 2px);
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .5s;
+    cursor: pointer;
+
+    &:after, &::before{
+        height: 2px;
+        width: 100%;
+        content: '';
+        position: absolute;
+        background-color: white;
+        transition: all .5s;
+    }
+
+    &.active{
+        border: none;
+        &:after{
+            transform: rotate(45deg);
+        }
+
+        &:before{
+            transform: rotate(-45deg);
+        }
+    }
+}
+
+.catalog-menu{
+   // @include vw(padding-left, 4px);
+    @include vw(padding-top, 10px);
+    @include vw(padding-bottom, 10px);
+    @include vw(width, 70px);
+    background-color: white;
+    transition: all .5s;
+    overflow: hidden;
+    position: relative;
+    h2{
+        display: none;
+    }
+    z-index: 1000;
+    &.active{
+
+        width: auto;
+        overflow:visible;
+
+        ul{
+            li{
+                a{
+
+                    width: auto;
+                    color: #296ba6;
+                }
+            }
+        }
+    }
+    ul{
+        transition: all .5s;
+        white-space: nowrap;
+        li{
+            margin: 0;
+            @include vw(margin-bottom, 8px);
+            @include vw(padding-left, 17px);
+            list-style: none;
+            a{
+                @include vw(font-size, 16px);
+                @include vw(padding-left,65px);
+                //@include vw(padding-top,9px);
+                //@include vw(padding-bottom,9px);
+                @include vw(background-size,35px);
+                @include vw(line-height, 19px);
+                @include vw(height, 35px);
+                font-family: 'Proxima Nova';
+                color: transparent;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+
+
+                //border: 1px solid red !important
+            }
+        }
+    }
+}
+
+/*** end catalog menu ***/
+
+/** breadcrumbs **/
+
+.breadcrumb{
+    @include vw(padding-left, 18px);
+    @include vw(padding-top, 18px);
+    @include vw(padding-bottom, 18px);
+    @include vw(font-size, 15px);
+    display:flex;
+    background-color: rgba(247, 250, 250, 0.7);
+    font-family: 'Roboto';
+    a{
+        @include vw(margin-right, 10px);
+        color: #979797;
+    }
+}
+
+/** end breadcrumbs **/
+
+/** page title **/
+
+.page-title{
+    @include vw(font-size, 25px);
+    @include vw(padding-top, 32px);
+    @include vw(padding-bottom, 32px);
+    font-family: 'Roboto';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    color: #424242;
+}
+
+/** end page title **/
+
+/** 404 page **/
+
+.not_found-container{
+    @include vw(height, 577px);
+    display: flex;
+    align-items: center;
+
+    .col-1{
+        @include vw(width, 398px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        div{
+            font-family: 'Proxima Nova';
+            p{
+                @include vw(font-size, 35px);
+                @include vw(margin-bottom, 19px);
+                font-weight: bold;
+                color: #747377;
+            }
+            a{
+                @include vw(width, 148px);
+                @include vw(height, 28px);
+                @include vw(font-size, 18px);
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #3686CD;
+                color: white;
+
+            }
+        }
+
+    }
+
+    .col-2{
+        height: 100%;
+        @include vw(width, 987px);
+        @include vw(background-position-x, -127px);
+        @include vw(background-position-y, 80px);
+
+
+        background-image: url('../images/404/404.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        position: relative;
+        background-color: rgb(244, 244, 244);
+
+        p{
+            @include vw(font-size, 350px);
+            @include vw(top, 259px);
+            letter-spacing: -0.015em;
+            line-height: 30px;
+
+            font-family: 'SairaStencilOne';
+            color: rgba(54, 134, 205, 0.8);
+            position: absolute;
+            &:first-of-type{
+                @include vw(left, 95px)
+            }
+
+            &:last-of-type{
+                @include vw(right, 90px)
+            }
+        }
+    }
+}
+
+/** end 404 page **/
+
+/** about us **/
+.col-about{
+    display: flex;
+    justify-content: flex-end;
+    width: 53%;
+    @include vw(margin-top, 25px);
+    @include vw(margin-bottom, 25px);
+    p{
+        font-family: "Roboto";
+        @include vw(font-size, 25px);
+    }
+}
+.about-us{
+    @include vw(margin-bottom, 85px);
+    display: flex;
+    justify-content: space-between;
+    .col-1{
+        @include vw(width, 540px);
+        p{
+            @include vw(margin-bottom, 25px);
+            @include vw(line-height,43px);
+            font-family: 'Proxima Nova';
+
+            @include vw(line-height, 30px);
+        }
+        b{
+            color:#484848;
+        }
+    }
+    .col-2{
+        @include vw(width, 670px);
+
+
+        img{
+            @include vw(height, 388px);
+            width:100%
+        }
+
+    }
+}
+
+/** end about us **/
+
+
+/** contacts **/
+
+.contacts-container{
+    @include vw(margin-bottom, 84px);
+    display: flex;
+    justify-content: space-between;
+
+    .contact-info{
+        .title{
+            @include vw(font-size, 17px);
+            @include vw(line-height, 36px);
+            font-family: 'Proxima Nova';
+            font-weight: bold;
+            @include vw(margin-bottom, 20px);
+        }
+
+        .item{
+            display: flex;
+            .icon-block{
+                @include vw(width, 52px);
+                @include vw(padding-top, 10px);
+                @include vw(margin-right, 20px);
+                display:flex;
+                justify-content: center;
+                background-color: #EBF6FF;
+                overflow: hidden;
+            }
+
+            .content{
+                @include vw(width, 471px);
+                @include vw(padding-top, 15px);
+
+                display:flex;
+                flex-direction: column;
+            }
+            .content.content-email{
+                flex-direction: row!important;
+                align-items: baseline;
+                .title{
+                    @include vw(margin-right, 10px);
+                }
+            }
+
+        }
+
+        ul{
+            li{
+                @include vw(font-size, 16px);
+                //@include vw(line-height, 36px);
+                color: #595252;
+                font-family: 'Proxima Nova';
+            }
+
+        }
+    }
+
+    .contact-form{
+        @include vw(width, 548px);
+        @include vw(padding-top, 20px);
+        @include vw(padding-bottom, 20px);
+        @include vw(padding-left, 40px);
+        @include vw(padding-right, 40px);
+        display: flex;
+        flex-direction: column;
+        font-family: 'Proxima Nova';
+        background-color: #EBF6FF;
+
+        .title{
+            @include vw(font-size, 20px);
+            @include vw(margin-bottom, 10px);
+            font-weight: bold;
+        }
+        & > div{
+            display: flex;
+            justify-content: space-between;
+            input{
+                @include vw(width, 250px)
+            }
+        }
+
+        .subtitle{
+            @include vw(font-size, 15px);
+            @include vw(margin-bottom, 17px);
+        }
+        input,textarea{
+            @include vw(margin-bottom, 18px);
+            @include vw(padding-top, 8px);
+            @include vw(padding-bottom, 8px);
+            @include vw(padding-left, 12px);
+
+            border: none;
+        }
+
+        #send{
+            @include vw(width, 140px);
+            @include vw(height, 43px);
+            @include vw(font-size, 17px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #3686CD;
+            border: 1px solid #3686CD;
+            color: white;
+        }
+    }
+}
+
+/** end contacts **/
+
+/** instructions and rules **/
+
+#instructions_rules{
+    .item{
+        @include vw(margin-bottom, 50px);
+        .top{
+            display: flex;
+            .item_number{
+                @include vw(width, 89px);
+                @include vw(padding-top, 38px);
+                @include vw(margin-right,10px);
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                position: relative;
+                &::before{
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    height: 90%;
+                    background-color: #EBF6FF;
+                    top: 0;
+                    left: 0;
+                }
+                p{
+                    @include vw(font-size, 120px);
+                    @include vw(line-height, 30px);
+                    @include vw(padding-right, 10px);
+                    font-family: 'SairaStencilOne';
+                    z-index: 1;
+                    color: #C6E6FF;
+
+                }
+            }
+
+
+            .title{
+                @include vw(font-size,20px);
+                @include vw(line-height, 30px);
+
+                font-family: 'Proxima Nova';
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                color: #484848;
+            }
+        }
+        .bottom{
+            @include vw(padding-left, 99px);
+            display: flex;
+            flex-direction: column;
+            p{
+                @include vw(font-size, 18px);
+                @include vw(line-height, 30px);
+                font-family: 'Proxima Nova';
+                color: #484848;
+            }
+
+        }
+    }
+}
+
+/** end **/
+
+
+/** catalog **/
+
+#catalog-container{
+    position: absolute;
+}
+
+.catalog-container{
+
+    #parameters{
+        @include vw(width, 195px);
+        @include vw(padding-left, 18px);
+        @include vw(padding-right, 18px);
+        @include vw(padding-top, 13px);
+        @include vw(padding-bottom, 30px);
+        display: flex;
+        flex-direction: column;
+        background-color: rgba(244, 250, 254, 0.75);
+        font-family: 'Proxima Nova';
+
+        input{
+            @include vw(width, 185px);
+            @include vw(padding-left, 5px);
+            @include vw(padding-right, 5px);
+            @include vw(font-size, 10px);
+            border:  0.2px solid #C4C4C4;;
+        }
+
+        label{
+            @include vw(margin-top, 14px);
+            //@include vw(margin-bottom, 7px);
+            @include vw(font-size, 15px);
+            color: #424242;
+            font-weight: bold;
+            font-family: 'Proxima Nova';
+        }
+
+        select{
+            outline: none;
+            @include vw(width, 195px);
+            @include vw(font-size, 10px);
+            background-color: white;
+            border:  0.2px solid #C4C4C4;;
+        }
+
+        & > .title{
+            @include vw(font-size, 18px);
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        #edit-submit-filter{
+            background-color: #3686CD;
+            color: white;
+        }
+
+        #edit-reset{
+            background-color: white;
+            color: black;
+            border: 1px solid #C4C4C4;;
+        }
+
+        .views-submit-button{
+            margin-right: 6%;
+        }
+
+        .views-submit-button, .views-reset-button{
+            width: 45%;
+            display: inline-block;
+            input, button,a{
+                width: 100%;
+                @include vw(border-radius, 2.5px);
+                @include vw(height, 25px);
+                @include vw(font-size,10px);
+                font-family: 'Proxima Nova';
+                font-weight: bolder;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        .views-reset-button{
+            a{
+                background-color: #FFFFFF;
+                color: #848484;
+            }
+        }
+
+        .views-submit-button input{
+            background-color: #3686CD;
+            color: white;
+        }
+
+        .caption{
+            @include vw(margin-top, 14px);
+            @include vw(margin-bottom, 7px);
+            @include vw(font-size, 15px);
+            color: #424242;
+            font-weight: bold;
+
+        }
+
+        .min-max-price{
+            display: flex;
+            justify-content: space-between;
+            @include vw(width, 195px);
+           & > div{
+               width: 30%;
+               input{
+                   width: 80%;
+               }
+           }
+            label{
+                display: none;
+            }
+        }
+
+        /*
+        .item-group{
+            display: flex;
+            flex-direction: column;
+
+
+
+
+
+            .in-ct{
+                position: relative;
+                & > div{
+                    display: flex;
+                    background-color: white;
+                    input{
+                        @include vw(width, 165px);
+                        @include vw(padding-left, 5px);
+                        @include vw(font-size, 15px);
+                        border: none;
+                        &::-webkit-input-placeholder  {
+                            @include vw(font-size, 15px);
+                            font-family: 'Proxima Nova';
+                        }
+
+                        &{
+
+                        }
+                    }
+                    .close{
+                        @include vw(height, 28px);
+                        @include vw(width, 28px);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 0.2px solid #C4C4C4;;
+                        position: relative;
+                        cursor: pointer;
+
+
+                        svg{
+                            @include vw(width, 12px);
+                            @include vw(height, 6px);
+                            transition: all .5s;
+                        }
+                    }
+
+                }
+                &.active{
+                    ul{
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    & > div{
+                        .close svg{
+                            transform: rotate(180deg);
+                        }
+                    }
+                }
+
+                ul{
+                    width: 100%;
+                    background-color: white;
+                    position: absolute;
+                    z-index: 100;
+                    display: none;
+                    li{
+                        @include vw(padding-left, 5px);
+                        @include vw(padding-top, 5px);
+                        @include vw(padding-bottom, 5px);
+
+                        font-family: 'Proxima Nova';
+
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .input-group{
+                @include vw(font-size, 14px);
+                @include vw(margin-top, 10px);
+                display: flex;
+                justify-content: space-between;
+                input{
+                    @include vw(width, 65px);
+                    @include vw(height,15px);
+                    @include vw(padding-left, 5px);
+                    @include vw(font-size, 10px);
+                    border: 0.2px solid #C4C4C4;
+                    background-color: #FFFFFF;
+                }
+            }
+
+
+        }*/
+    }
+}
+
+#with_photo{
+    @include vw(margin-top, 24px);
+}
+
+/** end catalog **/
+
+input[type="checkbox"]:checked,
+input[type="checkbox"]:not(:checked),
+input[type="radio"]:checked,
+input[type="radio"]:not(:checked)
+{
+    position: absolute;
+    left: -9999px;
+}
+
+input[type="checkbox"]:checked + label,
+input[type="checkbox"]:not(:checked) + label,
+input[type="radio"]:checked + label,
+input[type="radio"]:not(:checked) + label {
+    display: inline-block;
+    position: relative;
+    padding-left: 28px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+
+input[type="checkbox"]:checked + label:before,
+input[type="checkbox"]:not(:checked) + label:before,
+input[type="radio"]:checked + label:before,
+input[type="radio"]:not(:checked) + label:before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+
+
+    width: 18px;
+    height: 18px;
+
+    border: 1px solid #dddddd;
+    background-color: #ffffff;
+}
+
+input[type="checkbox"]:checked + label:before,
+input[type="checkbox"]:not(:checked) + label:before {
+    border-radius: 2px;
+}
+
+input[type="radio"]:checked + label:before,
+input[type="radio"]:not(:checked) + label:before {
+    border-radius: 100%;
+}
+
+
+input[type="checkbox"]:checked + label:after,
+input[type="checkbox"]:not(:checked) + label:after,
+input[type="radio"]:checked + label:after,
+input[type="radio"]:not(:checked) + label:after {
+    content: "";
+    position: absolute;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:checked + label:after,
+input[type="checkbox"]:not(:checked) + label:after {
+    left: 2px;
+    top: 0px;
+    width: 18px;
+    height: 8px;
+    border-radius: 1px;
+
+
+    border-left: 3px solid #3686CD;
+    border-bottom: 3px solid #3686CD;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+input[type="radio"]:checked + label:after,
+input[type="radio"]:not(:checked) + label:after {
+    left: 5px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: #3686CD;
+}
+
+input[type="checkbox"]:not(:checked) + label:after,
+input[type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+}
+
+input[type="checkbox"]:checked + label:after,
+input[type="radio"]:checked + label:after {
+    opacity: 1;
+}
+
+
+/** user registratioin **/
+.registration-nav{
+
+    ul{
+        display: flex;
+        @include vw(font-size, 18px);
+        font-family: 'Proxima Nova';
+        font-weight: bold;
+        li{
+            display: flex;
+            align-items: center;
+            a{
+                color: #484848;
+            }
+            &.active{
+                background-color: rgba(235, 246, 255, 0.7);
+
+            }
+
+            &:hover{
+                background-color: rgba(235, 246, 255, 0.7);
+            }
+        }
+        /*
+        li:first-of-type{
+            @include vw(width, 247px);
+            @include vw(height, 56px);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        li:last-of-type{
+            @include vw(padding-left, 47px);
+            @include vw(padding-right, 47px);
+        }*/
+
+        li{
+            a{
+                @include vw(height, 56px);
+                @include vw(padding-left, 47px);
+                @include vw(padding-right, 47px);
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}
+
+/** user login **/
+form#user-login{
+    input[type='text'], input[type='password']{
+        @include vw(height, 30px);
+        @include vw(padding, 5px);
+        border: 0.4px solid rgba(66, 170, 255, 0.7);
+    }
+    label{
+        @include vw(font-size, 18px);
+        @include vw(margin-bottom, 6px);
+        font-family: 'Proxima Nova';
+        font-weight: bold;
+    }
+
+    .description{
+        display: none;
+    }
+
+    #edit-submit{
+        @include vw(padding-top, 14px);
+        @include vw(padding-bottom, 14px);
+        @include vw(padding-left, 32px);
+        @include vw(padding-right, 32px);
+        @include vw(font-size, 18px);
+        background-color: #3686CD;
+        border: 0;
+        color: #fff;
+        font-family: "Proxima Nova";
+        font-weight: 600;
+    }
+}
+
+/** user end login **/
+
+/** user registration form **/
+#registration-form{
+    //@include vw(, );
+    @include vw(margin-bottom, 127px);
+    @include vw(padding-top, 73px);
+
+    display: flex;
+    justify-content: space-around;
+
+    background: rgba(54, 134, 205, 0.02);
+
+    .col-1{
+
+        #user-image{
+            img{
+                @include vw(max-width, 275px);
+                // @include vw(height, 312px);
+                height: auto;
+            }
+
+            .group-button{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                input[type='button']{
+                    @include vw(padding-left, 16px);
+                    @include vw(padding-right, 16px);
+                    @include vw(padding-top,12px);
+                    @include vw(padding-bottom, 12px);
+                    @include vw(font-size, 17px);
+                    background-color: white;
+                    color:#3686CD;
+                    border: 1px solid #3686CD;
+                    cursor: pointer;
+                    &:hover{
+                        color: white;
+                        background-color: #3686CD;
+                    }
+                }
+            }
+
+            .form-item.form-type-managed-file.form-item-field-user-img-und-0, #edit-field-user-img{
+                display: none !important;
+            }
+        }
+    }
+
+    .col-2{
+        @include vw(width, 730px);
+        display: flex;
+        flex-direction: column;
+
+        .item{
+            width: 100%;
+            @include vw(margin-bottom, 35px);
+            .description{
+                font-family: "Proxima Nova";
+                @include vw(font-size, 16px);
+                @include vw(margin-left, 5px);
+            }
+            .form-type-checkbox{
+              .description{
+                // font-size: 20px !important;
+                @include vw(font-size, 20px);
+              }
+            }
+            .itm-check{
+                .form-item{
+                    display: flex;
+                    margin-top: 0;
+                    .option{
+                        .form-required{
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+
+            .row-1{
+                label{
+                        @include vw(font-size, 18px);
+                        @include vw(margin-bottom, 6px);
+                        font-family: 'Proxima Nova';
+                        font-weight: bold;
+                }
+                input{
+                    @include vw(width, 720px);
+                    @include vw(height, 30px);
+                    @include vw(padding, 5px);
+                    border: 0.4px solid rgba(66, 170, 255, 0.7);
+                }
+            }
+
+            #edit-submit{
+                //@include vw(height, 28px);
+                @include vw(padding-top, 14px);
+                @include vw(padding-bottom, 14px);
+                @include vw(padding-left, 32px);
+                @include vw(padding-right, 32px);
+                @include vw(font-size, 18px);
+                background-color: #3686CD;
+                border: 0;
+                color: #fff;
+                font-family: "Proxima Nova";
+                font-weight: 600;
+            }
+
+            #edit-actions{
+                @include vw(margin-top, 52px);
+                margin-bottom: 0;
+            }
+
+            #edit-account{
+
+                input{
+                    @include vw(height, 30px);
+                    @include vw(padding, 5px);
+                    border: 0.4px solid rgba(66, 170, 255, 0.7);
+                }
+
+                .form-item.form-type-textfield{
+                    input{
+                        width: 100%;
+                        @include vw(height, 30px);
+                        @include vw(padding, 5px);
+                        margin-top: 0;
+                        margin-bottom: 0;;
+                    }
+
+
+                    label{
+                        @include vw(font-size, 18px);
+                        @include vw(margin-bottom, 6px);
+                        font-family: 'Proxima Nova';
+                        font-weight: bold;
+                    }
+
+
+                    .description{
+                        @include vw(padding-left, 30px);
+                        @include vw(margin-top, 10px);
+                        @include vw(font-size, 14px);
+                        font-family: 'Proxima Nova';
+                        font-weight: bold;
+                        position: relative;
+                        &:before{
+                            content: url('../images/information.png');
+                            @include vw(width, 19px);
+                            @include vw(height, 19px);
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                        }
+                    }
+
+
+                }
+
+                .form-item.form-type-password-confirm.form-item-pass{
+                    font-family: "Proxima Nova";
+                    display: flex;
+                    justify-content: space-between;
+                    .password-strength,.description, div.password-confirm, .password-suggestions.description{
+                        display: none !important;
+                    }
+
+                    .confirm-parent, .password-parent{
+                        @include vw(width, 349px);
+                        input{
+                            width: 100%;
+                        }
+                    }
+
+                }
+
+            }
+
+            .item-title{
+                @include vw(font-size, 18px);
+                @include vw(padding-left, 30px);
+                font-family: 'Proxima Nova';
+                font-weight: bold;
+                position: relative;
+                display: flex;
+                align-items: center;
+                &:before{
+                    content:'';
+                    @include vw(width, 20px);
+                    @include vw(height,3px);
+                    position: absolute;
+                    background-color: red;
+                    left: 0;
+                }
+            }
+
+            .input-group{
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .left-block, .right-block{
+                .form-item.form-type-textfield.form-item-profile-juridical-field-jur-authface-und-0-field-jur-jp-phone-und-0-value{
+                    label{
+                        @include vw(margin-bottom, 28px);
+                    }
+                }
+                .form-item.form-type-select.form-item-profile-physical-field-phys-info-und-0-field-phys-ph-borndate-und-0-value-month,
+                .form-item.form-type-select.form-item-profile-physical-field-phys-info-und-0-field-phys-ph-borndate-und-0-value-day,
+                .form-item.form-type-select.form-item-profile-physical-field-phys-info-und-0-field-phys-ph-borndate-und-0-value-year,
+                .form-item.form-type-select.form-item-profile-physical-field-phys-passport-und-0-field-phys-pp-authdate-und-0-value-month,
+                .form-item.form-type-select.form-item-profile-physical-field-phys-passport-und-0-field-phys-pp-authdate-und-0-value-day,
+                .form-item.form-type-select.form-item-profile-physical-field-phys-passport-und-0-field-phys-pp-authdate-und-0-value-year,
+                .form-item.form-type-select.form-item-profile-juridical-field-jur-regcertificate-und-0-field-jur-rc-regdate-und-0-value-month,
+                .form-item.form-type-select.form-item-profile-juridical-field-jur-regcertificate-und-0-field-jur-rc-regdate-und-0-value-day,
+                .form-item.form-type-select.form-item-profile-juridical-field-jur-regcertificate-und-0-field-jur-rc-regdate-und-0-value-year{
+                    label{
+                        display: none;
+                    }
+                }
+                #profile-physical-field-phys-passport-und-0-field-phys-pp-unicnumber-add-more-wrapper, #profile-physical-field-phys-info-und-0-field-phys-ph-address-add-more-wrapper, .form-item.form-type-select.form-item-profile-physical-field-phys-info-und-0-field-phys-ph-sex-und{
+                  @include vw(margin-top, 45px);
+                }
+                &>div{
+                    @include vw(width, 350px);
+                    @include vw(margin-bottom, 23px);
+
+                    fieldset{
+                        width: 100%;
+
+                        border: 0;
+                        margin-top: 1em;
+                        padding: 0;
+
+                        .clearfix:after{
+                            display: none;
+                        }
+
+                        .date-no-float{
+                            width: 100%;
+                        }
+
+                        .date-padding{
+                            width: 100%;
+                            margin-right: 0;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+
+                            .form-item.form-type-select{
+                                @include vw(width, 110px);
+                            }
+
+
+                            select{
+                               // @include vw(width, 110px);
+                                width: 100%;
+                                margin: 0;
+                                float: right;
+                            }
+
+                        }
+                        .form-item{
+                            width: 100%;
+                            flex-direction: column;
+                            margin: 0;
+                        }
+
+                        legend{
+                            @include vw(margin-bottom, 6px);
+                           .fieldset-legend{
+                            @include vw(font-size, 18px);
+                            font-family: 'Proxima Nova';
+                            font-weight: bold;
+                           }
+                        }
+                        .date-padding{
+                            padding: 0;
+                        }
+                        .form-item{
+                            margin-bottom: 0;
+                        }
+                    }
+                    input{
+                        @include vw(width, 340px);
+                        @include vw(height, 30px);
+
+                    }
+                    select{
+                        @include vw(height, 40px);
+                        width: 100%;
+                        background-color: white;
+                        margin: 0;
+                    }
+
+                    input, select{
+                        @include vw(padding, 5px);
+                        margin-top: 0;
+                        margin-bottom: 0;
+                        border: 0.4px solid rgba(66, 170, 255, 0.7);
+                    }
+
+                    label{
+                        @include vw(font-size, 18px);
+                        @include vw(margin-bottom, 6px);
+                        font-family: 'Proxima Nova';
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/** end user registration form **/
+
+/*** main top ***/
+
+.main-top{
+    h2{
+        display: none;
+    }
+}
+
+#main-top-container{
+    @include vw(height, 631px);
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    #main-top{
+        @include vw(padding-left, 20px);
+
+        .title, .subtitle{
+            font-family: 'Proxima Nova';
+            color: #515050;
+        }
+
+        .title{
+            @include vw(font-size, 36px);
+            @include vw(max-width, 530px);
+            @include vw(padding-top, 159px);
+            @include vw(margin-bottom, 18px);
+            font-weight: bold;
+        }
+
+        .subtitle{
+            @include vw(font-size, 21px);
+            @include vw(margin-bottom, 59px);
+            font-weight: normal;
+        }
+
+        .start{
+            @include vw(font-size, 20px);
+            @include vw(padding-left, 40px);
+            @include vw(padding-right, 40px);
+            @include vw(padding-top, 15px);
+            @include vw(padding-bottom, 15px);
+            background-color: #DE1818;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            text-decoration: none;
+            color: white;
+            font-family: 'Proxima Nova';
+            cursor: pointer;
+        }
+    }
+}
+
+/*** end main top ***/
+
+/*** advantages ***/
+
+.advantages{
+    @include vw(width, 1280px);
+    margin: 0 auto;
+    h2{
+        @include vw(font-size, 26px);
+        @include vw(padding-left, 28px);
+        font-family: 'Proxima Nova';
+        color: #3C3C3C;
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        &:before{
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 3px;
+            background-color: #3686CD;
+            left: 0;
+        }
+    }
+
+
+    .row{
+        &-1,&-2{
+            @include vw(padding-left, 86px);
+
+        }
+
+        &-1{
+            @include vw(margin-top, 70px);
+            display: flex;
+            align-items: center;
+            font-family: 'Proxima Nova';
+
+            p{
+                &:first-of-type{
+                    @include vw(width, 330px);
+                    @include vw(padding-top,10px);
+                    @include vw(padding-bottom, 10px);
+                    @include vw(padding-right, 18px);
+
+                    @include vw(margin-right, 18px);
+                    @include vw(font-size, 23px);
+                    border-right: 3px solid #DE1818;
+                    font-weight: bolder;
+                    color: #3C3C3C;
+                }
+                &:last-of-type{
+                    @include vw(width, 760px);
+                    @include vw(font-size, 18px);
+                    font-weight: bold;
+                    color: #515050;
+                }
+            }
+        }
+
+        &-2{
+            @include vw(margin-top, 80px);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            .circle{
+                @include vw(width, 90px);
+                @include vw(height, 90px);
+                @include vw(border-radius, 90px);
+
+                background-color: #E4EEF9;
+                position: relative;
+
+                svg{
+                    @include vw(width, 80px);
+                    @include vw(height, 80px);
+                    @include vw(left, 35px);
+                    @include vw(top, 21px);
+                    position: absolute;
+                }
+            }
+
+            .item{
+                @include vw(width, 217px);
+
+                .bottom{
+                    @include vw(margin-top, 15px);
+                    @include vw(font-size, 17px);
+                    font-family: 'Proxima Nova';
+                    color: #515050;
+                }
+            }
+        }
+    }
+}
+
+/*** end advantages ***/
+
+
+/*** platform ***/
+
+.platform-container{
+    &>h2{
+        display: none;
+    }
+
+    .platform{
+        display: flex;
+        background-color: linear-gradient(87.96deg, rgba(196, 222, 234, 0.15) 0.57%, rgba(196, 222, 234, 0) 100.77%);
+        @include vw(margin-top, 125px);
+        h2, .content, .more{
+            @include vw(margin-left, 99px);
+            font-family: 'Proxima Nova';
+            font-weight: bold;
+        }
+
+        h2{
+            color: #515050;
+        }
+
+        h2{
+            @include vw(font-size, 26px);
+            @include vw(margin-top, 52px)
+        }
+
+        .content{
+            @include vw(font-size, 19px);
+            @include vw(margin-top, 25px);
+            @include vw(margin-bottom, 73px);
+            @include vw(width, 512px);
+            color: #424242;
+        }
+
+        .more{
+            @include vw(padding-left, 31px);
+            @include vw(padding-right, 31px);
+            @include vw(padding-top, 14px);
+            @include vw(padding-bottom, 14px);
+
+            cursor:pointer;
+            display: inline-block;
+            background-color: #3686CD;
+            color: white;
+        }
+        .red-line{
+            position: relative;
+        }
+        .red-line::before{
+            content: "";
+            position: absolute;
+            @include vw(width, 12px);
+            height: 70%;
+            top: 30%;
+            left: -.7%;
+            background-color: #DE1818;
+        }
+        img{
+            width: 100%;
+        }
+    }
+
+
+}
+
+/*** end platform ***/
+
+/*** search ***/
+#search-block-form{
+
+}
+
+.block-search input.form-text{
+    @include vw(width, 202px);
+    background-color: transparent;
+    border-bottom: 1px solid white !important;
+}
+
+
+.block-search .container-inline{
+    background-color: transparent !important;
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+
+}
+/*** end search ***/
+
+
+/*** direct implementation ***/
+
+.direct_implementation{
+    @include vw(width, 1280px);
+    margin: 0 auto;
+
+    .field-label{
+        display: none;
+    }
+
+    &> h2{
+            @include vw(font-size, 26px);
+            @include vw(padding-left, 28px);
+            font-family: 'Proxima Nova';
+            color: #3C3C3C;
+            position: relative;
+            display: flex;
+            align-items: center;
+
+            &:before{
+                content: '';
+                position: absolute;
+                width: 20px;
+                height: 3px;
+                background-color: #3686CD;
+                left: 0;
+            }
+        }
+
+
+    .container-implementation{
+        display: flex;
+
+        @include vw(margin-top, 50px);
+        // @include vw(margin-left,-9px);
+        // @include vw(margin-right, -9px);
+
+        .item{
+            @include vw(width, 294px);
+            @include vw(height, 365px);
+            @include vw(margin-left, 9px);
+            @include vw(margin-right, 9px);
+
+            overflow: hidden;
+
+            .tovar-img{
+                @include vw(width, 294px);
+                @include vw(height, 200px);
+                overflow: hidden;
+                div{
+                    width: 100%;
+                    height: 100%;
+                    img{
+                        height: 100%;
+                        width: auto;
+                    }
+                }
+            }
+
+
+            .tovar-info{
+                background: #FFFFFF;
+                border-left: 0.3px solid #42AAFF;
+                border-right: 0.3px solid #42AAFF;
+                box-sizing: border-box;
+
+                .tovar-title{
+                    @include vw(padding-left, 13px);
+                    @include vw(padding-right, 13px);
+                    @include vw(padding-top, 13px);
+                    @include vw(margin-bottom, 34px);
+                    @include vw(font-size, 15px);
+
+                    font-family: 'Montserrat', sans-serif;
+                    font-weight: 500;
+                    color: #424242;
+                }
+
+                .location{
+                    @include vw(padding-left, 13px);
+                    @include vw(padding-right, 13px);
+                    @include vw(font-size, 16px);
+                    display: flex;
+                    font-weight: bold;
+                    font-family: 'Proxima Nova';
+                    color: #515050;
+
+                    &:before{
+                        content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAARCAYAAAAL4VbbAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFPSURBVHgBhZJRTsJAEIZnpgQTn/AGeAIhYBPfOIKcQDwCj0gIJUZ8lROIN/AG8IgU097APYKPUtodt9vuptYq87Qz+/Wff2eKkEfLCxq1ejxwkC6YoYFAYh99LULvShgGNfgYNOsgV8DQhHIgedtRe6aP/4ImEu5vJ91XOgE5NSAzL04jOtvedRClHFrYwWet7M53QdpAnYWCzouC7oPvKRvTTChpUw4CIqzL3aX8UWsRA3zqC8Ym/Hob2RpLFESAYTYW7rnz4MbKqIcjwdTkcVILsXvv98ihlVUAXBOykAzXaq6N3OLybdS5pd3kco0KsK1VB7WUgQFTm7iP9Jwp8xsP4Y9AlotNvkUN+2NX+eaXClbQIV6ahOwBHc9MxvpnmG0K/4aFN6O2SFsWVf1xZ1n8mIpJdKg9GfVUFY5FumJ3/v5RdUflglbnpF8FfwOggIy9mVpwFgAAAABJRU5ErkJggg==');
+                        @include vw(margin-right, 5px);
+                    }
+                }
+
+                .tovar-price{
+                    @include vw(padding-left, 13px);
+                    @include vw(padding-right, 13px);
+                    @include vw(padding-bottom, 5px);
+                    @include vw(font-size, 16px);
+                    font-weight: bold;
+                    font-family: 'Proxima Nova';
+                    color: #515050;
+                }
+
+            }
+
+            .more-info{
+                @include vw(height, 34px);
+                width: 100%;
+                background-color: #3686CD;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                overflow: hidden;
+                position: relative;
+
+                p{
+                    @include vw(font-size, 15px);
+                    font-weight: bold;
+                    color: white;
+                    z-index: 100;
+                    font-family: 'Proxima Nova';
+                }
+
+                &::after{
+                    content: '';
+                    height: 100%;
+                    @include vw(width, 34px);
+                    position: absolute;
+                    background-color: white;
+                    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAKCAYAAABSfLWiAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADNSURBVHgBnZLBDYJAEEVnx4QzJVACRsB4kw60AzsQr3IQo6I3LEErUU8aNgY6kBK8irLrEgghnnb9p0kmefNmMgQkY63oELET5e/XOA0GWbuHshCCZASEm5qmnczgavwFob7lAWdLURolyN7EZjMAFNNfU48jRrXDJJ53j8QJ7w9QDAfQxXS90sBAep12GkAZ9iHK69i7ZEoY2wubp1CaUb93UII422QhjhtUgMKlvpPWZpIGYRIRYJ4oM8xz99b6FembsKK4cODnX0CZLwoLSC5qQSy2AAAAAElFTkSuQmCC');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    right: 110%;
+                    opacity: 0;
+                    transition: all .7s;
+                }
+
+                &:hover{
+                    &::after{
+                        right: 0;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*** end direct implementation ***/
+
+/*** page title ***/
+
+#main{
+    .page-title{
+        display: none;
+    }
+}
+
+/*** page title end ***/
+
+
+/*** ***/
+
+.lot-info{
+    .field-label{
+        display: none;
+    }
+}
+
+/*** ***/
+
+.col{
+
+      &-1 {
+        width: 8.333333%;
+        display: inline-block;
+      }
+
+      &-2 {
+        width: 16.666667%;
+        display: inline-block;
+      }
+
+      &-3 {
+        width: 25%;
+        display: inline-block;
+      }
+
+      &-4 {
+        width: 33.333333%;
+        display: inline-block;
+      }
+
+      &-5 {
+        width: 41.666667%;
+        display: inline-block;
+      }
+
+      &-6 {
+        width: 50%;
+        display: inline-block;
+      }
+
+      &-7 {
+        width: 58.333333%;
+        display: inline-block;
+      }
+
+      &-8 {
+        width: 66.666667%;
+        display: inline-block;
+      }
+
+      &-9 {
+        width: 75%;
+        display: inline-block;
+      }
+
+      &-10 {
+        width: 83.333333%;
+        display: inline-block;
+      }
+
+      &-11 {
+        width: 91.666667%;
+        display: inline-block;
+      }
+
+      &-12 {
+        width: 100%;
+        display: inline-block;
+      }
+}
+
+/*** pagination ***/
+ul.pager{
+    display: flex !important;
+    justify-content: center;
+    li{
+        @include vw(font-size, 17px);
+        font-family: 'Roboto';
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+
+        &.pager-current{
+            @include vw(width, 30px);
+            @include vw(height, 30px);
+            @include vw(border-radius, 30px);
+            background-color:  rgba(66, 170, 255, 0.3);
+            font-style: normal;
+            font-weight: normal;
+        }
+    }
+}
+/*** end pagination ***/
+
+/** * **/
+
+
+.product-image{
+    .item-list ul li{
+        margin: 0 !important;
+    }
+}
+
+#chess{
+    @include vw(margin-left, 380px);
+    @include vw(margin-right, 16px)
+}
+
+/**  viewed **/
+.block-viewed{
+    .viewed-container{
+        @include vw(width, 1280px);
+        @include vw(padding-bottom,50px);
+        margin: 0 auto !important;
+        display: flex;
+    }
+    h2{
+        @include vw(width, 1280px);
+        margin: 0 auto !important;
+        font-family: 'Proxima Nova';
+        font-style: normal;
+        font-weight: normal;
+        @include vw(font-size,20px);
+        @include vw(line-height,24px);
+        text-transform: uppercase;
+        color: #424242;
+        display: flex;
+        @include vw(padding-top,50px);
+        @include vw(padding-bottom,50px);
+        &::before{
+            content: '';
+            display: block;
+            @include vw(width,20px);
+            @include vw(height,3px);
+            background: #3686CD;
+            position: relative;
+            @include vw(bottom,-9px);
+            @include vw(margin-right,10px);
+        }
+    }
+}
+
+
+/*** end viewed ***/
+
+
+/*** chek ***/
+#chek_input_container{
+    @include vw(margin-bottom, 30px);
+    display: flex;
+    align-items: center;
+    p{
+        @include vw(margin-left, 12px);
+        font-family: 'Proxima Nova';
+        font-weight: bold;
+        span{
+            color: red;
+        }
+    }
+    #chek_input{
+        @include vw(width, 13px);
+        @include vw(height, 13px);
+        position: relative;
+        border: 0.3px solid #848484;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg{
+            display: none;
+        }
+        &.active{
+            svg{
+                display: flex;
+            }
+        }
+    }
+}
+/*** end chek ***/
+
+
+
+/** style2 **/
+.content-wrapper {
+    @include vw(margin-right, 80px);
+    @include vw(margin-left, 180px);
+    @include vw(margin-bottom, 100px);
+  }
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .hide {
+    h2 {
+      display: none;
+    }
+  }
+
+  // Subscribe
+  .subscribe {
+    margin: 0 auto;
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include vw(padding-top, 100px);
+    @include vw(padding-bottom, 100px);
+    .subscribe-text {
+      font-family: "Proxima Nova";
+      @include vw(font-size, 20px);
+      width: 32%;
+    }
+    .subscribe-form {
+      background-color: #f5f4f4;
+
+      #subscribeEmail {
+        @include vw(font-size, 17px);
+        @include vw(width, 369px);
+        border: 0;
+        background-color: inherit;
+        @include vw(padding, 10px);
+        font-family: "Proxima Nova";
+        font-weight: 600;
+      }
+      .btn {
+        @include vw(padding-left, 31px);
+        @include vw(padding-right, 31px);
+        @include vw(padding-top, 14px);
+        @include vw(padding-bottom, 14px);
+        @include vw(font-size, 16px);
+        font-family: "Proxima Nova";
+        font-weight: 600;
+        border: 0;
+
+        cursor: pointer;
+        display: inline-block;
+        background-color: #3686cd;
+        color: white;
+      }
+    }
+  }
+  .lot-info {
+    display: flex;
+    justify-content: space-between;
+
+    .gallery {
+      @include vw(width, 536px);
+
+      .main-img-container {
+        @include vw(margin-bottom, 5px);
+        position: relative;
+        img {
+          object-fit: cover;
+          width: 100%;
+        }
+      }
+      .divider {
+        border-bottom: 2px solid #c4c4c4;
+        @include vw(margin-bottom, 10px);
+        position: relative;
+      }
+      .divider::after {
+        content: "";
+        position: absolute;
+        background: url("../images/node/Polygon.svg") no-repeat;
+        @include vw(width, 20px);
+        @include vw(height, 8px);
+        left: 10%;
+      }
+      .img-container {
+        display: flex;
+        justify-content: space-between;
+        .img-item {
+          @include vw(max-width, 140px);
+          width: 100%;
+          @include vw(margin-right, 10px);
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+        .img-item:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+    .lot-section-2 {
+      .lot-name {
+        @include vw(padding-left, 10px);
+        @include vw(padding-right, 10px);
+        h3 {
+          font-family: "Proxima Nova";
+          @include vw(font-size, 25px);
+        }
+        p {
+          @include vw(font-size, 15px);
+        }
+
+        .info-container {
+          display: flex;
+          justify-content: space-between;
+          @include vw(margin-top, 10px);
+          width: 55%;
+          font-family: "Roboto";
+        }
+
+        .info-item {
+          @include vw(margin-right, 20px);
+        }
+
+        .views,
+        .calendar {
+          display: flex;
+          align-items: flex-start;
+        }
+        .views {
+          span {
+            @include vw(margin-right, 5px);
+          }
+        }
+        .calendar {
+          margin-right: 0;
+          align-self: flex-start;
+        }
+      }
+      .lot-details-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        font-family: "Proxima Nova";
+
+        .lot-details {
+          @include vw(padding, 10px);
+          background-color: #f4fafe;
+          @include vw(width, 500px);
+          @include vw(margin-right, 10px);
+          //position: relative;
+
+          .details {
+            @include vw(margin-bottom, 25px);
+            position: relative;
+            h4 {
+              @include vw(font-size, 19px);
+              @include vw(padding-left, 25px);
+            }
+            h4::before {
+              content: "";
+              position: absolute;
+              @include vw(width, 20px);
+              height: 3px;
+              background-color: #3686cd;
+              left: 0;
+              top: 40%;
+            }
+          }
+          .details::before {
+            content: "";
+            position: absolute;
+            background-size: cover;
+            background-position: center;
+            background: url("../images/node/right.svg") no-repeat;
+            @include vw(width, 19px);
+            @include vw(height, 19px);
+            left: 95%;
+            top: 10%;
+
+            cursor: pointer;
+            transition: all 0.5s ease-out;
+          }
+          .details-container {
+            @include vw(font-size, 16px);
+            .detail-item {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              @include vw(margin-bottom, 20px);
+
+              .detail-info-2 {
+                width: 60%;
+              }
+              .detail-info {
+                width: 30%;
+              }
+              .status_node {
+                color: #3686cd;
+              }
+            }
+          }
+          .buttons {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            @include vw(margin-top, 30px);
+            .request {
+              background-color: #3686cd;
+              @include vw(padding-top, 8px);
+              @include vw(padding-bottom, 8px);
+              @include vw(width, 190px);
+              margin: 0 auto;
+            }
+            .fav {
+              background-color: #fff;
+              @include vw(padding-top, 6px);
+              @include vw(padding-bottom, 8px);
+              @include vw(width, 190px);
+              margin: 0 auto;
+              border: 2px solid #3686cd;
+              a.btn {
+                color: #3686cd !important;
+              }
+            }
+            a.btn {
+              text-decoration: none;
+              @include vw(font-size, 16px);
+              color: #fff;
+            }
+          }
+        }
+        .lot-details-buy {
+          @include vw(padding, 10px);
+          background-color: #f4fafe;
+          @include vw(width, 715px);
+          // width: 100%;
+          //position: relative;
+
+          #details-panel-buy {
+          }
+
+          .details {
+            @include vw(margin-bottom, 25px);
+            position: relative;
+            h4 {
+              @include vw(font-size, 19px);
+              @include vw(padding-left, 25px);
+            }
+            h4::before {
+              content: "";
+              position: absolute;
+              @include vw(width, 20px);
+              height: 3px;
+              background-color: #3686cd;
+              left: 0;
+              top: 40%;
+            }
+          }
+          .details::before {
+            content: "";
+            position: absolute;
+            background-size: cover;
+            background-position: center;
+            background: url("../images/node/right.svg") no-repeat;
+            @include vw(width, 19px);
+            @include vw(height, 19px);
+            left: 95%;
+            top: 10%;
+            cursor: pointer;
+            transition: all 0.5s ease-out;
+            // transform: rotate(180deg);
+          }
+          .details-container {
+            @include vw(font-size, 16px);
+            .detail-item {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              @include vw(margin-bottom, 25px);
+
+              .detail-info-2 {
+                width: 70%;
+              }
+              .detail-info {
+              }
+              .status {
+                color: #3686cd;
+              }
+            }
+          }
+          .buttons {
+            font-weight: 600;
+            display: flex;
+            justify-content: flex-start;
+            text-align: center;
+            @include vw(margin-top, 60px);
+            .request {
+              background-color: #3686cd;
+              @include vw(padding-top, 8px);
+              @include vw(padding-bottom, 9px);
+              @include vw(width, 145px);
+              @include vw(margin-right, 30px);
+            }
+            .fav {
+              background-color: #fff;
+              @include vw(padding-top, 8px);
+              @include vw(padding-bottom, 8px);
+              @include vw(width, 200px);
+              border: 1px solid #3686cd;
+              a.btn {
+                color: #3686cd !important;
+              }
+            }
+            a.btn {
+              text-decoration: none;
+              @include vw(font-size, 16px);
+              color: #fff;
+              //   padding: 10px;
+            }
+          }
+        }
+        .price-info {
+          background-color: #ebf6ff;
+          @include vw(max-width, 237px);
+          width: 100%;
+          @include vw(padding, 10px);
+          .start-price {
+            background-color: #fff;
+            @include vw(padding-bottom, 10px);
+          }
+          p {
+            @include vw(font-size, 15px);
+          }
+          .start-text,
+          .price-text {
+            @include vw(font-size, 16px);
+          }
+          .first-price {
+            @include vw(font-size, 20px);
+            position: relative;
+            svg {
+            }
+          }
+          .first-price {
+            .field-name-field-lot-price {
+              width: min-content;
+            }
+          }
+
+          .start-price,
+          .step-torg,
+          .min-price,
+          .current-price,
+          .next-bet,
+          .count-bet,
+          .my-bets,
+          .timeout,
+          .bet-btn,
+          .participants {
+            @include vw(padding, 10px);
+          }
+          .count-bet {
+            .bet-text {
+              background-color: #fff;
+            }
+          }
+          .timeout {
+            .time-text {
+              color: #3686cd;
+            }
+          }
+          .bet-btn {
+            text-align: center;
+            @include vw(padding-left, 10px);
+            @include vw(padding-right, 10px);
+            .bet-warning {
+              background-color: #de1818;
+              @include vw(padding, 10px);
+              border: 0;
+              width: 100%;
+            }
+            .bet-success {
+              background-color: #23ba16;
+              @include vw(padding, 10px);
+              border: 0;
+              width: 100%;
+            }
+            a.btn {
+              text-decoration: none;
+              color: #fff;
+              @include vw(font-size, 16px);
+            }
+          }
+        }
+        #details-panel-request {
+        }
+        #details-panel {
+          display: none;
+        }
+
+        #panel {
+          @include vw(height, 364px);
+        }
+        .active::before {
+          transition: all 0.5s ease-out;
+          transform: rotate(180deg);
+        }
+        .users-bet {
+          background-color: #fff;
+          border: 0.5px solid #42aaff;
+          @include vw(padding-top, 5px);
+          @include vw(padding-bottom, 5px);
+          @include vw(padding-left, 5px);
+          @include vw(padding-right, 15px);
+          overflow: auto;
+
+          .user-table {
+            width: 100%;
+            td {
+              @include vw(padding, 5px);
+              @include vw(padding-right, 15px);
+            }
+            thead {
+            }
+            tbody {
+              tr:nth-child(2n-1) {
+                background-color: #ebf6ff;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  #user-table {
+    overflow: auto;
+    @include vw(height, 364px);
+  }
+  #panel::-webkit-scrollbar {
+    width: 4px;
+  }
+  #panel::-webkit-scrollbar-track {
+    background: #c4c4c4;
+  }
+  #panel::-webkit-scrollbar-thumb {
+    background: #3686cd;
+  }
+  .pay-info-container {
+    display: flex;
+    justify-content: space-between;
+    @include vw(margin-top, 20px);
+    font-family: "Proxima Nova";
+    .payment {
+      @include vw(padding, 10px);
+      background-color: #ebf6ff;
+      @include vw(width, 536px);
+      @include vw(font-size, 16px);
+      div {
+        @include vw(margin-bottom, 20px);
+      }
+      .payment-info {
+        .payment-info-head {
+          @include vw(margin-bottom, 20px);
+        }
+        .payment-info-text {
+        }
+      }
+      .payment-cost {
+        margin-bottom: 0;
+      }
+    }
+
+    .additional-info {
+      @include vw(padding, 10px);
+      @include vw(width, 696px);
+      // width: 100%;
+
+      .additional-head {
+        @include vw(font-size, 20px);
+        position: relative;
+        @include vw(margin-bottom, 35px);
+        h4 {
+          @include vw(padding-left, 25px);
+        }
+        h4::before {
+          content: "";
+          position: absolute;
+          @include vw(width, 20px);
+          height: 3px;
+          background-color: #3686cd;
+          left: 0;
+          top: 40%;
+        }
+      }
+      .additional-text {
+        @include vw(line-height, 30px);
+        @include vw(font-size, 17px);
+      }
+    }
+  }
+  .full-pay-info-container {
+    display: flex;
+    justify-content: flex-end;
+    @include vw(margin-top, 20px);
+    font-family: "Proxima Nova";
+
+    .additional-info {
+      @include vw(padding, 10px);
+      width: 53%;
+
+      .additional-head {
+        @include vw(font-size, 20px);
+        position: relative;
+        @include vw(margin-bottom, 35px);
+        h4 {
+          @include vw(padding-left, 25px);
+        }
+        h4::before {
+          content: "";
+          position: absolute;
+          @include vw(width, 20px);
+          height: 3px;
+          background-color: #3686cd;
+          left: 0;
+          top: 40%;
+        }
+      }
+      .additional-text {
+        @include vw(line-height, 30px);
+        @include vw(font-size, 17px);
+      }
+    }
+  }
+  .person-lots {
+    background: rgba(54, 134, 205, 0.05);
+    @include vw(padding-right, 80px);
+    @include vw(padding-left, 80px);
+    @include vw(padding-top, 40px);
+    @include vw(padding-bottom, 40px);
+    @include vw(margin-top, 30px);
+
+    .checkbox {
+      @include vw(margin-bottom, 80px);
+    }
+    input[type="checkbox"] {
+      display: none;
+    }
+    .checkbox label:before {
+      @include vw(border-radius, 5px);
+      @include vw(width, 15px);
+      @include vw(margin-right, 10px);
+      background: #fff;
+    }
+    input[type="checkbox"]:checked + label:before {
+      content: "\2713";
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+      @include vw(font-size, 16px);
+      color: #3686cd;
+      text-align: center;
+      @include vw(line-height, 16px);
+    }
+    label {
+      font-family: "Roboto";
+      @include vw(font-size, 16px);
+    }
+    .red {
+      color: red;
+    }
+  }
+  .title-lots {
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: normal;
+    @include vw(font-size, 20px);
+    @include vw(line-height, 24px);
+    text-transform: uppercase;
+    color: #424242;
+    display: flex;
+    @include vw(padding-bottom, 20px);
+    &::before {
+      content: "";
+      display: block;
+      @include vw(width, 20px);
+      @include vw(height, 3px);
+      background: #3686cd;
+      position: relative;
+      @include vw(bottom, -9px);
+      @include vw(margin-right, 10px);
+    }
+  }
+  .lot {
+    @include vw(margin-right, 20px);
+    @include vw(width, 295px);
+    @include vw(height, 393px);
+    min-height: 27.29167vw !important;
+    background: #ffffff;
+    position: relative;
+  }
+  .lot-image {
+    position: relative;
+    img {
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+  .close-lot {
+    position: absolute;
+    @include vw(top, 15px);
+    @include vw(right, 10px);
+    cursor: pointer;
+    z-index: 2;
+    svg {
+      @include vw(width, 20px);
+      @include vw(height, 21px);
+    }
+  }
+  .special-lot {
+    position: absolute;
+    @include vw(top, 5px);
+    left: 0px;
+    background: #de1818;
+    color: #fff;
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: normal;
+    @include vw(font-size, 16px);
+    @include vw(padding-top, 5px);
+    @include vw(padding-bottom, 5px);
+    @include vw(padding-left, 15px);
+    @include vw(padding-right, 20px);
+  }
+  .lot-description {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    @include vw(font-size, 15px);
+    @include vw(line-height, 18px);
+    display: flex;
+    align-items: center;
+    @include vw(padding, 15px);
+  }
+  .lot-time-img {
+    @include vw(margin-right, 5px);
+  }
+  .lot-location,
+  .lot-time,
+  .lot-bet {
+    @include vw(padding-left, 15px);
+    @include vw(margin-top, 5px);
+    display: flex;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 400;
+    @include vw(font-size, 12px);
+  }
+  .location-img {
+    svg {
+      @include vw(width, 23px);
+      @include vw(height, 23px);
+    }
+  }
+  .lot-time-img {
+    svg {
+      @include vw(width, 18px);
+      @include vw(height, 18px);
+    }
+  }
+  .lot-button {
+    min-width: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background: #3686cd;
+    color: #ffffff;
+    @include vw(padding-bottom, 10px);
+    @include vw(padding-top, 10px);
+    @include vw(font-size, 15px);
+    text-align: center;
+    border: 0px;
+  }
+  .today-slider,
+  .favorite-slider {
+    @include vw(margin-bottom, 60px);
+  }
+
+  .slick-next::before {
+    content: url(Images/arrow-down-next.png);
+  }
+  .slick-prev {
+    transform: rotate(180deg);
+  }
+  .slick-prev::before {
+    content: url(Images/arrow-down-next.png);
+  }
+
+  .btn{
+    cursor: pointer;
+  }
+
+  .modal {
+    @include vw(padding, 10px);
+    @include vw(width, 516px);
+    //   @include vw(height, 177px);
+
+    background-color: #fff;
+    border: 0.5px solid #e6e6e6;
+    position: absolute;
+    z-index: 1000;
+  }
+
+  .modal-container{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &::before{
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(28, 34, 66, 0.5);
+      opacity: .5;
+      left: 0;
+      top: 0;
+    }
+    z-index: 999;
+  }
+
+  .modal-body {
+    border: 2px solid #3686cd;
+    position: relative;
+    //   @include vw(height, 161px);
+    @include vw(font-size, 20px);
+  }
+  .close-btn {
+    position: absolute;
+    left: 95%;
+    cursor: pointer;
+    //   @include vw(width, 13px);
+    //   @include vw(height, 13px);
+    @include vw(margin-top, 2px);
+    svg {
+      @include vw(width, 13px);
+      @include vw(height, 13px);
+    }
+    // right: 100%;
+  }
+
+  .modal-content {
+    text-align: center;
+    @include vw(margin-top, 30px);
+    @include vw(margin-bottom, 30px);
+    //   height: auto;
+    //   margin: 20px auto;
+  }
+  .modal-content-text {
+    @include vw(margin-bottom, 15px);
+  }
+  .modal-content-text-fav {
+      @include vw(margin-bottom, 25px);
+  }
+  .modal-content-text-win {
+    @include vw(margin-bottom, 25px);
+  }
+  .modal-content-text-fail {
+    @include vw(margin-bottom, 25px);
+    color: #de1818;
+  }
+
+  .modal-content-fav {
+    text-align: center;
+    @include vw(margin-top, 35px);
+    @include vw(margin-bottom, 34px);
+  }
+  .modal-content-win {
+    text-align: center;
+    @include vw(margin-top, 35px);
+    @include vw(margin-bottom, 34px);
+    //   height: auto;
+    //   margin: 20px auto;
+  }
+  .favorite {
+    display: flex;
+    justify-content: space-between;
+  }
+  .fav {
+    background-color: #3686cd;
+    padding: 8px 0 10px 0;
+    @include vw(width, 200px);
+    margin: 0 auto;
+  }
+  .back {
+    background-color: #fff;
+    padding: 6px 0 10px 0;
+    @include vw(width, 200px);
+    margin: 0 auto;
+    border: 2px solid #3686cd;
+  }
+  .back .modal-btn {
+    color: #3686cd !important;
+  }
+  .modal-btn-container {
+    background-color: #3686cd;
+    padding: 8px 0 10px 0;
+    @include vw(width, 200px);
+    margin: 0 auto;
+  }
+  a.modal-btn {
+    text-decoration: none;
+    @include vw(font-size, 16px);
+   // color: #fff;
+    //   padding: 10px;
+  }
+
+  @media only screen and (max-width: 768px) {
+
+    .block-viewed h2{
+        @include vwm(font-size, 19px);
+        align-items: center;
+        &::before{
+            @include vwm(width, 20px);
+            @include vwm(height, 3px);
+            line-height: unset;
+            bottom: unset;
+        }
+    }
+
+    footer .footer-bottom div svg{
+        height: auto;
+        @include vwm(width, 100px)
+    }
+    .subscribe {
+      width: 100%;
+      flex-wrap: wrap;
+      .subscribe-text {
+        @include vwm(font-size, 20px);
+        width: 100%;
+        text-align: center;
+        @include vwm(margin-bottom, 20px);
+      }
+      .subscribe-form {
+        #subscribeEmail {
+          font-family: Roboto;
+          @include vwm(font-size, 14px);
+          // @include vwm(width, 369px);
+          width: -webkit-fill-available;
+          @include vwm(padding, 15px);
+          font-weight: 500;
+        }
+        #subscribeEmail:focus {
+          border: 0;
+        }
+        .btn {
+          font-family: Roboto;
+          @include vwm(padding-left, 31px);
+          @include vwm(padding-right, 31px);
+          @include vwm(padding-top, 14px);
+          @include vwm(padding-bottom, 14px);
+          @include vwm(font-size, 18px);
+          width: 100%;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .lot-name {
+      .info-container {
+        width: 100% !important;
+      }
+      h3 {
+        @include vwm(font-size, 19px);
+      }
+      p {
+        @include vwm(font-size, 14px);
+      }
+    }
+    .details {
+      @include vwm(margin-bottom, 20px);
+      h4 {
+        @include vwm(font-size, 17px);
+        @include vwm(padding-left, 25px);
+      }
+      h4::before {
+        @include vwm(width, 20px);
+      }
+    }
+    .arrow-btn-bet {
+      @include vw(margin-top, 25px);
+    }
+    .details::before {
+      @include vwm(width, 20px);
+      @include vwm(height, 13px);
+      width: 90%;
+    }
+
+    .lot-info {
+      flex-wrap: wrap-reverse;
+    }
+    .gallery {
+      width: 100% !important;
+      margin-right: 0 !important;
+      .divider {
+        @include vwm(margin-bottom, 10px);
+      }
+      .divider::after {
+        @include vwm(width, 20px);
+        @include vwm(height, 8px);
+      }
+      .img-container {
+        .img-item {
+          max-width: 100% !important;
+        }
+      }
+    }
+    .lot-section-2 {
+      width: 100%;
+      .lot-name {
+        .calendar {
+          width: auto !important;
+        }
+        .views {
+          span {
+            @include vwm(margin-right, 5px);
+          }
+        }
+      }
+    }
+    .lot-details-container {
+      flex-direction: column-reverse;
+      .lot-details {
+        @include vwm(padding, 10px);
+        width: -webkit-fill-available !important;
+        margin-right: 0;
+        @include vwm(margin-bottom, 15px);
+      }
+      .lot-details-buy {
+        width: -webkit-fill-available !important;
+        @include vwm(padding, 10px);
+        .request {
+          @include vwm(width, 90px);
+          @include vwm(padding-bottom, 8px);
+          @include vwm(padding-top, 10px);
+        }
+      }
+
+      #panel {
+        @include vwm(height, 357px);
+      }
+      .users-bet {
+        @include vwm(padding-top, 5px);
+        @include vwm(padding-bottom, 5px);
+        @include vwm(padding-left, 5px);
+        padding-right: 0;
+        @include vwm(font-size, 13px);
+      }
+      .details-container {
+        @include vwm(font-size, 15px);
+
+        .detail-item {
+          .detail-info-2 {
+            width: 50% !important;
+          }
+        }
+      }
+     /* .buttons {
+        a.btn {
+          @include vwm(font-size, 15px);
+        }
+        .request,
+        .fav {
+          @include vwm(width, 128px);
+        }
+      }*/
+    }
+    .price-info {
+      max-width: 100% !important;
+      width: -webkit-fill-available !important;
+      @include vwm(padding, 20px);
+      @include vwm(margin-bottom, 15px);
+      .start-price {
+        @include vwm(padding-bottom, 10px);
+      }
+      p {
+        @include vwm(font-size, 15px);
+      }
+      .start-text,
+      .price-text {
+        @include vwm(font-size, 16px);
+      }
+      span {
+        @include vwm(font-size, 19px);
+        svg {
+        }
+      }
+      .first-price {
+        .field-name-field-lot-price {
+          width: min-content;
+        }
+        .start-price,
+        .step-torg,
+        .min-price,
+        .current-price,
+        .next-bet,
+        .count-bet,
+        .my-bets,
+        .timeout,
+        .bet-btn,
+        .participants {
+          @include vwm(padding, 20px);
+          @include vwm(margin-bottom, 5px);
+        }
+      }
+
+      .bet-btn {
+        @include vwm(width, 200px);
+        .bet-warning {
+          @include vwm(padding, 10px);
+          width: 70% !important;
+          float: left;
+        }
+        .bet-success {
+          @include vwm(padding, 10px);
+          width: 70% !important;
+          float: left;
+        }
+        a.btn {
+          @include vwm(font-size, 16px);
+        }
+      }
+    }
+    .pay-info-container,
+    .full-pay-info-container {
+      @include vwm(margin-top, 20px);
+      flex-wrap: wrap;
+      .payment {
+        @include vwm(padding, 10px);
+        margin-right: 0 !important;
+        width: auto !important;
+        @include vwm(font-size, 15px);
+        @include vwm(margin-bottom, 15px);
+        div {
+          @include vwm(margin-bottom, 15px);
+        }
+        .payment-info {
+          .payment-info-head {
+            @include vwm(margin-bottom, 20px);
+          }
+          .payment-info-text {
+          }
+        }
+        .payment-cost {
+          margin-bottom: 0;
+        }
+      }
+
+      .additional-info {
+        @include vwm(padding, 10px);
+        width: 100%;
+
+        .additional-head {
+          @include vwm(font-size, 20px);
+          @include vwm(margin-bottom, 35px);
+          h4 {
+            @include vwm(padding-left, 25px);
+          }
+          h4::before {
+            @include vwm(width, 20px);
+          }
+        }
+        .additional-text {
+          @include vwm(line-height, 30px);
+          @include vwm(font-size, 17px);
+        }
+      }
+    }
+
+    .title-lots {
+      @include vwm(font-size, 19px);
+      @include vwm(line-height, 80px);
+      &::before {
+        @include vwm(width, 20px);
+        @include vwm(height, 3px);
+        background: #3686cd;
+        position: relative;
+        @include vwm(top, 36px);
+        @include vwm(margin-right, 10px);
+      }
+    }
+
+    .lot {
+      @include vwm(margin-left, 20px);
+      @include vwm(margin-right, 20px);
+      @include vwm(width, 295px);
+      @include vwm(min-height, 393px);
+      @include vwm(margin-bottom, 20px);
+    }
+    .close-lot {
+      @include vwm(top, 15px);
+      @include vwm(right, 10px);
+      svg {
+        @include vwm(width, 20px);
+        @include vwm(height, 21px);
+      }
+    }
+    .special-lot {
+      @include vwm(top, 5px);
+      @include vwm(font-size, 16px);
+      @include vwm(padding-top, 5px);
+      @include vwm(padding-bottom, 5px);
+      @include vwm(padding-left, 15px);
+      @include vwm(padding-right, 20px);
+    }
+    .lot-description {
+      @include vwm(font-size, 15px);
+      @include vwm(line-height, 18px);
+      @include vwm(padding, 15px);
+    }
+    .lot-time-img {
+      @include vwm(margin-right, 5px);
+    }
+    .lot-location,
+    .lot-time,
+    .lot-bet {
+      @include vwm(padding-left, 15px);
+      @include vwm(margin-top, 5px);
+      @include vwm(font-size, 12px);
+    }
+    .location-img {
+      svg {
+        @include vwm(width, 23px);
+        @include vwm(height, 23px);
+      }
+    }
+    .lot-time-img {
+      svg {
+        @include vwm(width, 18px);
+        @include vwm(height, 18px);
+      }
+    }
+    .lot-button {
+      @include vwm(padding-bottom, 10px);
+      @include vwm(padding-top, 10px);
+      @include vwm(font-size, 15px);
+    }
+    .today-slider,
+    .favorite-slider {
+      @include vwm(margin-bottom, 0px);
+      @include vwm(max-height, 400px);
+    }
+    .slick-next::before {
+      @include vwm(margin-right, 20px);
+    }
+    .slick-prev::before {
+      @include vwm(margin-left, -20px);
+    }
+  }
+
+
+
+/*** end style 2 ***/
+
+@media only screen and (max-width: 768px){
+    /*** user-block ***/
+
+    header{
+      #user-block{
+        @include vwm(width, 187.5px);
+
+        #link-edit-profile{
+            @include vwm(width, 44px);
+            @include vwm(height, 44px)
+        }
+
+        #login-user,#exit{
+            @include vwm(font-size, 14px);
+        }
+      }
+    }
+
+    /*** end user block ***/
+
+    /*** lot ***/
+    .lot-info{
+        .lot-section-2{
+            .lot-name{
+                h3{
+                    @include vwm(font-size, 16px)
+                }
+                p{
+                    @include vwm(font-size, 14px);
+                }
+            }
+
+            .lot-details-container{
+
+
+                p{
+                    font-size: 4.26667vw !important;
+                }
+
+                .price-info{
+                    .first-price{
+                        @include vwm(font-size, 14px)
+                    }
+                }
+
+
+                .lot-details{
+                      .buttons{
+                        a.btn {
+                        @include vwm(font-size, 15px);
+                      }
+                      .request,
+                      .fav {
+                        @include vwm(width, 128px);
+                      }
+                    }
+
+                    .details{
+                        &::before{
+                            display: none;
+                        }
+                        h4{
+                            @include vwm(font-size, 16px);
+                            @include vwm(padding-left, 20px);
+                            &::before{
+                                @include vwm(width, 15px);
+                                height: 3px;
+                                left: 0;
+                                top: 40%;
+                            }
+                        }
+                    }
+
+                    .details-container{
+                        @include vwm(font-size, 14px)
+                    }
+                }
+            }
+        }
+    }
+    /*** end lot ***/
+
+    .region-catalog-nav{
+        display: none;
+    }
+
+
+    #login-user-header{
+
+        #login-user-container{
+            @include vwm(width, 360px);
+            @include vwm(height, 360px);
+
+            .close{
+                @include vwm(top, 20px);
+                @include vwm(right, 15px);
+                @include vwm(height, 22px);
+                @include vwm(width, 22px);
+                &::before,&::after{
+
+                    @include vwm(height, 2px);
+                    @include vwm(width, 18px);
+                }
+
+            }
+
+
+            #block-user-login{
+                @include vwm(width, 340px);
+                @include vwm(height, 340px);
+                h2{
+                    @include vwm(font-size, 20px);
+                }
+
+                label{
+                    @include vwm(font-size, 15px);
+                    @include vwm(margin-bottom, 10px);
+                }
+
+                input.form-text, textarea.form-textarea, select.form-select{
+                    @include vwm(width, 240px);
+                    @include vwm(height, 25px);
+                }
+
+                #login-user-header #login-user-container #block-user-login label{
+                    @include vw(margin-bottom, 7px)
+                }
+
+                .item-list ul{
+                    @include vw(margin-top, 30px);
+                    @include vw(margin-bottom, 60px);
+                    li{
+                        @include vwm(font-size, 16px);
+                    }
+                }
+
+
+                #edit-submit{
+                    @include vwm(font-size, 14px);
+                    @include vwm(padding-top, 8px);
+                    @include vwm(padding-left, 30px);
+                    @include vwm(padding-right, 30px);
+                    @include vwm(padding-bottom, 8px);
+
+                }
+            }
+        }
+    }
+
+    /*** header  ***/
+
+    header{
+        @include vwm(height, 70px);
+        #logo{
+            img{
+                @include vwm(height, 27px);
+                @include vwm(width, 104px);
+            }
+        }
+
+        #block-login{
+            a{
+                @include vwm(padding-left, 8px);
+                @include vwm(padding-right, 8px);
+                @include vwm(padding-top, 7px);
+                @include vwm(padding-bottom, 7px);
+                @include vwm(font-size, 14px);
+                @include vwm(margin-left, 6px);
+                @include vwm(margin-right, 6px);
+            }
+        }
+    }
+
+
+
+    /** end header **/
+
+    #menu-toggle{
+        @include vwm(height, 12px);
+        @include vwm(width, 22px);
+        @include vwm(margin-left, 30px);
+        border-top: 3px solid;
+        border-bottom: 3px solid;
+        border-color: white;
+        &::before, &::after{
+            height: 3px;
+        }
+
+    }
+
+    /** navigation **/
+
+    nav#navigation{
+        @include vwm(height, 50px);
+        background: rgba(54, 134, 205, 0.65);
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        #main-menu{
+            //@include vw(width, 1280px);
+            height: 100%;
+        // margin: 0 auto;
+            display: none;
+            align-items: flex-start;
+
+            ul{
+                @include vwm(top, 50px);
+
+                position: absolute;
+                flex-direction: column;
+                align-items: flex-start;
+                left: 0;
+                z-index: 100;
+                background-color: #7CB0DE;
+                li{
+                    a{
+                        @include vwm(font-size, 15px);
+                        @include vwm(padding-left, 50px)
+                    }
+                }
+            }
+
+            /*ul{
+                display: flex;
+                li{
+                    @include vw(margin-right, 63px);
+                    list-style: none;
+
+                    position: relative;
+                    a{
+                        @include vw(font-size, 18px);
+                        color:white;
+                        text-align: center;
+                        display: block;
+
+                        position: relative;
+                        overflow: hidden;
+                        font-family: 'Secular One', sans-serif;
+
+                        &:before{
+                            content: '';
+                            @include vw(height, 3px);
+                            width: 100%;
+                            position: absolute;
+                            left: -100%;
+                            bottom: -2.5px;
+                            background-color: white;
+                            opacity: 0;
+                            transition: all .5s;
+                        }
+                        &:hover{
+                            &:before{
+                                left: 0;
+                                opacity: 1;
+                            }
+                        }
+                    }
+
+                }
+            }*/
+        }
+    }
+    #search{
+        @include vwm(margin-left, 118px);
+        .block-search input.form-text{
+            @include vwm(width, 136px);
+
+        }
+    }
+
+
+
+    .col-about{
+        justify-content: center;
+        width: 100%;
+        @include vwm(margin-top, 25px);
+        @include vwm(margin-bottom, 25px);
+        text-align: center;
+        p{
+            font-family: "Proxima Nova";
+            @include vwm(font-size, 19px);
+            font-weight: 600;
+        }
+    }
+    .main-top{
+
+    }
+
+    #main-top-container{
+        @include vwm(height, 290px);
+
+        width: 100%;
+
+        #main-top{
+            // @include vwm(padding-left, 20px);
+            padding-left: 0;
+
+            /*.title, .subtitle{
+                ;
+            }*/
+
+            .title{
+                @include vwm(font-size, 18px);
+                @include vwm(max-width, 530px);
+                // @include vwm(padding-top, 159px);
+                @include vwm(margin-bottom, 18px);
+                margin-left: 0!important;
+                margin-right: 0!important;
+            }
+
+            .subtitle{
+                @include vwm(font-size, 16px);
+                @include vwm(margin-bottom, 59px);
+            }
+
+            .start{
+                @include vwm(font-size, 14px);
+                @include vwm(padding-left, 20px);
+                @include vwm(padding-right, 20px);
+                @include vwm(padding-top, 10px);
+                @include vwm(padding-bottom, 10px);
+            }
+        }
+    }
+
+    .advantages{
+        // @include vwm(width, 1280px);
+        margin: 0 auto;
+        h2{
+            @include vwm(font-size, 19px);
+            @include vwm(padding-left, 28px);
+
+            &:before{
+                width: 20px;
+                height: 3px;
+                left: 0;
+            }
+        }
+
+
+        .row{
+            &-1,&-2{
+                // @include vwm(padding-left, 86px);
+                padding-left: 0;
+
+            }
+
+            &-1{
+                // @include vwm(margin-top, 70px);
+                flex-wrap: wrap;
+                p{
+                    &:first-of-type{
+                        // @include vwm(width, 330px);
+                        width: 100%;
+                        @include vwm(padding-top,10px);
+                        @include vwm(padding-bottom, 10px);
+                        @include vwm(padding-right, 18px);
+                        @include vwm(margin-right, 18px);
+                        @include vwm(font-size, 17px);
+                    }
+                    &:last-of-type{
+                        // @include vwm(width, 760px);
+                        width: 100%;
+                        @include vwm(font-size, 14px);
+                        @include vwm(margin-top, 20px);
+                    }
+                }
+            }
+
+            &-2{
+                @include vwm(margin-top, 80px);
+                .circle{
+                    @include vwm(width, 86px);
+                    @include vwm(height, 86px);
+                    @include vwm(border-radius, 86px);
+
+                    svg{
+                        @include vwm(width, 66px);
+                        @include vwm(height, 66px);
+                        @include vwm(left, 35px);
+                        @include vwm(top, 21px);
+                        position: absolute;
+                    }
+                }
+
+                .item{
+                    // @include vwm(width, 217px);
+                    width: 50%!important;
+
+                    .bottom{
+                        @include vwm(margin-top, 15px);
+                        @include vwm(font-size, 15px);
+                    }
+                }
+            }
+        }
+    }
+
+    .direct_implementation{
+        @include vwm(width, 335px);
+        margin: 0 auto;
+
+        &> h2{
+                @include vwm(font-size, 19px);
+                @include vwm(padding-left, 28px);
+                &:before{
+
+                    width: 20px;
+                    height: 3px;
+                    left: 0;
+                }
+            }
+
+
+        .container-implementation{
+            @include vwm(margin-top, 20px);
+            // margin-top: 0;
+            @include vwm(margin-left,-9px);
+            @include vwm(margin-right, -9px);
+
+            .item{
+                @include vwm(width, 240px);
+                // @include vwm(height, 331px);
+                height: auto!important;
+                @include vwm(margin-left, 9px);
+                @include vwm(margin-right, 9px);
+
+                overflow: hidden;
+
+                .tovar-img{
+                    @include vwm(width, 294px);
+                    @include vwm(height, 200px);
+                    overflow: hidden;
+                    div{
+                        width: 100%;
+                        height: 100%;
+                        img{
+                            height: 100%;
+                            width: auto;
+                        }
+                    }
+                }
+
+
+                .tovar-info{
+
+
+                    .tovar-title{
+                        @include vwm(padding-left, 13px);
+                        @include vwm(padding-right, 13px);
+                        @include vwm(padding-top, 13px);
+                        @include vwm(margin-bottom, 34px);
+                        @include vwm(font-size, 15px);
+
+                    }
+
+                    .location{
+                        @include vwm(padding-left, 13px);
+                        @include vwm(padding-right, 13px);
+                        @include vwm(font-size, 16px);
+                        display: flex;
+                        &:before{
+                            @include vwm(margin-right, 5px);
+                        }
+                    }
+
+                    .tovar-price{
+                        @include vwm(padding-left, 13px);
+                        @include vwm(padding-right, 13px);
+                        @include vwm(padding-bottom, 5px);
+                        @include vwm(font-size, 16px);
+
+                    }
+
+                }
+
+                .more-info{
+                    @include vwm(height, 34px);
+                    width: 100%;
+
+                    overflow: hidden;
+                    position: relative;
+
+                    p{
+                        @include vwm(font-size, 15px);
+                    }
+
+                    &::after{
+                        height: 100%;
+                        @include vwm(width, 34px);
+
+                        right: 110%;
+                    }
+
+                    &:hover{
+                        &::after{
+                            right: 0;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .platform-container{
+
+        .platform{
+           flex-wrap: wrap;
+            @include vwm(margin-top, 70px);
+            .col-6{
+                width: 100%!important;
+            }
+            h2, .content, .more{
+                // @include vwm(margin-left, 99px);
+                // margin-left: auto;
+            }
+
+            h2{
+                @include vwm(font-size, 19px);
+                @include vwm(margin-top, 52px)
+            }
+
+            .content{
+                @include vwm(font-size, 16px);
+                @include vwm(margin-top, 25px);
+                @include vwm(margin-bottom, 20px);
+                // @include vwm(width, 512px);
+                width: 90%;
+            }
+            .red-line::before{
+
+                @include vwm(height, 12px);
+                width: 70%;
+                top: -2%;
+            }
+
+            .more{
+                @include vwm(padding-left, 31px);
+                @include vwm(padding-right, 31px);
+                @include vwm(padding-top, 14px);
+                @include vwm(padding-bottom, 14px);
+                @include vwm(margin-bottom, 40px);
+                p{
+                    @include vwm(font-size, 15px);
+                }
+            }
+
+            img{
+                width: 100%;
+            }
+        }
+
+
+    }
+
+    .subscribe{
+        width: 100%;
+        flex-direction: column;
+        .subscribe-text{
+            @include vwm(font-size, 18px);
+        }
+
+        .subscribe-text{
+            width: 100%;
+        }
+    }
+
+
+
+    .modal {
+        @include vwm(width, 300px);
+      }
+      a.modal-btn {
+        @include vwm(font-size, 14px);
+      }
+      .modal-body {
+        @include vwm(font-size, 16px);
+      }
+      .modal-btn-container {
+        @include vwm(width, 165px);
+      }
+      .fav,
+      .back {
+        @include vwm(width, 115px);
+        padding: 0;
+      }
+      .close-btn {
+        svg {
+          @include vwm(width, 9px);
+          @include vwm(height, 9px);
+        }
+      }
+      .modal-content-text-win{
+          @include vwm(width, 283px);
+          margin-left: auto;
+          margin-right: auto;
+      }
+
+    footer{
+        width: 100%;
+        @include vwm(padding-top, 60px);
+        position: relative;
+        &::before{
+            content: '';
+            @include vwm(padding-top, 60px);
+            background-color: rgba(54, 134, 205, 0.65);
+            width: 100%;
+        }
+
+        .footer-top{
+            @include vwm(padding-top, 32px);
+            @include vwm(padding-bottom, 32px);
+            flex-wrap: wrap-reverse;
+
+            .requisites{
+                // @include vwm(width, 570px);
+                width: 100%;
+                li{
+                    @include vwm(font-size, 15px);
+                    @include vwm(margin-bottom, 5px);
+
+
+                    p{
+                        @include vwm(margin-right, 5px);
+                    }
+                    span{
+                    }
+                }
+
+            }
+            .footer-nav{
+                // @include vwm(width, 390px);
+                width: 100%!important;
+                @include vwm(margin-bottom, 20px);
+                li{
+
+                    &.title{
+                        @include vwm(font-size, 16px);
+                        @include vwm(margin-bottom, 16px);
+                        margin-right: 0!important;
+                        margin-left: 0!important;
+                    }
+                    @include vwm(font-size, 15px);
+                    @include vwm(margin-bottom, 5px);
+                    a{
+
+                    }
+                }
+            }
+        }
+
+        .footer-bottom{
+            @include vwm(padding-top, 21px);
+            @include vwm(padding-bottom, 21px);
+            flex-wrap: wrap;
+            justify-content: center!important;
+
+            p{
+                @include vwm(font-size,15px);
+            }
+        }
+    }
+    // Регистрация
+    #registration-form{
+        //@include vw(, );
+        @include vwm(margin-bottom, 127px);
+        @include vwm(padding-top, 73px);
+        flex-wrap: wrap;
+        .col-1{
+          margin: 0 auto;
+          width: 50%;
+            #user-image{
+                img{
+                    max-width: 100%!important;
+                    // @include vw(height, 312px);
+                    height: auto;
+                }
+
+                .group-button{
+                    width: 100%;
+                    input[type='button']{
+                        @include vwm(padding-left, 16px);
+                        @include vwm(padding-right, 16px);
+                        @include vwm(padding-top,12px);
+                        @include vwm(padding-bottom, 12px);
+                        @include vwm(font-size, 14px);
+                        margin: 0 auto;
+                    }
+                }
+
+                .form-item.form-type-managed-file.form-item-field-user-img-und-0, #edit-field-user-img{
+                    display: none !important;
+                }
+            }
+        }
+
+        .col-2{
+            width: 100%!important;
+            .item{
+                width: 100%;
+                @include vwm(margin-bottom, 35px);
+                .description{
+                    font-family: "Proxima Nova";
+                    @include vwm(font-size, 15px);
+                    @include vwm(margin-left, 5px);
+                }
+                .itm-check{
+                    .form-item{
+
+                        margin-top: 0;
+                        .option{
+                            .form-required{
+                                display: none;
+                            }
+                        }
+                    }
+                }
+
+
+                .row-1{
+                    label{
+                            @include vwm(font-size, 15px);
+                            @include vwm(margin-bottom, 6px);
+                            font-family: 'Proxima Nova';
+                            font-weight: bold;
+                    }
+                    input{
+                        width: -webkit-fill-available!important;
+                        @include vwm(height, 30px);
+                        @include vwm(padding, 5px);
+                        border: 0.4px solid rgba(66, 170, 255, 0.7);
+                    }
+                }
+
+                #edit-submit{
+                    //@include vw(height, 28px);
+                    @include vwm(padding-top, 14px);
+                    @include vwm(padding-bottom, 14px);
+                    @include vwm(padding-left, 32px);
+                    @include vwm(padding-right, 32px);
+
+                }
+
+                #edit-actions{
+                    margin-top: 0;
+                    margin: 0 auto;
+                }
+
+                #edit-account{
+
+                    input{
+                        @include vwm(height, 30px);
+                        @include vwm(padding, 5px);
+                        border: 0.4px solid rgba(66, 170, 255, 0.7);
+                    }
+
+                    .form-item.form-type-textfield{
+                        input{
+                            width: -webkit-fill-available!important;
+                            @include vwm(height, 30px);
+                            @include vwm(padding, 5px);
+                            margin-top: 0;
+                            margin-bottom: 0;;
+                        }
+
+
+                        label{
+                            @include vwm(font-size, 15px);
+                            @include vwm(margin-bottom, 6px);
+
+                        }
+
+                        .description{
+                            @include vwm(padding-left, 30px);
+                            @include vwm(margin-top, 10px);
+                            @include vwm(font-size, 13px);
+                            font-family: 'Proxima Nova';
+                            font-weight: bold;
+                            position: relative;
+                            &:before{
+                                content: url('../images/information.png');
+                                @include vwm(width, 16px);
+                                @include vwm(height, 16px);
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                            }
+                        }
+
+
+                    }
+
+                    .form-item.form-type-password-confirm.form-item-pass{
+                        font-family: "Proxima Nova";
+                        flex-wrap: wrap;
+                        .password-strength,.description, div.password-confirm, .password-suggestions.description{
+                            display: none !important;
+                        }
+
+                        .confirm-parent, .password-parent{
+                            @include vwm(width, 349px);
+                            input{
+                                width: -webkit-fill-available!important;
+                                @include vwm(margin-bottom, 10px);
+                            }
+                        }
+
+                    }
+
+                }
+
+                .item-title{
+                    @include vwm(font-size, 17px);
+                    @include vwm(padding-left, 30px);
+                    &:before{
+                        @include vwm(width, 20px);
+                        @include vwm(height,3px);
+                    }
+                }
+
+                .input-group{
+                    flex-wrap: wrap;
+                }
+
+                .left-block, .right-block{
+                    width: 100%!important;
+                    #profile-physical-field-phys-passport-und-0-field-phys-pp-unicnumber-add-more-wrapper{
+                      @include vwm(margin-top, 42px);
+                    }
+                    &>div{
+                        width: 100%!important;
+                        @include vwm(margin-bottom, 23px);
+
+                        fieldset{
+                            width: 100%;
+
+                            border: 0;
+                            margin-top: 1em;
+                            padding: 0;
+
+                            .clearfix:after{
+                                display: none;
+                            }
+
+                            .date-no-float{
+                                width: 100%;
+                            }
+
+                            .date-padding{
+                                width: 100%;
+                                margin-right: 0;
+
+                                .form-item.form-type-select{
+                                    @include vwm(width, 85px);
+
+                                }
+
+                                select{
+                                   // @include vw(width, 110px);
+                                    width: 100%;
+                                    @include vwm(height, 40px);
+                                }
+
+                            }
+                            .form-item{
+                                width: 100%;
+                                flex-direction: column;
+                                margin: 0;
+                            }
+
+                            legend{
+                                @include vwm(margin-bottom, 6px);
+                               .fieldset-legend{
+                                @include vwm(font-size, 15px);
+                                font-family: 'Proxima Nova';
+                                font-weight: bold;
+                               }
+                            }
+                            .date-padding{
+                                padding: 0;
+                            }
+                            .form-item{
+                                margin-bottom: 0;
+                            }
+                        }
+                        input{
+                            width: -webkit-fill-available!important;
+                            @include vwm(height, 40px);
+
+                        }
+                        select{
+                            @include vwm(height, 40px);
+                            width: 100%;
+                            background-color: white;
+                            margin: 0;
+                        }
+
+                        input, select{
+                            @include vwm(padding, 5px);
+                            margin-top: 0;
+                            margin-bottom: 0;
+                            border: 0.4px solid rgba(66, 170, 255, 0.7);
+                        }
+
+                        label{
+                            @include vwm(font-size, 15px);
+                            @include vwm(margin-bottom, 6px);
+                            font-family: 'Proxima Nova';
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    ul.pager{
+        li{
+            @include vwm(font-size, 10px);
+            &.pager-current{
+                @include vwm(width,20px);
+                @include vwm(height, 20px);
+                @include vwm(border-radius, 20px);
+            }
+        }
+
+        .pager-previous{
+            margin-left: 0;
+        }
+
+        .pager-next, .pager-previous{
+            //display: none;
+
+        }
+    }
+}

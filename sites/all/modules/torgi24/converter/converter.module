@@ -1,0 +1,127 @@
+<?php
+
+function converter_menu() {
+	$items = array();
+	$items['admin/config/content/converter/export'] = array(
+		'page callback' => 'converter_export',
+		'access arguments' => array('access administration pages'),
+		'title' => 'Экспорт'
+		// 'type' => MENU_CALLBACK
+	);
+	$items['admin/config/content/converter/import'] = array(
+		'page callback' => 'converter_import',
+		'access arguments' => array('access administration pages'),
+		'title' => 'Импорт'
+		// 'type' => MENU_CALLBACK
+	);
+	return $items;
+}
+
+function converter_export() {
+	$nodes = node_load_multiple(array(), array('type' => 'lot'));
+	$items = array();
+	foreach ($nodes as $node) {
+		// print_r($node);
+		// $node->field_tovar_price['und'][0]['value'] = '113209200';
+		// $node->field_test['und'][0]['value'] = $node->field_tovar_price['und'][0]['value'] / 10000;
+		// print_r($node);
+		// node_save($node);
+		$items[] = array(
+			'nid' => $node->nid,
+			'price' => $node->field_lot_endprice['und'][0]['value']
+		);
+	}
+	$file = fopen('db.txt', 'w');
+	fputs($file, json_encode($items));
+	fclose($file);
+	print_r($items);
+	return true;
+}
+
+function converter_import() {
+	//$file = fopen('db.txt', 'r');
+
+	$file = file_get_contents('db.txt', true);
+	var_dump(json_decode($file));
+	$json = $file;
+	$db = json_decode($json);
+	//fclose($file);
+	
+	// return true;
+	foreach ($db as $value) {
+		$node = new stdClass();
+		$node->type = 'lot';
+		node_object_prepare($node);
+		
+		$node->title = $value->title;
+		//$node->field_lot_katalog['und'][0]['value']  = $value->field_lot_katalog;
+		$file_name = str_replace("public://", "", $value->field_lot_img->und[0]->uri);
+		
+		$file_path = drupal_realpath('sites/default/files/styles/medium/public/'.$file_name);
+		$file = (object)array(
+			'uid' => 1,
+			'uri' => $file_path,
+			'filename' => basename($file_path),
+			'filemime' => file_get_mimetype($file_path),
+		);
+
+		
+		$file = file_copy($file, 'public://images');
+		
+		
+		if($file){
+			$node->field_lot_img[LANGUAGE_NONE][] = (array)$file;
+			//$node->field_lot_gallery[LANGUAGE_NONE][] = (array)$file;
+			$node->field_lot_status['und'][0]['value'] = $value->field_lot_status;
+			$node->field_lot_info['und'][0]['value'] = $value->field_lot_info;
+			$node->field_lot_owner['und'][0]['value'] = $value->field_lot_owner;
+			$node->field_lot_location['und'][0]['value'] = $value->field_lot_location;
+			$node->field_lot_payment['und'][0]['value'] = $value->field_lot_payment;
+			$node->field_lot_price['und'][0]['value'] = doubleval($value->field_lot_price);
+			
+			$node->field_lot_endprice['und'][0]['value'] = doubleval($value->field_lot_endprice);
+			$node->field_type_auction['und'][0]['value'] = 'autctionType2';
+			$node->field_lot_price_status['und'][0]['value'] = 'priceType2';
+			$node->field_filing_end['und'][0]['value'] = $value->field_filing_end;
+			$node->field_trading_start['und'][0]['value'] = $value->field_trading_start;
+			$node->field_trading_end['und'][0]['value'] = $value->field_trading_end;
+			
+
+			
+			$node->field_lot_count_user['und'][0]['value'] = intval($value->field_lot_party);
+			$node->field_penultimate_bid['und'][0]['value'] = doubleval($value->field_lot_pass);
+			
+			$node->language = LANGUAGE_NONE;
+			$node->uid = 1; 
+			if($value->field_lot_status == 'status4'){
+				$node->status = 0; 
+			}else{
+				   
+				$node->status = 1;
+			}
+			
+			//var_dump($price);
+			
+			node_save($node);
+		}else{
+			var_dump('1');
+		}
+		
+	}
+	
+	return true;
+}
+
+/*
+status1|Прием заявок
+status2|Проводятся торги
+status3|Торги не состоялись (лот приобретен единственным участником)
+status4|Торги не состоялись. Ожидаются повторные торги
+status5|Торги состоялись
+status6|Торги отменены
+status7|Ожидаются торги
+status8|Торги продлены
+*/
+
+
+/**/

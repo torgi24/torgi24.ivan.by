@@ -1,0 +1,5 @@
+name=Converter
+description=Конвертер
+version=1.0
+package=torgi24
+core=7.x

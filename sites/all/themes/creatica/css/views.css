@@ -1,0 +1,85 @@
+/* ---------- Slider ----------- */
+
+
+.bxslider-views-slideshow-main-frame-row img{
+background-color: #fff;
+line-height: 0;
+}
+
+/* ---------- Views ----------- */
+
+
+
+.view-katalog .views-row,
+.view-loty .views-row {
+width: 100%;
+margin: 0;
+overflow: hidden;
+}
+
+
+
+.view-katalog .views-row .views-field,
+.view-loty .views-row .views-field {
+float: left;
+padding: 7px;
+width: 25%;
+box-sizing: border-box;
+}
+
+
+
+.view-katalog .views-row-even, 
+.view-loty .views-row-even { 
+background-color: #fff;
+border-bottom: 1px solid #fff;
+
+}
+
+.view-katalog .views-row-odd ,
+.view-loty .views-row-odd { 
+background-color: #f0f5f9;
+border-bottom: 1px solid #fff;
+}
+
+
+
+tr.even{ 
+background-color: #fff;
+border-bottom: 1px solid #fff;
+
+}
+
+tr.odd{ 
+background-color: #f0f5f9;
+border-bottom: 1px solid #fff;
+}
+
+th { 
+background-color: #3f8bcf;
+vertical-align: middle;
+padding: 10px;
+color: #fff;
+}
+
+tr, td{ 
+vertical-align: top;
+padding: 10px;
+}
+
+td{ 
+width: 25%;
+
+}
+
+td.views-field-field-lot-img,
+td.views-field-field-tovar-img{ 
+line-height: 0 !important;
+}
+
+
+
+
+
+
+
