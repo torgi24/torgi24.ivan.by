@@ -1,16 +1,3 @@
-<script>
-  //делаем необезательное поле
-  $( document ).ready(function() {
-    //отчество
-    $('input#edit-profile-physical-field-phys-info-und-0-field-phys-pn-patrname-und-0-value').removeAttr("required");
-    $('input#edit-profile-physical-field-phys-info-und-0-field-phys-pn-patrname-und-0-value').removeClass("required");
-    //Квартира
-    $('input#edit-profile-physical-field-phys-address-und-0-field-phys-pa-appartment-und-0-value').removeAttr("required");
-    $('input#edit-profile-physical-field-phys-address-und-0-field-phys-pa-appartment-und-0-value').removeClass("required");
-  });
-</script>
-
-
 <div id="wrapper">
 
 

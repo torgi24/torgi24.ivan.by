@@ -141,7 +141,7 @@ if(empty($content['links']['statistics']['#links']['statistics_counter']['title'
               <?if(isset($content['field_lot_actcopy'])):?>
                 <!-- <div class="detail-item" style="display:none"> -->
                 <div class="detail-item" >
-                  <div class="detail-info"><p>Копия акта о проведенных торгах:</p></div>
+                  <div class="detail-info"><p>Копия протокола о проведенных торгах:</p></div>
                   <div class="detail-info-2"><?= render($content['field_lot_actcopy'])?></div>
                 </div>
               <?endif;?>
