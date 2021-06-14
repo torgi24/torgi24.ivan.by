@@ -78,7 +78,7 @@
 
 <div class="container">
     <div class="row">
-      <?if(!empty($page['content']['system_main']['search_results']["#markup"])):?>
+      <?if(!empty($page['content']['system_main']['search_results'])):?>
         <?= render($page['content']['system_main']['search_results'])?>
       <?else:?>
         <h2>По вашему запросу ничего</h2>

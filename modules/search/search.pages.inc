@@ -62,13 +62,13 @@ function search_view($module = NULL, $keys = '') {
          watchdog('search', 'Searched %type for %keys.', array('%keys' => $keys, '%type' => $info['title']), WATCHDOG_NOTICE, l(t('results'), 'search/' . $info['path'] . '/' . $keys));
        }
       // Collect the search results.
+
       $results = search_data($keys, $info['module'], $conditions);
     }
   }
   // The form may be altered based on whether the search was run.
   $build['search_form'] = drupal_get_form('search_form', NULL, $keys, $info['module']);
   $build['search_results'] = $results;
-
   return $build;
 }
 

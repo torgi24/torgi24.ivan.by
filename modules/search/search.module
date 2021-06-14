@@ -152,12 +152,7 @@ function search_block_info() {
 function search_block_view($delta = '') {
   if (user_access('search content')) {
     $block['content'] = drupal_get_form('search_block_form');
-    //$block['content']['search_block_form']['#value'] = 'stanok';
-    //$_POST['search_block_form']='stanok';
-    //$_POST['form_id'] = 'search-block-form';
-    //print_r($_POST);
     return $block;
-
   }
 }
 

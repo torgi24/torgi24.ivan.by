@@ -42,7 +42,7 @@ function creatica_process_page(&$variables) {
   if (module_exists('color')) {
     _color_page_alter($variables);
   }
- 
+
 }
 
 /**
