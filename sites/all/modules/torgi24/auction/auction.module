@@ -737,9 +737,6 @@ function auction_init() {
 				if (count($node->field_trading_end) == 0)
 					break;
 
-
-
-
         //массив с результатами ставок
 				$result = db_select('auction_bets', 'b')
 						->fields('b', array('id', 'timestamp', ))
@@ -776,11 +773,7 @@ function auction_init() {
           node_save($node);
         }
 
-
-
-
 				break;
-
 
 			case 'status7':
 				$result = db_select('auction_access', 'a')
@@ -1014,4 +1007,3 @@ status7|Ожидаются торги
 status8|Торги продлены
 status9|Торги не состоялись (лот снят с участия)
 */
-

@@ -17,7 +17,7 @@
     <?php endif; ?>
   </div>
    <?php print render($page['header_center']); ?>
-  
+
    <?php if (!$logged_in): ?>
     <div id='login-user-header'>
       <div id="login-user-container">
@@ -38,22 +38,22 @@
       <div id='login-user'>
         <?print($user->name);?>
       </div>
-        
+
       <a id ='exit' href="/user/logout">Выход</a>
     </div>
-    
- 
+
+
   <?endif;?>
 
  </header>
- 
+
 
  <nav id="navigation">
     <div id="menu-toggle">
     </div>
-    
+
     <div id="main-menu">
-      <?php 
+      <?php
         if (module_exists('i18n_menu')) {
           $main_menu_tree = i18n_menu_translated_tree(variable_get('menu_main_links_source', 'main-menu'));
         } else {
@@ -61,15 +61,15 @@
         }
         print drupal_render($main_menu_tree);
       ?>
-       
+
     </div>
 
     <div id="search">
       <?php print render($page['search']); ?>
     </div>
-  </nav> 
-      
-  
+  </nav>
+
+
 </div>
 
 <div id="catalog-container">
