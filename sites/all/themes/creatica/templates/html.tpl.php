@@ -11,9 +11,18 @@
 
 <link href='//fonts.googleapis.com/css?family=Exo+2:400,500,300,600,700,800,300italic,400italic,500italic,600italic,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
 <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" rel="stylesheet">
+<link rel="stylesheet" href="/sites/all/themes/creatica/css/magnific-popup.css">
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
 <script src="//code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script src="/sites/all/themes/creatica/js/jquery.magnific-popup.js"></script>
+<script>
+  jQuery(document).ready(function($) {
+    $('.popup-youtube').magnificPopup({
+      type: 'iframe'
+    });
+  });
 
+</script>
 </head>
 <body class="<?php print $classes; ?>"<?php print $attributes; ?>>
 
@@ -21,7 +30,7 @@
   <?php print $page; ?>
   <?php print $scripts; ?>
   <?php print $page_bottom; ?>
- 
- 
+
+
 </body>
 </html>

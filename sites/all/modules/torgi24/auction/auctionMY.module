@@ -86,6 +86,15 @@ function auction_node_view($node, $view_mode, $langcode) {
 	if ($node->type != 'lot')
 		return true;
 	global $user;
+
+echo $node->field_lot_status['und'][0]['value'];
+  $info = db_select('auction_bets', 'b')
+    ->fields('b')
+    ->condition('nid', $node->nid)
+    ->execute()
+    ->fetchAll();
+
+  //print_r($info);
 	switch ($node->field_lot_status['und'][0]['value']) {
 		case 'status1':
 			if (!in_array('authenticated user', $user->roles)) {
@@ -139,37 +148,14 @@ function auction_node_view($node, $view_mode, $langcode) {
 				);
 			}
 			break;
-		case 'status3':
-
-      $info2 = db_select('auction_access', 'a')
-        ->fields('a', array('uid','nid'))
-        ->condition('nid', $node->nid)
-        ->condition('status', 1)
-        ->execute()
-        ->fetchAll();
-      $resprice = db_select('field_data_field_lot_price', 'a')
-        ->fields('a', array('field_lot_price_value'))
-        ->condition('entity_id',$info2[0]->nid)
-        ->execute()
-        ->fetchAll();
-      $info2[0]->id = '';
-      $info2[0]->flag_lot = 1;
-      $info2[0]->timestamp = time();
-      $info2[0]->current_price = $resprice[0]->field_lot_price_value;
-
-		  case 'status5':
-			$info = db_select('auction_bets', 'b')
+    case 'status3':	case 'status5':
+      $info = db_select('auction_bets', 'b')
 				->fields('b')
 				->condition('nid', $node->nid)
 				->execute()
 				->fetchAll();
-
-			if(isset($info2) && count($info2) == 1 && empty($info)){
-          //то один участник без ставок
-          $info = $info2;
-        }
 			$result = end($info);
-
+			print_r($info);
 			if(count($info) > 1){
 				$node->field_penultimate_bid['und'][0]['value'] = $info[count($info)-2]->current_price.'; '.date('H:i:s', $info[count($info)-2]->timestamp);
 			}else{
@@ -177,7 +163,6 @@ function auction_node_view($node, $view_mode, $langcode) {
 			}
 			$info_field_penultimate_bid = field_info_field('field_penultimate_bid');
 			field_sql_storage_field_storage_write('node', $node, 'update', array($info_field_penultimate_bid['id']));
-
 
 			$node->field_lot_winner['und'][0]['value'] = user_load($result->uid)->name;
 			$info_field_lot_winner = field_info_field('field_lot_winner');
@@ -227,6 +212,15 @@ function auction_node_view($node, $view_mode, $langcode) {
 				);
 			}
 			break;
+    case 'status4':
+      //echo $user->uid;
+      $nid= $node->nid;
+      $flag = 1;
+      $current_price = $node->field_lot_price['und'][0]['value'];
+      /*db_insert('auction_bets')
+        ->fields(array('uid' => $user->uid, 'nid' => $nid, 'timestamp' => time() , 'flag_lot' =>$flag,'current_price'=>round($current_price,2)))
+        ->execute();*/
+      break;
 		case 'status8':
 			drupal_add_js(drupal_get_path('module', 'auction').'/js/auction_ext.js');
 
@@ -349,14 +343,22 @@ function auction_access_admin_edit($id) {
 			'From' => 'info@torgi24.by',
 			'Reply-To' => 'info@torgi24.by'
 		);*/
-
+    $flag = 1;
+    $resprice = db_select('field_data_field_lot_price', 'a')
+      ->fields('a', array('field_lot_price_value'))
+      ->condition('entity_id',$result[0]->nid)
+      ->execute()
+      ->fetchAll();
+    $current_price = $resprice[0]->field_lot_price_value;
+    db_insert('auction_bets')
+      ->fields(array('uid' => $result[0]->uid, 'nid' => $result[0]->nid, 'timestamp' => time() , 'flag_lot' =>$flag,'current_price'=>round($current_price,2)))
+      ->execute();
 		$node_q = node_load($result[0]->nid);
 		$user = user_load($result[0]->uid);
 		$message = "Вам открыт доступ к лоту №".$result[0]->nid." Начало торгов: ".date('d.m.y H:i:s',$node_q->field_trading_start['und'][0]['value']);
 		mail($user->mail, 'torgi24.by', $message) or die($message);
 
 	}
-
 	drupal_set_message('Статус обновлен.', 'status');
 	drupal_goto('admin/config/content/auction_access');
 }
@@ -645,10 +647,10 @@ function auction_logs() {
 		->groupBy('b.nid')
 		->orderBy('b.nid')
 		->execute();
-		$rows[] = array();
+	$rows[] = array();
 	foreach ($result as $row) {
 		$node = node_load($row->nid);
-			if (!$node)
+		if (!$node)
 			continue;
 		$rows[] = array(
 			array('data' => theme('image_style', array('style_name' => 'thumbnail', 'path' => $node->field_lot_img['und'][0]['uri'])), 'class' => 'field-my-lot-img'),
@@ -660,29 +662,6 @@ function auction_logs() {
 			l('Отчёт', 'admin/config/content/auction_log/'.$row->nid, array('attributes' => array('target' => '_blank')))
 		);
 	}
-
-  //массив с результатами зарегистрированных участников
-  $result2 = db_select('field_data_field_lot_status', 'a')
-    ->fields('a', array('entity_id'))
-    ->condition('field_lot_status_value', 'status3')
-    ->execute()
-    ->fetchAll();
-  foreach ($result2 as $row) {
-    $node = node_load($row->entity_id);
-    if (!$node)
-      continue;
-    $rows[] = array(
-      array('data' => theme('image_style', array('style_name' => 'thumbnail', 'path' => $node->field_lot_img['und'][0]['uri'])), 'class' => 'field-my-lot-img'),
-      l($node->title, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
-      l($node->nid, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
-      date('d.m.Y H:i', $node->field_trading_start['und'][0]['value']),
-      date('d.m.Y H:i', $node->field_trading_end['und'][0]['value']),
-      ($node->field_trading_end['und'][0]['value'] > time()) ? 'Проводится' : 'Завершен',
-      l('Отчёт', 'admin/config/content/auction_log/'.$row->entity_id, array('attributes' => array('target' => '_blank')))
-    );
-  }
-
-
 	return theme('table', array('header' => array('Фото', 'Наименование', 'Номер лота', 'Дата начало', 'Дата окончания', 'Статус', 'Посмотреть отчёт'), 'rows' => $rows));
 }
 
@@ -713,17 +692,14 @@ function auction_log($nid) {
 			date('d.m.Y H:i:s', $row->timestamp)
 		);
 	}
-  if(empty($rows)) return 'Торги не состоялись (лот приобретен единственным участником)';
 	return theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows));
 }
 
 function auction_init() {
 	$nodes = node_load_multiple(array(), array('type' => 'lot'));
-  $k=0;
+
 	foreach ($nodes as $node) {
 		$status = $node->field_lot_status['und'][0]['value'];
-
-
 		switch ($status) {
 			case 'status1':
 				if (count($node->field_filing_end) == 0)
@@ -740,19 +716,13 @@ function auction_init() {
 
 
 
-        //массив с результатами ставок
+
 				$result = db_select('auction_bets', 'b')
 						->fields('b', array('id', 'timestamp', ))
 						->condition('nid', $node->nid)
 						->execute()
 						->fetchAll();
-        //массив с результатами зарегистрированных участников
-        $result2 = db_select('auction_access', 'a')
-          ->fields('a', array('status','uid','nid'))
-          ->condition('nid', $node->nid)
-          ->condition('status', 1)
-          ->execute()
-          ->fetchAll();
+
 				if(!empty($result)){
 					$last_bid = end($result);
 					$last_bid = $last_bid->timestamp;
@@ -762,20 +732,15 @@ function auction_init() {
 					}elseif ($node->field_trading_end['und'][0]['value'] <= time()) {
 						$node->field_lot_status['und'][0]['value'] = 'status8';
 						node_save($node);
-						//print json_encode(array('status' => 2));
+						print json_encode(array('status' => 2));
 
 					}
 
 					break;
-				}else if(empty($result) && ($node->field_trading_end['und'][0]['value'] < time()) && empty($result2)){
-					$node->field_lot_status['und'][0]['value'] = 'status4';
-					node_save($node);
+				}else if(empty($result) && ($node->field_trading_end['und'][0]['value'] < time())){
+            $node->field_lot_status['und'][0]['value'] = 'status4';
+            node_save($node);
 				}
-				elseif(empty($result) && ($node->field_trading_end['und'][0]['value'] < time()) && !empty($result2) && count($result2)==1){
-          $node->field_lot_status['und'][0]['value'] = 'status8';
-          node_save($node);
-        }
-
 
 
 
@@ -789,8 +754,9 @@ function auction_init() {
 						->condition('status', 1)
 						->execute()
 						->fetchAll();
-				if(count($result) <= 1){
-					$node->field_lot_status['und'][0]['value'] = 'status4';
+
+				if(count($result) <= 0){
+				  $node->field_lot_status['und'][0]['value'] = 'status4';
 					$node->field_trading_end['und'][0]['value'] = $node->field_trading_start['und'][0]['value'];
 
 					node_save($node);
@@ -811,50 +777,17 @@ function auction_init() {
 				}
 				break;
 			case 'status8':
-        //массив с результатами ставок
 					$result = db_select('auction_bets', 'b')
 						->fields('b', array('id', 'timestamp', 'uid'))
 						->condition('nid', $node->nid)
 						->execute()
 						->fetchAll();
-          //массив с результатами зарегистрированных участников
-          $result2 = db_select('auction_access', 'a')
-          ->fields('a', array('status','uid','nid'))
-          ->condition('nid', $node->nid)
-          ->condition('status', 1)
-          ->execute()
-          ->fetchAll();
-
+        print_r($result);
 					if(empty($result) || count($result) == 0){
-            if(!empty($result2) && count($result2)==1) {
-              //если ставок нет, но есть один участник
-              /*$headers = array(
-								'From' => 'info@torgi24.by',
-								'Reply-To' => 'info@torgi24.by',
-								'X-Mailer' => 'PHP/' . phpversion()
-							);*/
-              $resprice = db_select('field_data_field_lot_price', 'a')
-                ->fields('a', array('field_lot_price_value'))
-                ->condition('entity_id', $result2[0]->nid)
-                ->execute()
-                ->fetchAll();
-
-              $current_price = $resprice[0]->field_lot_price_value;
-              $user_mail = user_load($result2[0]->uid);
-              $lot = $node->nid;
-
-              mail($user_mail->mail, 'torgi24.by', "Вы выиграли лот №" . $lot) or die('error');
-              $node->field_lot_status['und'][0]['value'] = 'status3';
-              //$node->field_lot_endprice['und'][0]['value'] = number_format($current_price, 2, '.', ' ');
-              $node->field_lot_endprice['und'][0]['value'] = $current_price;
-              $node->field_trading_end['und'][0]['value'] = time();
-              node_save($node);
-              drupal_goto(drupal_get_path_alias('node/' . $node->nid));
-            }else{
-						  $node->field_lot_status['und'][0]['value'] = 'status4';
-						  node_save($node);
-						  drupal_goto(drupal_get_path_alias('node/'.$node->nid));
-            }
+						$node->field_lot_status['und'][0]['value'] = 'status4';
+						node_save($node);
+						drupal_goto(drupal_get_path_alias('node/'.$node->nid));
+            echo 'pust';
 					};
 
 					if(!empty($result)){
@@ -872,8 +805,7 @@ function auction_init() {
 							$node->field_lot_status['und'][0]['value'] = 'status4';
 							node_save($node);
 							drupal_goto(drupal_get_path_alias('node/'.$node->nid));
-						} elseif (count($result) == 1 && count($result2)==1) {
-              //если одна ставка и один участник.
+						} elseif (count($result) == 1) {
 							/*$headers = array(
 								'From' => 'info@torgi24.by',
 								'Reply-To' => 'info@torgi24.by',
@@ -890,8 +822,7 @@ function auction_init() {
 							$node->field_trading_end['und'][0]['value'] = time();
 							node_save($node);
 							drupal_goto(drupal_get_path_alias('node/'.$node->nid));
-						} elseif (count($result) >= 1 && count($result2) > 1) {
-						  //если одна или больше ставок и участников больше одного, то выграли лот с торгами.
+						} elseif (count($result) > 1) {
 
 							/*$headers = array(
 								'From' => 'info@torgi24.by',
@@ -923,7 +854,7 @@ function auction_print_act($nid) {
 	$node = node_load($nid);
 
 	switch ($node->field_lot_status['und'][0]['value']) {
-		case 'status5':
+    case 'status5':
 			$result = db_select('auction_bets', 'b')
 				->fields('b', array('uid','current_price'))
 				->condition('nid', $node->nid)
@@ -971,8 +902,7 @@ function auction_print_act($nid) {
 			break;
 
 		case 'status4':
-
-			require_once 'sites/all/modules/torgi24/auction/documents/PHPWord.php';
+      require_once 'sites/all/modules/torgi24/auction/documents/PHPWord.php';
 			$PHPWord = new PHPWord();
 			$templateProcessor = $PHPWord->loadTemplate('sites/all/modules/torgi24/auction/documents/examples/failed.docx');
 			$templateProcessor->setValue('nid', $nid);
