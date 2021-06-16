@@ -696,6 +696,7 @@ function auction_log($nid) {
 		drupal_not_found();
 		drupal_exit();
 	}
+	//таблица ставок
 	$result = db_select('auction_bets', 'b')
 		->fields('b')
 		->condition('b.nid', $nid)
@@ -713,8 +714,136 @@ function auction_log($nid) {
 			date('d.m.Y H:i:s', $row->timestamp)
 		);
 	}
-  if(empty($rows)) return 'Торги не состоялись (лот приобретен единственным участником)';
-	return theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows));
+	//дата начала торгов
+	$result_date_start = db_select('field_data_field_trading_start', 'b')
+    ->fields('b', array('field_trading_start_value'))
+    ->condition('entity_id', $node->nid)
+    ->execute()
+    ->fetchAll();
+	//количество участников
+  $result_count_user = db_select('field_data_field_lot_count_user', 'b')
+    ->fields('b', array('field_lot_count_user_value'))
+    ->condition('entity_id', $node->nid)
+    ->execute()
+    ->fetchAll();
+  //начальная цена лота
+  $result_price= db_select('field_data_field_lot_price', 'b')
+    ->fields('b', array('field_lot_price_value'))
+    ->condition('entity_id', $node->nid)
+    ->execute()
+    ->fetchAll();
+  //шаг торгов
+  $result_pass= db_select('field_data_field_lot_pass', 'b')
+    ->fields('b', array('field_lot_pass_value'))
+    ->condition('entity_id', $node->nid)
+    ->execute()
+    ->fetchAll();
+  //имя файла протокола
+  $result_file_name= db_query("
+        select filename from file_managed
+        where fid = (select field_lot_actcopy_fid from field_data_field_lot_actcopy where entity_id=$node->nid)")->fetchAll();
+  //формируем ссылку на протокол
+  if(!empty($result_file_name)){
+    $file_actopy = theme_link(array(
+        'text'=>'Открыть  '.$result_file_name[0]->filename,
+        'path'=>'/sites/default/files/'.$result_file_name[0]->filename,
+        'options'=>array('attributes' => array('class'=>'','title'=>$result_file_name[0]->filename),'html'=>''),
+        ));
+  }else $file_actopy = 'Нет';
+  $result_status= db_select('field_data_field_lot_status', 'b')
+    ->fields('b', array('field_lot_status_value'))
+    ->condition('entity_id', $node->nid)
+    ->execute()
+    ->fetchAll();
+  $status_ru = array(
+    'status1'=>'Прием заявок',
+    'status2'=>'Проводятся торги',
+    'status3'=>'Торги не состоялись (лот приобретен единственным участником)',
+    'status4'=>'Торги не состоялись. Ожидаются повторные торги',
+    'status5'=>'Торги состоялись',
+    'status6'=>'Торги отменены',
+    'status7'=>'Ожидаются торги',
+    'status8'=>'Торги продлены',
+    'status9'=>'Торги не состоялись (лот снят с участия)',
+    'status10'=>'Торги не состоялись в связи с техническим сбоем. Ожидаются повторные торги',
+    'status11'=>'Торги аннулированы'
+  );
+  $text = '<div><h3>Торги от '.date('d.m.Y H:i', $result_date_start[0]->field_trading_start_value).'</h3></div>';
+  $rows_info[0] = array(
+    $result_count_user[0]->field_lot_count_user_value,
+    $result_pass[0]->field_lot_pass_value,
+    $file_actopy,
+    $result_price[0]->field_lot_price_value,
+    $status_ru[$result_status[0]->field_lot_status_value]
+  );
+
+  $table_info= theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Копия протокола о проведенных торгах', 'Начальная цена', 'Статус'), 'rows' => $rows_info));
+  if(empty($rows) && $result_status[0]->field_lot_status_value == 'status3')
+    $text.= '<div><h3>Торги не состоялись (лот приобретен единственным участником)</h3></div>';
+  $table_bets='Ставок не было';
+  if(!empty($rows))
+    $table_bets = theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows));
+  //если повторные торги, вытягиваем инфу
+  $result_lot_copyAll = db_select('auction_lot_copy', 'b')
+    ->fields('b', array())
+    ->condition('nid', $node->nid)
+    ->execute()
+    ->fetchAll();
+  //print_r($result_lot_copy);
+  $copyAll='';
+  if(!empty($result_lot_copyAll)){
+    //если в такблице есть что-то по лоту
+    foreach ($result_lot_copyAll as $result_lot_copy) {
+      $copy_id = $result_lot_copy->copy_id;
+      //print_r($result_lot_copy);
+      if (!empty($result_lot_copy->filename)) {
+        $file_actopy = theme_link(array(
+          'text' => 'Открыть  ' . $result_lot_copy->filename,
+          'path' => '/sites/default/files/' . $result_lot_copy->filename,
+          'options' => array('attributes' => array('class' => '', 'title' => $result_lot_copy->filename), 'html' => ''),
+        ));
+      } else $file_actopy = 'Нет';
+      $rows_info[0] = array(
+        $result_lot_copy->count_user,
+        $result_lot_copy->lot_pass,
+        $file_actopy,
+        $result_lot_copy->lot_price,
+        $status_ru[$result_lot_copy->status]
+      );
+      $text_copy = '<div style="padding-top:20px;margin-top: 40px;border-top:5px dotted gray"><h3>
+                    Информация о прошлых торгах от даты ' . date('d.m.Y H:i', $result_lot_copy->date_start) . '</h3></div>';
+      $table_info_copy = theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Копия протокола о проведенных торгах', 'Начальная цена', 'Статус'), 'rows' => $rows_info));
+      $result_copy = db_select('auction_bets_copy', 'b')
+        ->fields('b')
+        ->condition('b.nid', $node->nid)
+        ->condition('b.copy_id', $copy_id)
+        ->orderBy('b.id')
+        ->execute();
+      $rows = array();
+      foreach ($result_copy as $key => $row) {
+        $count = $key + 1;
+        $user = user_load($row->uid);
+        $rows[] = array(
+          $row->id,
+          l($node->title, drupal_get_path_alias('node/' . $node->nid), array('attributes' => array('target' => '_blank'))),
+          l($user->name, 'user/' . $user->uid, array('attributes' => array('target' => '_blank'))),
+          number_format($row->current_price, 2) . ' бел. руб.',
+          date('d.m.Y H:i:s', $row->timestamp)
+        );
+      }
+      $table_bets_copy='Ставок не было';
+      if(!empty($rows))
+      $table_bets_copy = theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows));
+
+
+      $copyAll .= $text_copy . $table_info_copy . $table_bets_copy;
+
+
+    }
+  }
+
+
+	return $text.$table_info.$table_bets.$copyAll;
 }
 
 function auction_init() {
@@ -962,7 +1091,7 @@ function auction_print_act($nid) {
 			var_dump($node->field_operator['und'][0]['value']);
 			drupal_goto(drupal_get_path_alias($file));
 			break;
-
+    case 'status3':
 		case 'status4':
 
 			require_once 'sites/all/modules/torgi24/auction/documents/PHPWord.php';

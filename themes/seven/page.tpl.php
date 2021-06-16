@@ -1,4 +1,3 @@
-
   <div id="branding" class="clearfix">
     <?php print $breadcrumb; ?>
     <?php print render($title_prefix); ?>
@@ -31,7 +30,7 @@
     <div id="footer">
       <?php print $feed_icons; ?>
     </div>
- 
+
 <script>
     function toFixedNoRounding(n, valNum) {
   const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + n + "})?", "g")
@@ -49,5 +48,30 @@ document.querySelector('#edit-field-lot-min-price-und-0-value').addEventListener
 
 })
 </script>
-
+    <!--Подключаем библиотеку-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $("#edit-submit").click(function(){
+          for(var i=0;i<12;i++) {
+            if ($('#edit-field-lot-status-und-status' + i).is(':checked')) {
+              var status = $('#edit-field-lot-status-und-status' + i).val();
+            }
+          }
+          if(status == 'status10' || status == 'status11') {
+            var node = $('a.active').attr('href');
+            node = node.replace('/node/', '');
+            node = node.replace('/edit', '');
+            $.ajax({
+              url: "../../copy_node.php",
+              type:"POST",
+              data:{nodeMy: node},
+              success:function(result){
+                //console.log(result);
+                //alert(result);
+              }});
+          }
+        });
+      });
+    </script>
   </div>
