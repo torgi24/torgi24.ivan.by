@@ -1735,7 +1735,7 @@ form#user-login #edit-submit {
   border: 0.4px solid rgba(66, 170, 255, 0.7);
 }
 .form-item-profile-juridical-field-jur-authface-und-0-field-jur-jp-phone-und-0-value input {
-  width: 19vw !important;
+  //width: 19vw !important;
 
 }
 

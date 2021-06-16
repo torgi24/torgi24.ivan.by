@@ -16,7 +16,9 @@ else{
   $step = round(($node->field_lot_price['und'][0]['value'] / 100 * $node->field_lot_percent_step['und'][0]['value']) , 2);
 }
 */
-$step = round(($node->field_lot_price['und'][0]['value'] / 100 * $node->field_lot_percent_step['und'][0]['value']) , 2);
+if(isset($node->field_lot_percent_step['und'][0]['value']))
+  $step = round(($node->field_lot_price['und'][0]['value'] / 100 * $node->field_lot_percent_step['und'][0]['value']) , 2);
+else $step = 0;
 
 $field = field_get_items('node', $node, 'field_trading_start');
 $output = field_view_value('node', $node, 'field_trading_start', $field[0]);

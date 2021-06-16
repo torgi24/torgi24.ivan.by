@@ -1,4 +1,8 @@
 <?php
+error_reporting(E_ALL);
+// Подключаем библиотеку pdf
+require_once 'sites/all/modules/torgi24/auction/documents/dompdf/autoload.inc.php';
+use Dompdf\Dompdf;
 function auction_menu() {
 	$items = array();
 	$items['auction/participate/%'] = array(
@@ -786,7 +790,7 @@ function auction_log($nid) {
   $text = '<div><h3>Торги '.date('d.m.Y', $result_date_start[0]->field_trading_start_value).'</h3></div>';
   $rows_info[0] = array(
     $result_count_user[0]->field_lot_count_user_value,
-    $result_pass[0]->field_lot_pass_value,
+    (empty($result_pass)) ? '' : $result_pass[0]->field_lot_pass_value,
     $result_price[0]->field_lot_price_value,
     $status_ru[$result_status[0]->field_lot_status_value],
     $file_actopy
@@ -865,7 +869,7 @@ function auction_log($nid) {
   ));
   $log.='</div>';
 
-	return $log.$text.$table_info.$table_bets.$copyAll;
+  return $log.$text.$table_info.$table_bets.$copyAll;
 }
 
 function auction_init() {
@@ -1062,9 +1066,7 @@ function auction_init() {
 	}
 }
 
-// Подключаем библиотеку pdf
-require_once 'sites/all/modules/torgi24/auction/documents/dompdf/autoload.inc.php';
-use Dompdf\Dompdf;
+
 
 function auction_print_act($nid) {
   //if если логи
@@ -1174,4 +1176,6 @@ status6|Торги отменены
 status7|Ожидаются торги
 status8|Торги продлены
 status9|Торги не состоялись (лот снят с участия)
+'status10'=>'Торги не состоялись в связи с техническим сбоем. Ожидаются повторные торги',
+'status11'=>'Торги аннулированы'
 */
