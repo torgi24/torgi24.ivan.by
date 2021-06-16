@@ -65,7 +65,7 @@ document.querySelector('#edit-field-lot-min-price-und-0-value').addEventListener
             $.ajax({
               url: "../../copy_node.php",
               type:"POST",
-              data:{nodeMy: node},
+              data:{nodeMy: node,statusMy:status},
               success:function(result){
                 //console.log(result);
                 //alert(result);

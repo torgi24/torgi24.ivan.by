@@ -58,7 +58,6 @@ function auction_menu() {
 		'type' => MENU_CALLBACK,
 		'page arguments' => array(2)
 	);
-
 	return $items;
 }
 
@@ -667,22 +666,38 @@ function auction_logs() {
     ->condition('field_lot_status_value', 'status3')
     ->execute()
     ->fetchAll();
-  foreach ($result2 as $row) {
-    $node = node_load($row->entity_id);
-    if (!$node)
-      continue;
-    $rows[] = array(
-      array('data' => theme('image_style', array('style_name' => 'thumbnail', 'path' => $node->field_lot_img['und'][0]['uri'])), 'class' => 'field-my-lot-img'),
-      l($node->title, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
-      l($node->nid, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
-      date('d.m.Y H:i', $node->field_trading_start['und'][0]['value']),
-      date('d.m.Y H:i', $node->field_trading_end['und'][0]['value']),
-      ($node->field_trading_end['und'][0]['value'] > time()) ? 'Проводится' : 'Завершен',
-      l('Отчёт', 'admin/config/content/auction_log/'.$row->entity_id, array('attributes' => array('target' => '_blank')))
-    );
+	//массив нод, если статус 10 или 11
+  $result3 = db_select('auction_lot_copy', 'a')
+    ->fields('a', array('entity_id'=>'nid'))
+    ->distinct()
+    ->condition(
+      db_or()
+        ->condition('status', 'status10')
+        ->condition('status', 'status11')
+    )
+    ->execute()
+    ->fetchAll();
+  //присоединяем массив, чтобы не делать много циклов
+  foreach($result3 as $resu){
+    $resu->entity_id = $resu->nid;
+    unset($resu->nid);
+    $result2[] = $resu;
   }
-
-
+   unset($result3);
+    foreach ($result2 as $row) {
+      $node = node_load($row->entity_id);
+      if (!$node)
+        continue;
+      $rows[] = array(
+        array('data' => theme('image_style', array('style_name' => 'thumbnail', 'path' => $node->field_lot_img['und'][0]['uri'])), 'class' => 'field-my-lot-img'),
+        l($node->title, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
+        l($node->nid, drupal_get_path_alias('node/'.$node->nid), array('attributes' => array('target' => '_blank'))),
+        date('d.m.Y H:i', $node->field_trading_start['und'][0]['value']),
+        date('d.m.Y H:i', $node->field_trading_end['und'][0]['value']),
+        ($node->field_trading_end['und'][0]['value'] > time()) ? 'Проводится' : 'Завершен',
+        l('Отчёт', 'admin/config/content/auction_log/'.$row->entity_id, array('attributes' => array('target' => '_blank')))
+      );
+    }
 	return theme('table', array('header' => array('Фото', 'Наименование', 'Номер лота', 'Дата начало', 'Дата окончания', 'Статус', 'Посмотреть отчёт'), 'rows' => $rows));
 }
 
@@ -745,7 +760,7 @@ function auction_log($nid) {
   //формируем ссылку на протокол
   if(!empty($result_file_name)){
     $file_actopy = theme_link(array(
-        'text'=>'Открыть  '.$result_file_name[0]->filename,
+        'text'=>$result_file_name[0]->filename,
         'path'=>'/sites/default/files/'.$result_file_name[0]->filename,
         'options'=>array('attributes' => array('class'=>'','title'=>$result_file_name[0]->filename),'html'=>''),
         ));
@@ -768,16 +783,16 @@ function auction_log($nid) {
     'status10'=>'Торги не состоялись в связи с техническим сбоем. Ожидаются повторные торги',
     'status11'=>'Торги аннулированы'
   );
-  $text = '<div><h3>Торги от '.date('d.m.Y H:i', $result_date_start[0]->field_trading_start_value).'</h3></div>';
+  $text = '<div><h3>Торги '.date('d.m.Y', $result_date_start[0]->field_trading_start_value).'</h3></div>';
   $rows_info[0] = array(
     $result_count_user[0]->field_lot_count_user_value,
     $result_pass[0]->field_lot_pass_value,
-    $file_actopy,
     $result_price[0]->field_lot_price_value,
-    $status_ru[$result_status[0]->field_lot_status_value]
+    $status_ru[$result_status[0]->field_lot_status_value],
+    $file_actopy
   );
 
-  $table_info= theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Копия протокола о проведенных торгах', 'Начальная цена', 'Статус'), 'rows' => $rows_info));
+  $table_info= theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Начальная цена', 'Статус', 'Копия протокола о проведенных торгах'), 'rows' => $rows_info));
   if(empty($rows) && $result_status[0]->field_lot_status_value == 'status3')
     $text.= '<div><h3>Торги не состоялись (лот приобретен единственным участником)</h3></div>';
   $table_bets='Ставок не было';
@@ -792,13 +807,14 @@ function auction_log($nid) {
   //print_r($result_lot_copy);
   $copyAll='';
   if(!empty($result_lot_copyAll)){
-    //если в такблице есть что-то по лоту
+    arsort($result_lot_copyAll);
+    //если в таблице есть что-то по лоту
     foreach ($result_lot_copyAll as $result_lot_copy) {
       $copy_id = $result_lot_copy->copy_id;
       //print_r($result_lot_copy);
       if (!empty($result_lot_copy->filename)) {
         $file_actopy = theme_link(array(
-          'text' => 'Открыть  ' . $result_lot_copy->filename,
+          'text' => $result_lot_copy->filename,
           'path' => '/sites/default/files/' . $result_lot_copy->filename,
           'options' => array('attributes' => array('class' => '', 'title' => $result_lot_copy->filename), 'html' => ''),
         ));
@@ -806,13 +822,13 @@ function auction_log($nid) {
       $rows_info[0] = array(
         $result_lot_copy->count_user,
         $result_lot_copy->lot_pass,
-        $file_actopy,
         $result_lot_copy->lot_price,
-        $status_ru[$result_lot_copy->status]
+        $status_ru[$result_lot_copy->status],
+        $file_actopy
       );
       $text_copy = '<div style="padding-top:20px;margin-top: 40px;border-top:5px dotted gray"><h3>
-                    Информация о прошлых торгах от даты ' . date('d.m.Y H:i', $result_lot_copy->date_start) . '</h3></div>';
-      $table_info_copy = theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Копия протокола о проведенных торгах', 'Начальная цена', 'Статус'), 'rows' => $rows_info));
+                    Информация о прошлых торгах ' . date('d.m.Y', $result_lot_copy->date_start) . '</h3></div>';
+      $table_info_copy = theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Начальная цена', 'Статус', 'Копия протокола о проведенных торгах'), 'rows' => $rows_info));
       $result_copy = db_select('auction_bets_copy', 'b')
         ->fields('b')
         ->condition('b.nid', $node->nid)
@@ -841,9 +857,15 @@ function auction_log($nid) {
 
     }
   }
+  $log='<div style="text-align:right" id="logpdf">';
+  $log.= theme_link(array(
+    'text' => 'Скачать отчет',
+    'path' => './auction/print/'.$node->nid.'-log',
+    'options' => array('attributes' => array('class' => '', 'title' => 'Скачать отчет'), 'html' => ''),
+  ));
+  $log.='</div>';
 
-
-	return $text.$table_info.$table_bets.$copyAll;
+	return $log.$text.$table_info.$table_bets.$copyAll;
 }
 
 function auction_init() {
@@ -1040,7 +1062,26 @@ function auction_init() {
 	}
 }
 
+// Подключаем библиотеку pdf
+require_once 'sites/all/modules/torgi24/auction/documents/dompdf/autoload.inc.php';
+use Dompdf\Dompdf;
+
 function auction_print_act($nid) {
+  //if если логи
+  if(substr_count($nid,'log')>0){
+    $nid = str_replace('-log','',$nid);
+    $table = auction_log($nid);
+    $dompdf = new Dompdf();
+    $dompdf->setPaper('A4', 'landscape');
+    $h1 = '<h1>Отчет по лоту №'.$nid.'</h1>';
+    $html= '<div style="font-family: DejaVu Sans !important">'.$h1.$table.'</div>';
+    $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+    $dompdf->loadHtml($html,'UTF-8');
+    $dompdf->render();
+    $dompdf->stream('log-'.$nid.'.pdf');
+    $dompdf->stream();
+    exit();
+  }
 
 	$node = node_load($nid);
 
@@ -1123,8 +1164,6 @@ function auction_print_act($nid) {
 	}
 
 }
-
-
 /*
 status1|Прием заявок
 status2|Проводятся торги

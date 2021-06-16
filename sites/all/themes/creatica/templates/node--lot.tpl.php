@@ -146,7 +146,9 @@ if(empty($content['links']['statistics']['#links']['statistics_counter']['title'
                 </div>
               <?endif;?>
 
-              <?if($is_admin && $node->field_lot_status['und'][0]['value'] == 'status5' || $is_admin && $node->field_lot_status['und'][0]['value'] == 'status4'):?>
+              <?if($is_admin && $node->field_lot_status['und'][0]['value'] == 'status5'
+                  || $is_admin && $node->field_lot_status['und'][0]['value'] == 'status4'
+                  || $is_admin && $node->field_lot_status['und'][0]['value'] == 'status3'):?>
                 <!-- <div class="detail-item" style="display:none"> -->
                 <div class="detail-item" >
                   <div class="detail-info"><p>Ссылка на скачивание протокола </p></div>

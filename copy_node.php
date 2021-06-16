@@ -2,9 +2,16 @@
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/sites/default/settings.php';
 require_once DRUPAL_ROOT . '/includes/database/database.inc';
-$node   = $_POST['nodeMy'];
-$copy_id  = $node.'-'.rand(0,100000);
-echo $copy_id;
+$node         = $_POST['nodeMy'];
+$copy_id      = $node.'-'.rand(0,100000);
+$status_new   = $_POST['statusMy'];
+//статус
+$result_status= db_select('field_data_field_lot_status', 'b')
+  ->fields('b', array('field_lot_status_value'))
+  ->condition('entity_id', $node)
+  ->execute()
+  ->fetchAll();
+if($status_new == $result_status[0]->field_lot_status_value) {return;}
 //копирование ставок
 $result_bets = db_select('auction_bets', 'b')
   ->fields('b', array('uid','nid','timestamp','flag_lot','current_price'))
@@ -65,12 +72,6 @@ $result_file_fid= db_select('field_data_field_lot_actcopy', 'b')
   ->condition('entity_id', $node)
   ->execute()
   ->fetchAll();
-//статус
-$result_status= db_select('field_data_field_lot_status', 'b')
-  ->fields('b', array('field_lot_status_value'))
-  ->condition('entity_id', $node)
-  ->execute()
-  ->fetchAll();
 //Имя файла протокола
 $result_file_name= db_query("
         select filename from file_managed
@@ -87,11 +88,11 @@ $arr_inst = array(
   'lot_price'     =>$result_price[0]->field_lot_price_value,
   'lot_pass'      =>(isset($result_pass[0]->field_lot_pass_value) ? $result_pass[0]->field_lot_pass_value:''),
   'filename'      =>(isset($result_file_name[0]->filename) ? $result_file_name[0]->filename:''),
-  'status'        =>$result_status[0]->field_lot_status_value,
+  'status'        =>$status_new,
   'nid'           =>$node,
   'date_start'    =>$result_date_start[0]->field_trading_start_value,
   'copy_id'       =>$copy_id);
-print_r($arr_inst);
+//print_r($arr_inst);
 //импорт в нашу таблицу-копию
 db_insert('auction_lot_copy')->fields($arr_inst)->execute();
 //удаляем ссылку на файл в таблице
