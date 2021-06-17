@@ -11,7 +11,10 @@
 function text_field_schema($field) {
   switch ($field['type']) {
     case 'text':
-      $columns = array(
+    if(!isset($field['settings']['max_length']) && $field['field_name']=='field_jur_jp_phone'){
+      $field['settings']['max_length'] = 20;
+    }
+     $columns = array(
         'value' => array(
           'type' => 'varchar',
           'length' => $field['settings']['max_length'],

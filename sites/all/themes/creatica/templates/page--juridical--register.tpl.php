@@ -320,3 +320,15 @@
 </div>
 
 <?php print render($page['footer']); ?>
+<script src="../sites/all/themes/creatica/js/jquery.maskedinput.min.js"></script>
+<script>
+  document.getElementById('edit-profile-juridical-field-jur-regcertificate-und-0-field-jur-rc-unp-und-0-value').setAttribute('maxLength',9);
+  document.getElementById('edit-profile-juridical-field-jur-regcertificate-und-0-field-jur-rc-regnumber-und-0-value').setAttribute('maxLength',13);
+  document.getElementById('edit-profile-juridical-field-jur-regcertificate-und-0-field-jur-rc-okpo-und-0-value').setAttribute('maxLength',8);
+  document.getElementById('edit-profile-juridical-field-jur-bankrecvizites-und-0-field-jur-br-account-test-und-0-value').setAttribute('maxLength',28);
+  document.getElementById('edit-profile-juridical-field-jur-bankrecvizites-und-0-field-jur-br-bankcode-und-0-value').setAttribute('maxLength',11);
+  jQuery(document).ready(function($) {
+    $("#edit-profile-juridical-field-jur-authface-und-0-field-jur-jp-phone-und-0-value").mask("+ 375 (99) 99-99-999");
+    $("label[for=edit-profile-juridical-field-jur-juraddress-und-0-field-jur-ja-appartment-und-0-value]").html("Квартира / офис"); // or .text("Квартира / офис");
+  });
+</script>

@@ -282,3 +282,15 @@
 </div>
 
 <?php print render($page['footer']); ?>
+  <script src="../sites/all/themes/creatica/js/jquery.maskedinput.min.js"></script>
+  <script>
+    /*Длина полей*/
+    document.getElementById('edit-profile-physical-field-phys-passport-und-0-field-phys-pp-unicnumber-und-0-value').setAttribute('maxLength',14);
+    document.getElementById('edit-profile-physical-field-phys-bankrecvizites-und-0-field-phys-br-card-und-0-value').setAttribute('maxLength',28);
+    /*Маска*/
+    jQuery(document).ready(function($) {
+      $("#edit-profile-physical-field-phys-info-und-0-field-phys-ph-phone-und-0-value").mask("+ 375 (99) 99-99-999");
+      $("#edit-profile-physical-field-phys-bankrecvizites-und-0-field-phys-br-action-card-und-0-value").mask("99/99");
+    });
+
+  </script>
