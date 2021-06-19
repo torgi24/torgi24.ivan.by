@@ -356,8 +356,12 @@ function auction_access_admin_edit($id) {
 		$node_q = node_load($result[0]->nid);
 		$user = user_load($result[0]->uid);
 		$message = "Вам открыт доступ к лоту №".$result[0]->nid." Начало торгов: ".date('d.m.y H:i:s',$node_q->field_trading_start['und'][0]['value']);
-		mail($user->mail, 'torgi24.by', $message) or die($message);
-
+		if(!mail($user->mail, 'torgi24.by', $message)){
+      watchdog(
+        'Аукцион', 'Не отправилось сообщение'.$message, $variables = array(),
+        $severity = WATCHDOG_WARNING,
+        $link = NULL);
+    }
 	}
 
 	drupal_set_message('Статус обновлен.', 'status');
@@ -961,7 +965,7 @@ function auction_init() {
 			case 'status8':
         //массив с результатами ставок
 					$result = db_select('auction_bets', 'b')
-						->fields('b', array('id', 'timestamp', 'uid'))
+						->fields('b', array('id', 'timestamp', 'uid','current_price'))
 						->condition('nid', $node->nid)
 						->execute()
 						->fetchAll();
@@ -991,7 +995,13 @@ function auction_init() {
               $user_mail = user_load($result2[0]->uid);
               $lot = $node->nid;
 
-              mail($user_mail->mail, 'torgi24.by', "Вы выиграли лот №" . $lot) or die('error');
+              if(!mail($user_mail->mail, 'torgi24.by', "Вы выиграли лот №" . $lot)){
+                watchdog(
+                  'Аукцион', 'Не отправилось сообщение о выигрыше лота №'.$lot, $variables = array(),
+                  $severity = WATCHDOG_WARNING,
+                  $link = NULL);
+              }
+
               $node->field_lot_status['und'][0]['value'] = 'status3';
               //$node->field_lot_endprice['und'][0]['value'] = number_format($current_price, 2, '.', ' ');
               $node->field_lot_endprice['und'][0]['value'] = $current_price;
@@ -1031,7 +1041,14 @@ function auction_init() {
 
 							$user_mail = user_load(end($result)->uid);
 							$lot = $node->nid;
-							mail($user_mail->mail, 'torgi24.by', "Вы выиграли лот №".$lot) or die('error');
+							if(!mail($user_mail->mail, 'torgi24.by', "Вы выиграли лот №".$lot) ){
+                watchdog(
+                  'Аукцион', 'Не отправилось сообщение о выигрыше лота №'.$lot, $variables = array(),
+                  $severity = WATCHDOG_WARNING,
+                  $link = NULL);
+              }
+
+
 
 							$node->field_lot_status['und'][0]['value'] = 'status3';
 							$node->field_lot_endprice['und'][0]['value'] = number_format(end($result)->current_price, 2, '.', ' ');
@@ -1047,11 +1064,14 @@ function auction_init() {
 								'X-Mailer' => 'PHP/' . phpversion()
 							);*/
 
-
 							$user_mail = user_load(end($result)->uid);
 							$lot = $node->nid;
-							mail($user_mail->mail, 'torgi24.by', "Вы выиграли лот №".$lot) or die('error');
-
+							if(!mail($user_mail->mail, 'torgi24.by', "Вы выиграли лот №".$lot) ) {
+                watchdog(
+                  'Аукцион', 'Не отправилось сообщение о выигрыше лота №'.$lot, $variables = array(),
+                  $severity = WATCHDOG_WARNING,
+                  $link = NULL);
+              }
 
 							$node->field_lot_status['und'][0]['value'] = 'status5';
 							$node->field_lot_endprice['und'][0]['value'] = number_format(end($result)->current_price, 2, '.', ' ');

@@ -32,8 +32,8 @@
         <!-- Сортировка -->
 
         <div class="views-widget">
-            <?= $sort_by;?>
-            <?= $sort_order;?>
+            <? if(isset($sort_by)) echo $sort_by;?>
+            <? if(isset($sort_order)) echo $sort_order;?>
         </div>
 
         <div class="" id="filter-button">
