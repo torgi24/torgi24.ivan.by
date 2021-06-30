@@ -123,7 +123,7 @@ if(empty($content['links']['statistics']['#links']['statistics_counter']['title'
           <div class="details arrow-btn">
             <h4 class ="">Сведения о лоте</h4>
           </div>
-          <div class="details-wrapper" id="details-panel">
+          <div class="details-wrapper" id="details-panel" style="display: block;">
             <div class="details-container">
               <div class="detail-item">
                 <div class="detail-info"><p>Статус:</p></div>
@@ -150,6 +150,7 @@ if(empty($content['links']['statistics']['#links']['statistics_counter']['title'
 
               <?if($is_admin && $node->field_lot_status['und'][0]['value'] == 'status5'
                   || $is_admin && $node->field_lot_status['und'][0]['value'] == 'status4'
+                  || $is_admin && $node->field_lot_status['und'][0]['value'] == 'status10'
                   || $is_admin && $node->field_lot_status['und'][0]['value'] == 'status3'):?>
                 <!-- <div class="detail-item" style="display:none"> -->
                 <div class="detail-item" >

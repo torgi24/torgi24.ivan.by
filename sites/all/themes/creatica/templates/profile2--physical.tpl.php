@@ -162,5 +162,48 @@ $profile_user = user_load($content['field_phys_info']['#object']->uid);
             }?>
 
         </table>
+      <div class="personal-info">
+        <p>Почтовый адрес</p>
+      </div>
+      <table class="table-info">
+        <tr>
+          <td>Страна:</td>
+          <td><?php if(!empty($wrapper->field_phys_address->field_phys_pa_country))
+            print $wrapper->field_phys_address->field_phys_pa_country->value(); ?></td>
+          </tr>
+        <tr>
+          <td>Населенный пункт:</td>
+          <td><?php if(!empty($wrapper->field_phys_address->field_phys_pa_city))
+            print $wrapper->field_phys_address->field_phys_pa_city->value(); ?></td>
+        </tr>
+        <tr>
+          <td>Улица:</td>
+          <td><?php if(!empty($wrapper->field_phys_address->field_phys_pa_street))
+              print $wrapper->field_phys_address->field_phys_pa_street->value(); ?></td>
+        </tr>
+        <tr>
+          <td>Дом, корпус:</td>
+          <td><?php if(!empty($wrapper->field_phys_address->field_phys_pa_homecorpus))
+              print $wrapper->field_phys_address->field_phys_pa_homecorpus->value(); ?></td>
+        </tr>
+        <tr>
+          <td>Квартира / офис:</td>
+          <td><?php if(!empty($wrapper->field_phys_address->field_phys_pa_appartment))
+              print $wrapper->field_phys_address->field_phys_pa_appartment->value(); ?></td>
+        </tr>
+        <tr>
+          <td>Индекс:</td>
+          <td><?php if(!empty($wrapper->field_phys_address->field_phys_pa_index))
+              print $wrapper->field_phys_address->field_phys_pa_index->value(); ?></td>
+        </tr>
+      </table>
+      <pre>
+      <?
+     // print_r($wrapper);
+      ?>
+
+      </pre>
+
+
     </div>
 </div>

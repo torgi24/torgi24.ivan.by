@@ -511,7 +511,7 @@ function auction_info($nid) {
 	}
 
 	if($node->field_trading_end['und'][0]['value'] < ($info->timestamp + 180) &&  ($info->timestamp + 180) > time() || $node->field_trading_end['und'][0]['value'] > time()){
-		echo  json_encode($data);
+    print json_encode($data);
 	}
 
 
@@ -710,6 +710,11 @@ function auction_logs() {
 }
 
 function auction_log($nid) {
+  $flag_log = false;
+  if(substr_count($nid,'log')>0){
+    $nid = str_replace('-log','',$nid);
+    $flag_log = true;
+  }
 	if (!preg_match('/^[0-9]+$/', $nid)) {
 		drupal_not_found();
 		drupal_exit();
@@ -773,6 +778,11 @@ function auction_log($nid) {
         'options'=>array('attributes' => array('class'=>'','title'=>$result_file_name[0]->filename),'html'=>''),
         ));
   }else $file_actopy = 'Нет';
+  $file_act_print = theme_link(array(
+    'text' => 'Скачать',
+    'path' => '/auction/print/'.$node->nid,
+    'options' => array('attributes' => array('class' => '', 'title' => 'Ссылка на скачивание протокола'), 'html' => ''),
+  ));
   $result_status= db_select('field_data_field_lot_status', 'b')
     ->fields('b', array('field_lot_status_value'))
     ->condition('entity_id', $node->nid)
@@ -792,34 +802,47 @@ function auction_log($nid) {
     'status11'=>'Торги аннулированы'
   );
   $text = '<div><h3>Торги '.date('d.m.Y', $result_date_start[0]->field_trading_start_value).'</h3></div>';
-  $rows_info[0] = array(
-    $result_count_user[0]->field_lot_count_user_value,
-    (empty($result_pass)) ? '' : $result_pass[0]->field_lot_pass_value,
-    $result_price[0]->field_lot_price_value,
-    $status_ru[$result_status[0]->field_lot_status_value],
-    $file_actopy
-  );
-
-  $table_info= theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Начальная цена', 'Статус', 'Копия протокола о проведенных торгах'), 'rows' => $rows_info));
+  if($flag_log) {
+    $rows_info[0] = array(
+      $result_count_user[0]->field_lot_count_user_value,
+      (empty($result_pass)) ? '' : $result_pass[0]->field_lot_pass_value,
+      $result_price[0]->field_lot_price_value,
+      $status_ru[$result_status[0]->field_lot_status_value]
+    );
+    $table_info= theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Начальная цена', 'Статус'), 'rows' => $rows_info, 'attributes' => ['style' => 'width: 1000px;','width' => '100%', 'cellspacing'=>"5", 'cellpadding'=>"10"]));
+  }else {
+    $rows_info[0] = array(
+      $result_count_user[0]->field_lot_count_user_value,
+      (empty($result_pass)) ? '' : $result_pass[0]->field_lot_pass_value,
+      $result_price[0]->field_lot_price_value,
+      $status_ru[$result_status[0]->field_lot_status_value],
+      $file_actopy,
+      $file_act_print
+    );
+    $table_info = theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Начальная цена', 'Статус', 'Копия протокола о проведенных торгах', 'Ссылка на скачивание протокола'), 'rows' => $rows_info));
+  }
   if(empty($rows) && $result_status[0]->field_lot_status_value == 'status3')
     $text.= '<div><h3>Торги не состоялись (лот приобретен единственным участником)</h3></div>';
   $table_bets='Ставок не было';
-  if(!empty($rows))
-    $table_bets = theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows));
+  if(!empty($rows)) {
+    if($flag_log)
+      $table_bets = theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows, 'attributes' => ['style' => 'width: 1000px;','width' => '100%', 'cellspacing'=>"5", 'cellpadding'=>"10"]));
+    else
+      $table_bets = theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows));
+
+  }
   //если повторные торги, вытягиваем инфу
   $result_lot_copyAll = db_select('auction_lot_copy', 'b')
     ->fields('b', array())
     ->condition('nid', $node->nid)
     ->execute()
     ->fetchAll();
-  //print_r($result_lot_copy);
   $copyAll='';
   if(!empty($result_lot_copyAll)){
     arsort($result_lot_copyAll);
     //если в таблице есть что-то по лоту
     foreach ($result_lot_copyAll as $result_lot_copy) {
       $copy_id = $result_lot_copy->copy_id;
-      //print_r($result_lot_copy);
       if (!empty($result_lot_copy->filename)) {
         $file_actopy = theme_link(array(
           'text' => $result_lot_copy->filename,
@@ -827,16 +850,34 @@ function auction_log($nid) {
           'options' => array('attributes' => array('class' => '', 'title' => $result_lot_copy->filename), 'html' => ''),
         ));
       } else $file_actopy = 'Нет';
-      $rows_info[0] = array(
-        $result_lot_copy->count_user,
-        $result_lot_copy->lot_pass,
-        $result_lot_copy->lot_price,
-        $status_ru[$result_lot_copy->status],
-        $file_actopy
-      );
+      $file_actopy_print = theme_link(array(
+        'text' => 'Скачать',
+        'path' => '/auction/print/'.$node->nid.'-failed',
+        'options' => array('attributes' => array('class' => '', 'title' => 'Ссылка на скачивание протокола'), 'html' => ''),
+      ));
+
       $text_copy = '<div style="padding-top:20px;margin-top: 40px;border-top:5px dotted gray"><h3>
                     Информация о прошлых торгах ' . date('d.m.Y', $result_lot_copy->date_start) . '</h3></div>';
-      $table_info_copy = theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Начальная цена', 'Статус', 'Копия протокола о проведенных торгах'), 'rows' => $rows_info));
+      if($flag_log) {
+        $rows_info[0] = array(
+          $result_lot_copy->count_user,
+          $result_lot_copy->lot_pass,
+          $result_lot_copy->lot_price,
+          $status_ru[$result_lot_copy->status]
+        );
+        $table_info_copy = theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Начальная цена', 'Статус'), 'rows' => $rows_info, 'attributes' => ['style' => 'width: 1000px;','width' => '100%', 'cellspacing'=>"5", 'cellpadding'=>"10"]));
+      }
+      else{
+        $rows_info[0] = array(
+          $result_lot_copy->count_user,
+          $result_lot_copy->lot_pass,
+          $result_lot_copy->lot_price,
+          $status_ru[$result_lot_copy->status],
+          $file_actopy,
+          $file_actopy_print
+        );
+        $table_info_copy = theme('table', array('header' => array('Количество участников', 'Шаг торгов', 'Начальная цена', 'Статус', 'Копия протокола о проведенных торгах','Ссылка на скачивание протокола'), 'rows' => $rows_info));
+      }
       $result_copy = db_select('auction_bets_copy', 'b')
         ->fields('b')
         ->condition('b.nid', $node->nid)
@@ -857,8 +898,10 @@ function auction_log($nid) {
       }
       $table_bets_copy='Ставок не было';
       if(!empty($rows))
-      $table_bets_copy = theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows));
-
+        if($flag_log)
+          $table_bets_copy = theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows, 'attributes' => ['style' => 'width: 1000px;','width' => '100%', 'cellspacing'=>"5", 'cellpadding'=>"10"]));
+        else
+          $table_bets_copy = theme('table', array('header' => array('ID ставки', 'Наименование', 'Имя пользователя', 'Ставка', 'Время'), 'rows' => $rows));
 
       $copyAll .= $text_copy . $table_info_copy . $table_bets_copy;
 
@@ -869,7 +912,7 @@ function auction_log($nid) {
   $log.= theme_link(array(
     'text' => 'Скачать отчет',
     'path' => './auction/print/'.$node->nid.'-log',
-    'options' => array('attributes' => array('class' => '', 'title' => 'Скачать отчет'), 'html' => ''),
+    'options' => array('attributes' => array('id'=>'down-log','class' => '', 'title' => 'Скачать отчет'), 'html' => ''),
   ));
   $log.='</div>';
 
@@ -918,7 +961,7 @@ function auction_init() {
 					}elseif ($node->field_trading_end['und'][0]['value'] <= time()) {
 						$node->field_lot_status['und'][0]['value'] = 'status8';
 						node_save($node);
-						//print json_encode(array('status' => 2));
+						print json_encode(array('status' => 2));
 
 					}
 
@@ -935,19 +978,23 @@ function auction_init() {
 				break;
 
 			case 'status7':
+      case 'status10'://добавил 10 статуc
 				$result = db_select('auction_access', 'a')
 						->fields('a', array('nid','status', ))
 						->condition('nid', $node->nid)
 						->condition('status', 1)
 						->execute()
 						->fetchAll();
-				if(count($result) <= 1){
+				if(count($result) < 1){//count($result) < 1 или так??
 					$node->field_lot_status['und'][0]['value'] = 'status4';
 					$node->field_trading_end['und'][0]['value'] = $node->field_trading_start['und'][0]['value'];
-
 					node_save($node);
 
-				}else{
+				}elseif(count($result) == 1){//count($result) < 1 или так??
+          $node->field_lot_status['und'][0]['value'] = 'status3';
+          $node->field_trading_end['und'][0]['value'] = $node->field_trading_start['und'][0]['value'];
+          node_save($node);
+        }else{
 					$node->field_lot_count_user['und'][0]['value'] = count($result);
 					$info_field_lot_count_user = field_info_field('field_lot_count_user');
 					field_sql_storage_field_storage_write('node', $node, 'update', array($info_field_lot_count_user['id']));
@@ -1003,8 +1050,8 @@ function auction_init() {
               }
 
               $node->field_lot_status['und'][0]['value'] = 'status3';
-              //$node->field_lot_endprice['und'][0]['value'] = number_format($current_price, 2, '.', ' ');
-              $node->field_lot_endprice['und'][0]['value'] = $current_price;
+              $node->field_lot_endprice['und'][0]['value'] = number_format($current_price, 2, '.', ' ');
+              //$node->field_lot_endprice['und'][0]['value'] = $current_price;
               $node->field_trading_end['und'][0]['value'] = time();
               node_save($node);
               drupal_goto(drupal_get_path_alias('node/' . $node->nid));
@@ -1091,8 +1138,14 @@ function auction_init() {
 function auction_print_act($nid) {
   //if если логи
   if(substr_count($nid,'log')>0){
-    $nid = str_replace('-log','',$nid);
+
     $table = auction_log($nid);
+    $nid = str_replace('-log','',$nid);
+    $dom = new DOMDocument;
+    $dom->validateOnParse = true;
+    $dom->loadHTML('<?xml encoding="UTF-8">'.$table);
+    $dom->getElementById('down-log')->setAttribute("style", "display:none");
+    $table = $dom->saveHTML();
     $dompdf = new Dompdf();
     $dompdf->setPaper('A4', 'landscape');
     $h1 = '<h1>Отчет по лоту №'.$nid.'</h1>';
@@ -1104,80 +1157,93 @@ function auction_print_act($nid) {
     $dompdf->stream();
     exit();
   }
+  $failed = false;
+  if(substr_count($nid,'failed')>0){
+    $nid = str_replace('-failed','',$nid);
+    $failed = true;
+  }
+  $node = node_load($nid);
+  $status = $node->field_lot_status['und'][0]['value'];
+  if($failed) $status = 'status10';
 
-	$node = node_load($nid);
-
-	switch ($node->field_lot_status['und'][0]['value']) {
-		case 'status5':
-			$result = db_select('auction_bets', 'b')
-				->fields('b', array('uid','current_price'))
-				->condition('nid', $node->nid)
-				->execute()
-				->fetchAll();
-
-
-			$profile = profile2_load_by_user(end($result)->uid);
-
-			$wrapper = entity_metadata_wrapper('profile2', current($profile));
-
-			if(isset($wrapper->field_phys_info->field_phys_pn_lastname)){
-				$fio = $wrapper->field_phys_info->field_phys_pn_lastname->value().' '.$wrapper->field_phys_info->field_phys_pn_name->value().' '.$wrapper->field_phys_info->field_phys_pn_patrname->value();
-			}else{
-				$fio = $wrapper->field_jur_authface->field_jur_af_lastname->value().' '.$wrapper->field_jur_authface->field_jur_af_name->value().' '.$wrapper->field_jur_authface->field_jur_af_patrname->value();
-			}
-
-			require_once 'sites/all/modules/torgi24/auction/documents/PHPWord.php';
-			unlink('docx/*.docx');
+	switch ($status) {
+    case 'status5':
+      $result = db_select('auction_bets', 'b')
+        ->fields('b', array('uid', 'current_price'))
+        ->condition('nid', $node->nid)
+        ->execute()
+        ->fetchAll();
 
 
-			$PHPWord = new PHPWord();
-			$templateProcessor = $PHPWord->loadTemplate('sites/all/modules/torgi24/auction/documents/examples/success.docx');
-			$templateProcessor->setValue('nid', $nid);
-			$templateProcessor->setValue('date', date('d.m.Y', $node->field_trading_end['und'][0]['value']));
-			$templateProcessor->setValue('protocol_id', date('dm', $node->field_trading_end['und'][0]['value']).'/'.$nid);
-			$templateProcessor->setValue('operator', $node->field_operator['und'][0]['value']);
-			$templateProcessor->setValue('date1', date('d.m.Y, H:i:s', $node->field_trading_start['und'][0]['value']));
-			$templateProcessor->setValue('date2', date('d.m.Y, H:i:s', $node->field_trading_end['und'][0]['value']));
-			$templateProcessor->setValue('crisis_manager',$node->field_crisis_manager['und'][0]['value']);
-			$templateProcessor->setValue('debitor', $node->field_debtor['und'][0]['value']);
-			$templateProcessor->setValue('head_position', $node->field_head_position['und'][0]['value']);
-			$templateProcessor->setValue('field_head_crisis', $node->field_head_crisis['und'][0]['value']);
-			$templateProcessor->setValue('cause', $node->field_cause['und'][0]['value']);
-			$templateProcessor->setValue('node_name', $node->title.', №'.$nid);
-			$templateProcessor->setValue('nid', $nid);
-			$templateProcessor->setValue('count_applications',$node->field_lot_count_user['und'][0]['value']);
-			$templateProcessor->setValue('max_price', end($result)->current_price);
-			$templateProcessor->setValue('count_bets', $node->field_number_bets['und'][0]['value']);
-			$templateProcessor->setValue('fio', $fio);
-			$file = 'docx/'.$nid.'-'.rand(0, 1000).'.docx';
-			$templateProcessor->save($file);
-			var_dump($node->field_operator['und'][0]['value']);
-			drupal_goto(drupal_get_path_alias($file));
-			break;
+      $profile = profile2_load_by_user(end($result)->uid);
+
+      $wrapper = entity_metadata_wrapper('profile2', current($profile));
+
+      if (isset($wrapper->field_phys_info->field_phys_pn_lastname)) {
+        $fio = $wrapper->field_phys_info->field_phys_pn_lastname->value() . ' ' . $wrapper->field_phys_info->field_phys_pn_name->value() . ' ' . $wrapper->field_phys_info->field_phys_pn_patrname->value();
+      } else {
+        $fio = $wrapper->field_jur_authface->field_jur_af_lastname->value() . ' ' . $wrapper->field_jur_authface->field_jur_af_name->value() . ' ' . $wrapper->field_jur_authface->field_jur_af_patrname->value();
+      }
+
+      require_once 'sites/all/modules/torgi24/auction/documents/PHPWord.php';
+      unlink('docx/*.docx');
+
+
+      $PHPWord = new PHPWord();
+      $templateProcessor = $PHPWord->loadTemplate('sites/all/modules/torgi24/auction/documents/examples/success.docx');
+      $templateProcessor->setValue('nid', $nid);
+      $templateProcessor->setValue('date', date('d.m.Y', $node->field_trading_end['und'][0]['value']));
+      $templateProcessor->setValue('protocol_id', date('dm', $node->field_trading_end['und'][0]['value']) . '/' . $nid);
+      $templateProcessor->setValue('operator', $node->field_operator['und'][0]['value']);
+      $templateProcessor->setValue('date1', date('d.m.Y, H:i:s', $node->field_trading_start['und'][0]['value']));
+      $templateProcessor->setValue('date2', date('d.m.Y, H:i:s', $node->field_trading_end['und'][0]['value']));
+      $templateProcessor->setValue('crisis_manager', $node->field_crisis_manager['und'][0]['value']);
+      $templateProcessor->setValue('debitor', $node->field_debtor['und'][0]['value']);
+      $templateProcessor->setValue('head_position', $node->field_head_position['und'][0]['value']);
+      $templateProcessor->setValue('field_head_crisis', $node->field_head_crisis['und'][0]['value']);
+      $templateProcessor->setValue('cause', $node->field_cause['und'][0]['value']);
+      $templateProcessor->setValue('node_name', $node->title . ', №' . $nid);
+      $templateProcessor->setValue('nid', $nid);
+      $templateProcessor->setValue('count_applications', $node->field_lot_count_user['und'][0]['value']);
+      $templateProcessor->setValue('max_price', end($result)->current_price);
+      $templateProcessor->setValue('count_bets', $node->field_number_bets['und'][0]['value']);
+      $templateProcessor->setValue('fio', $fio);
+      $file = 'docx/' . $nid . '-' . rand(0, 1000) . '.docx';
+      $templateProcessor->save($file);
+      var_dump($node->field_operator['und'][0]['value']);
+      drupal_goto(drupal_get_path_alias($file));
+      break;
     case 'status3':
-		case 'status4':
+    case 'status4':
+    case 'status10':
+    case 'status11':
 
-			require_once 'sites/all/modules/torgi24/auction/documents/PHPWord.php';
-			$PHPWord = new PHPWord();
-			$templateProcessor = $PHPWord->loadTemplate('sites/all/modules/torgi24/auction/documents/examples/failed.docx');
-			$templateProcessor->setValue('nid', $nid);
-			$templateProcessor->setValue('field_operator', $node->field_operator['und'][0]['value']);
-			$templateProcessor->setValue('date', date('d.m.Y', $node->field_trading_end['und'][0]['value']));
-			$templateProcessor->setValue('protocol_id', date('dm', $node->field_trading_end['und'][0]['value']).'/'.$nid);
-			$templateProcessor->setValue('date1', date('d.m.Y, H:i:s', $node->field_trading_start['und'][0]['value']));
-			$templateProcessor->setValue('date2', date('d.m.Y, H:i:s', $node->field_trading_end['und'][0]['value']));
-			$templateProcessor->setValue('crisis_manager',$node->field_crisis_manager['und'][0]['value']);
-			$templateProcessor->setValue('debitor', $node->field_debtor['und'][0]['value']);
-			$templateProcessor->setValue('head_position', $node->field_head_position['und'][0]['value']);
-			$templateProcessor->setValue('field_head_crisis', $node->field_head_crisis['und'][0]['value']);
-			$templateProcessor->setValue('cause', $node->field_cause['und'][0]['value']);
-			$templateProcessor->setValue('node_name', $node->title.', №'.$nid);
-			$templateProcessor->setValue('nid', $nid);
-
-			$templateProcessor->save('docx/'.$nid.'.docx');
-
-
-			header("Location:".'/docx/'.$nid.'.docx');
+      require_once 'sites/all/modules/torgi24/auction/documents/PHPWord.php';
+      $PHPWord = new PHPWord();
+      $templateProcessor = $PHPWord->loadTemplate('sites/all/modules/torgi24/auction/documents/examples/failed.docx');
+      $templateProcessor->setValue('nid', $nid);
+      $templateProcessor->setValue('field_operator', $node->field_operator['und'][0]['value']);
+      $templateProcessor->setValue('date', date('d.m.Y', $node->field_trading_end['und'][0]['value']));
+      $templateProcessor->setValue('protocol_id', date('dm', $node->field_trading_end['und'][0]['value']) . '/' . $nid);
+      $templateProcessor->setValue('date1', date('d.m.Y, H:i:s', $node->field_trading_start['und'][0]['value']));
+      $templateProcessor->setValue('date2', date('d.m.Y, H:i:s', $node->field_trading_end['und'][0]['value']));
+      $templateProcessor->setValue('crisis_manager', $node->field_crisis_manager['und'][0]['value']);
+      $templateProcessor->setValue('debitor', $node->field_debtor['und'][0]['value']);
+      $templateProcessor->setValue('head_position', $node->field_head_position['und'][0]['value']);
+      $templateProcessor->setValue('field_head_crisis', $node->field_head_crisis['und'][0]['value']);
+      if (isset($node->field_cause['und'][0]['value']))
+        $templateProcessor->setValue('cause', $node->field_cause['und'][0]['value']);
+      else
+        $templateProcessor->setValue('cause', '');
+      $templateProcessor->setValue('node_name', $node->title . ', №' . $nid);
+      $templateProcessor->setValue('nid', $nid);
+      if($failed) {
+        $templateProcessor->save('docx/' . $nid . '-failed.docx');
+        header("Location:" . '/docx/' . $nid . '-failed.docx');
+      }else{
+        $templateProcessor->save('docx/' . $nid . '.docx');
+        header("Location:" . '/docx/' . $nid . '.docx');
+      }
 			break;
 
 		default:
